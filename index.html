@@ -1,504 +1,770 @@
-<!DOCTYPE html>
+<!doctype html>
 <html lang="zh-TW">
 <head>
-    <meta charset="utf-8">
-    <meta content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no" name="viewport">
-    <title>2025 大阪京都行 (修正版)</title>
-    <script src="https://cdn.tailwindcss.com"></script>
-    <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+TC:wght@400;500;700&display=swap" rel="stylesheet">
-    <link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Rounded:opsz,wght,FILL,GRAD@24,400,1,0" rel="stylesheet">
-    
-    <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css" integrity="sha256-p4NxAoJBhIIN+hmNHrzRCf9tD/miZyoHS5obTRR9BMY=" crossorigin=""/>
-    <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js" integrity="sha256-20nQCchB9co0qIjJZRGuk2/Z9VM+kNiyxNV1lvTlZBo=" crossorigin=""></script>
-
-    <style>
-        body { font-family: 'Noto Sans TC', sans-serif; -webkit-tap-highlight-color: transparent; }
-        .no-scrollbar::-webkit-scrollbar { display: none; }
-        .no-scrollbar { -ms-overflow-style: none; scrollbar-width: none; }
-        .safe-top { padding-top: env(safe-area-inset-top, 0px); }
-        .safe-bottom { padding-bottom: env(safe-area-inset-bottom, 20px); }
-        .timeline-line {
-            position: absolute; left: 20px; top: 24px; bottom: 0; width: 2px; background: #e2e8f0; z-index: 0;
-        }
-        @keyframes slideUp { from { transform: translateY(100%); } to { transform: translateY(0); } }
-        .map-card-enter { animation: slideUp 0.3s cubic-bezier(0.16, 1, 0.3, 1) forwards; }
-        
-        /* 移除 Google Maps 相關樣式，加入 Leaflet 修正 */
-        .custom-div-icon { background: transparent; border: none; }
-        
-        @media (min-width: 1024px) {
-            #mobile-nav { display: none; }
-            #desktop-layout { display: flex; height: 100vh; overflow: hidden; }
-            #list-view { width: 400px; height: 100%; overflow-y: auto; border-right: 1px solid #e2e8f0; display: block !important; }
-            #map-view { flex: 1; height: 100%; display: block !important; position: relative !important; opacity: 1 !important; visibility: visible !important; }
-            .map-info-card { position: absolute; bottom: 32px; left: 50%; transform: translateX(-50%); width: 400px; max-width: 90%; z-index: 1000; } 
-            #view-title-bar-mobile { display: none; }
-            #view-title-bar-desktop { display: flex; }
-        }
-        @media (max-width: 1023px) {
-            #view-title-bar-desktop { display: none; }
-        }
-    </style>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>大阪京都六日遊（NAVER 可摺疊 DAY 版）</title>
+  <script src="https://cdn.tailwindcss.com"></script>
+  <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Material+Symbols+Rounded:wght@400;500;600&display=swap" />
+  <style>
+    .safe-top { padding-top: env(safe-area-inset-top); }
+    .safe-bottom { padding-bottom: env(safe-area-inset-bottom); }
+    details > summary::-webkit-details-marker { display:none; }
+    details[open] summary .material-symbols-rounded { transform: rotate(180deg); transition: transform .15s ease; }
+    details summary .material-symbols-rounded { transition: transform .15s ease; }
+  </style>
 </head>
 <body class="bg-slate-50 text-slate-800 h-screen w-screen overflow-hidden">
 
-<div id="settings-modal" class="fixed inset-0 z-[60] bg-black/50 flex items-center justify-center p-4 backdrop-blur-sm hidden">
-    <div class="bg-white rounded-2xl w-full max-w-sm overflow-hidden shadow-2xl transform transition-all scale-100">
-        <div class="p-4 border-b border-slate-100 flex justify-between items-center bg-slate-50">
-            <h3 class="font-bold text-slate-800 flex items-center gap-2">
-                <span class="material-symbols-rounded text-slate-500">settings</span>
-                導航設定
-            </h3>
-            <button onclick="toggleSettings()" class="text-slate-400 hover:text-slate-600"><span class="material-symbols-rounded">close</span></button>
-        </div>
-        <div class="p-4">
-            <p class="text-sm text-slate-500 mb-3">選擇點擊「導航」時開啟的應用程式：</p>
-            <div class="space-y-2">
-                <label class="flex items-center p-3 rounded-xl border border-slate-200 cursor-pointer hover:bg-slate-50 transition-colors has-[:checked]:border-blue-500 has-[:checked]:bg-blue-50">
-                    <input type="radio" name="map_provider" value="google" class="w-4 h-4 text-blue-600" checked="" onchange="updateMapProvider(this.value)">
-                    <span class="ml-3 font-medium text-slate-700">Google Maps (推薦)</span>
-                </label>
-                <label class="flex items-center p-3 rounded-xl border border-slate-200 cursor-pointer hover:bg-slate-50 transition-colors has-[:checked]:border-green-500 has-[:checked]:bg-green-50">
-                    <input type="radio" name="map_provider" value="naver" class="w-4 h-4 text-green-600" onchange="updateMapProvider(this.value)">
-                    <span class="ml-3 font-medium text-slate-700">NAVER Map</span>
-                    <span class="ml-auto text-xs bg-slate-100 text-slate-500 px-2 py-0.5 rounded">需安裝App</span>
-                </label>
-                <label class="flex items-center p-3 rounded-xl border border-slate-200 cursor-pointer hover:bg-slate-50 transition-colors has-[:checked]:border-gray-500 has-[:checked]:bg-gray-100">
-                    <input type="radio" name="map_provider" value="apple" class="w-4 h-4 text-gray-600" onchange="updateMapProvider(this.value)">
-                    <span class="ml-3 font-medium text-slate-700">Apple Maps</span>
-                </label>
-            </div>
-        </div>
-        <div class="p-4 border-t border-slate-100 bg-slate-50 text-right">
-            <button onclick="toggleSettings()" class="px-4 py-2 bg-blue-600 text-white rounded-lg font-medium text-sm hover:bg-blue-700">完成</button>
-        </div>
-    </div>
-</div>
+  <div class="w-full h-full flex flex-col lg:flex-row">
 
-<div class="w-full h-full relative" id="desktop-layout">
-    <div class="w-full h-full bg-slate-50 overflow-y-auto pb-24 lg:pb-0 relative z-10 transition-opacity duration-300 flex flex-col" id="list-view">
+    <!-- 左側：行程（可摺疊 DAY） -->
+    <div id="list-view" class="flex-1 lg:flex-none lg:w-[420px] h-full overflow-y-auto border-r border-slate-200 bg-slate-50">
+      <header class="sticky top-0 z-40 bg-white/95 backdrop-blur border-b border-slate-200 shadow-sm safe-top">
+        <div class="px-4 py-3 flex items-center justify-between">
+          <div class="min-w-0">
+            <h1 class="text-lg font-bold text-slate-900 truncate">大阪京都六日遊</h1>
+            <p class="text-xs text-slate-500">2025/11/27 - 12/02</p>
+          </div>
+          <button onclick="downloadHTML()" class="flex items-center gap-1 px-3 py-1.5 bg-slate-100 hover:bg-slate-200 rounded-lg text-sm text-slate-700 transition-colors">
+            <span class="material-symbols-rounded text-base">download</span>
+            <span>匯出</span>
+          </button>
+        </div>
+        <div class="px-4 pb-3">
+          <button class="w-full rounded-xl bg-slate-900 text-white py-2 text-sm font-semibold hover:bg-slate-800"
+                  onclick="switchView('map')">
+            <span class="material-symbols-rounded align-[-4px] mr-1">map</span>
+            打開地圖
+          </button>
+        </div>
+      </header>
+
+      <main class="p-4 space-y-4 pb-28 lg:pb-6">
         
-        <header class="sticky top-0 z-40 bg-white/95 backdrop-blur border-b border-slate-200 shadow-sm safe-top" id="view-title-bar-mobile">
-            <div class="px-4 py-3 flex items-center justify-between">
-                <div>
-                    <h1 class="text-lg font-bold text-slate-800">2025 大阪京都</h1>
-                    <p class="text-xs text-slate-500">11/27 - 12/02</p>
-                </div>
-                <div class="flex items-center gap-2">
-                    <button class="p-2 rounded-full bg-slate-50 text-slate-600 hover:bg-slate-100 border border-slate-100" onclick="toggleSettings()" title="導航設定">
-                        <span class="material-symbols-rounded text-xl">settings</span>
-                    </button>
-                    <button class="p-2 rounded-full bg-slate-50 text-slate-600 hover:bg-slate-100 border border-slate-100" onclick="alert('請直接儲存此檔案，無需再次下載')" title="檔案已修正">
-                        <span class="material-symbols-rounded text-xl">check_circle</span>
-                    </button>
-                </div>
+  <details class="bg-white rounded-2xl shadow-sm border border-slate-200 overflow-hidden" open>
+    <summary class="cursor-pointer select-none px-4 py-3 flex items-center justify-between gap-3">
+      <div class="min-w-0">
+        <div class="text-[11px] font-bold text-blue-700 bg-blue-100 inline-flex px-2 py-0.5 rounded-full">DAY 1</div>
+        <div class="mt-1 font-semibold text-slate-900 truncate">高雄 → 大阪</div>
+        <div class="text-xs text-slate-500">11/27 週四</div>
+      </div>
+      <span class="material-symbols-rounded text-slate-400">expand_more</span>
+    </summary>
+    <div class="p-4 space-y-3 bg-slate-50/60">
+      
+      <div class="group rounded-2xl border border-blue-200 bg-blue-50 hover:bg-blue-100/40 p-4 transition-all cursor-pointer"
+           onclick="focusLocation(34.6766, 135.5008, 'Henn na Hotel Osaka Shinsaibashi')">
+        <div class="flex items-start justify-between gap-3">
+          <div class="min-w-0 flex-1">
+            <div class="flex items-center gap-2">
+              <span class="text-xs font-semibold text-slate-500">—</span>
+              <span class="text-[10px] font-bold px-2 py-0.5 rounded-full bg-slate-100 text-slate-600">今日住宿</span>
             </div>
-            <div class="flex overflow-x-auto no-scrollbar px-2 py-2 gap-2 border-t border-slate-100" id="date-tabs-mobile"></div>
-        </header>
-
-        <header class="sticky top-0 z-40 bg-white border-b border-slate-200 shadow-sm p-4 hidden flex-col gap-4" id="view-title-bar-desktop">
-            <div class="flex justify-between items-center">
-                <div>
-                    <h1 class="text-xl font-bold text-slate-800">大阪京都六日遊</h1>
-                    <p class="text-sm text-slate-500">2025/11/27 - 12/02</p>
-                </div>
-                <div class="flex gap-2">
-                    <button class="flex items-center gap-1 px-3 py-1.5 bg-slate-100 hover:bg-slate-200 rounded-lg text-sm text-slate-700 transition-colors" onclick="toggleSettings()">
-                        <span class="material-symbols-rounded text-base">settings</span>
-                        <span>導航設定</span>
-                    </button>
-                    <button class="flex items-center gap-1 px-3 py-1.5 bg-green-50 hover:bg-green-100 text-green-700 rounded-lg text-sm transition-colors border border-green-100">
-                        <span class="material-symbols-rounded text-base">check</span>
-                        <span>已修正地圖</span>
-                    </button>
-                </div>
+            <div class="mt-1 font-bold text-slate-900 leading-snug">Henn na Hotel Osaka Shinsaibashi</div>
+            <div class="mt-1 text-sm text-slate-600 leading-snug">大阪市中央區南船場 3-5-2</div>
+          </div>
+          <div class="flex flex-col items-end gap-2 flex-shrink-0">
+            <div class="w-9 h-9 rounded-full bg-slate-100 text-slate-700 flex items-center justify-center">
+              <span class="material-symbols-rounded text-[20px]">bed</span>
             </div>
-            <div class="flex overflow-x-auto no-scrollbar gap-2 pb-2" id="date-tabs-desktop"></div>
-        </header>
-
-        <div class="p-4 space-y-6 min-h-[80vh] flex-1" id="day-content"></div>
-    </div>
-
-    <div class="absolute inset-0 z-0 bg-slate-200 hidden lg:block" id="map-view">
-        <div class="w-full h-full z-0" id="map"></div>
-        
-        <div class="map-info-card hidden absolute bottom-24 lg:bottom-8 left-4 right-4 bg-white rounded-2xl shadow-xl p-4 z-[1000] map-card-enter max-w-md mx-auto" id="map-card">
-            <div class="flex gap-4">
-                <div class="w-20 h-20 rounded-xl bg-slate-200 flex-shrink-0 overflow-hidden hidden" id="card-img-container">
-                    <img class="w-full h-full object-cover" id="card-img" src="">
-                </div>
-                <div class="flex-1 min-w-0">
-                    <div class="flex justify-between items-start">
-                        <span class="text-[10px] font-bold px-1.5 py-0.5 rounded bg-slate-100 text-slate-600 mb-1 inline-block" id="card-tag">地點</span>
-                        <button class="text-slate-400 p-1 -mt-2 -mr-2 hover:bg-slate-100 rounded-full" onclick="closeMapCard()"><span class="material-symbols-rounded">close</span></button>
-                    </div>
-                    <h3 class="font-bold text-slate-800 truncate" id="card-title">地點名稱</h3>
-                    <p class="text-xs text-slate-500 line-clamp-2 mt-1" id="card-desc">描述內容...</p>
-                    <button class="mt-3 w-full py-2 bg-blue-600 hover:bg-blue-700 text-white rounded-lg text-xs font-bold flex items-center justify-center gap-1 transition-colors" onclick="openNavigation()">
-                        <span class="material-symbols-rounded text-sm">directions</span> 
-                        <span id="nav-btn-text">Google 導航</span>
-                    </button>
-                </div>
-            </div>
+            <button class="text-xs font-semibold text-blue-600 hover:text-blue-800"
+              onclick="openNaverDirections(event, 34.6766, 135.5008, 'Henn na Hotel Osaka Shinsaibashi')">
+              NAVER 導航
+            </button>
+          </div>
         </div>
-    </div>
-</div>
+      </div>
+    
+      
+      <div class="group rounded-2xl border border-slate-200 bg-white hover:bg-slate-50 p-4 transition-all cursor-pointer"
+           onclick="focusLocation(34.4325, 135.2304, '起飛 BR182')">
+        <div class="flex items-start justify-between gap-3">
+          <div class="min-w-0 flex-1">
+            <div class="flex items-center gap-2">
+              <span class="text-xs font-semibold text-slate-500">07:05</span>
+              <span class="text-[10px] font-bold px-2 py-0.5 rounded-full bg-slate-100 text-slate-600">航班</span>
+            </div>
+            <div class="mt-1 font-bold text-slate-900 leading-snug">起飛 BR182</div>
+            <div class="mt-1 text-sm text-slate-600 leading-snug">高雄(KHH) ✈ 關西(KIX)</div>
+          </div>
+          <div class="flex flex-col items-end gap-2 flex-shrink-0">
+            <div class="w-9 h-9 rounded-full bg-slate-100 text-slate-700 flex items-center justify-center">
+              <span class="material-symbols-rounded text-[20px]">flight_takeoff</span>
+            </div>
+            <button class="text-xs font-semibold text-blue-600 hover:text-blue-800"
+              onclick="openNaverDirections(event, 34.4325, 135.2304, '起飛 BR182')">
+              NAVER 導航
+            </button>
+          </div>
+        </div>
+      </div>
+    
 
-<nav class="fixed bottom-0 left-0 right-0 bg-white border-t border-slate-200 pb-[env(safe-area-inset-bottom)] z-50 shadow-[0_-4px_6px_-1px_rgba(0,0,0,0.05)]" id="mobile-nav">
-    <div class="flex justify-around items-center h-16">
-        <button class="nav-btn flex flex-col items-center justify-center w-full h-full text-blue-600 transition-colors" id="btn-list" onclick="switchView('list')">
-            <span class="material-symbols-rounded text-2xl mb-0.5">format_list_bulleted</span>
-            <span class="text-[10px] font-medium">行程</span>
-        </button>
-        <button class="nav-btn flex flex-col items-center justify-center w-full h-full text-slate-400 transition-colors" id="btn-map" onclick="switchView('map')">
-            <span class="material-symbols-rounded text-2xl mb-0.5">map</span>
-            <span class="text-[10px] font-medium">地圖</span>
-        </button>
+      <div class="group rounded-2xl border border-slate-200 bg-white hover:bg-slate-50 p-4 transition-all cursor-pointer"
+           onclick="focusLocation(34.4325, 135.2304, '抵達大阪')">
+        <div class="flex items-start justify-between gap-3">
+          <div class="min-w-0 flex-1">
+            <div class="flex items-center gap-2">
+              <span class="text-xs font-semibold text-slate-500">10:55</span>
+              <span class="text-[10px] font-bold px-2 py-0.5 rounded-full bg-slate-100 text-slate-600">機場</span>
+            </div>
+            <div class="mt-1 font-bold text-slate-900 leading-snug">抵達大阪</div>
+            <div class="mt-1 text-sm text-slate-600 leading-snug">入境並前往市區</div>
+          </div>
+          <div class="flex flex-col items-end gap-2 flex-shrink-0">
+            <div class="w-9 h-9 rounded-full bg-slate-100 text-slate-700 flex items-center justify-center">
+              <span class="material-symbols-rounded text-[20px]">flight_land</span>
+            </div>
+            <button class="text-xs font-semibold text-blue-600 hover:text-blue-800"
+              onclick="openNaverDirections(event, 34.4325, 135.2304, '抵達大阪')">
+              NAVER 導航
+            </button>
+          </div>
+        </div>
+      </div>
+    
+
+      <div class="group rounded-2xl border border-blue-200 bg-blue-50 hover:bg-blue-100/40 p-4 transition-all cursor-pointer"
+           onclick="focusLocation(34.6766, 135.5008, '飯店 Check-in')">
+        <div class="flex items-start justify-between gap-3">
+          <div class="min-w-0 flex-1">
+            <div class="flex items-center gap-2">
+              <span class="text-xs font-semibold text-slate-500">13:00</span>
+              <span class="text-[10px] font-bold px-2 py-0.5 rounded-full bg-slate-100 text-slate-600">住宿</span>
+            </div>
+            <div class="mt-1 font-bold text-slate-900 leading-snug">飯店 Check-in</div>
+            <div class="mt-1 text-sm text-slate-600 leading-snug">心齋橋海茵娜飯店</div>
+          </div>
+          <div class="flex flex-col items-end gap-2 flex-shrink-0">
+            <div class="w-9 h-9 rounded-full bg-slate-100 text-slate-700 flex items-center justify-center">
+              <span class="material-symbols-rounded text-[20px]">hotel</span>
+            </div>
+            <button class="text-xs font-semibold text-blue-600 hover:text-blue-800"
+              onclick="openNaverDirections(event, 34.6766, 135.5008, '飯店 Check-in')">
+              NAVER 導航
+            </button>
+          </div>
+        </div>
+      </div>
+    
     </div>
-</nav>
+  </details>
+
+  <details class="bg-white rounded-2xl shadow-sm border border-slate-200 overflow-hidden">
+    <summary class="cursor-pointer select-none px-4 py-3 flex items-center justify-between gap-3">
+      <div class="min-w-0">
+        <div class="text-[11px] font-bold text-blue-700 bg-blue-100 inline-flex px-2 py-0.5 rounded-full">DAY 2</div>
+        <div class="mt-1 font-semibold text-slate-900 truncate">京都古都巡禮</div>
+        <div class="text-xs text-slate-500">11/28 週五</div>
+      </div>
+      <span class="material-symbols-rounded text-slate-400">expand_more</span>
+    </summary>
+    <div class="p-4 space-y-3 bg-slate-50/60">
+      
+      <div class="group rounded-2xl border border-blue-200 bg-blue-50 hover:bg-blue-100/40 p-4 transition-all cursor-pointer"
+           onclick="focusLocation(34.9965, 135.7803, 'The Hotel Seiryu Kyoto Kiyomizu')">
+        <div class="flex items-start justify-between gap-3">
+          <div class="min-w-0 flex-1">
+            <div class="flex items-center gap-2">
+              <span class="text-xs font-semibold text-slate-500">—</span>
+              <span class="text-[10px] font-bold px-2 py-0.5 rounded-full bg-slate-100 text-slate-600">今日住宿</span>
+            </div>
+            <div class="mt-1 font-bold text-slate-900 leading-snug">The Hotel Seiryu Kyoto Kiyomizu</div>
+            <div class="mt-1 text-sm text-slate-600 leading-snug">京都市東山區清水二丁目 204-2</div>
+          </div>
+          <div class="flex flex-col items-end gap-2 flex-shrink-0">
+            <div class="w-9 h-9 rounded-full bg-slate-100 text-slate-700 flex items-center justify-center">
+              <span class="material-symbols-rounded text-[20px]">bed</span>
+            </div>
+            <button class="text-xs font-semibold text-blue-600 hover:text-blue-800"
+              onclick="openNaverDirections(event, 34.9965, 135.7803, 'The Hotel Seiryu Kyoto Kiyomizu')">
+              NAVER 導航
+            </button>
+          </div>
+        </div>
+      </div>
+    
+      
+      <div class="group rounded-2xl border border-slate-200 bg-white hover:bg-slate-50 p-4 transition-all cursor-pointer"
+           onclick="focusLocation(34.9671, 135.7727, '伏見稻荷大社')">
+        <div class="flex items-start justify-between gap-3">
+          <div class="min-w-0 flex-1">
+            <div class="flex items-center gap-2">
+              <span class="text-xs font-semibold text-slate-500">08:00</span>
+              <span class="text-[10px] font-bold px-2 py-0.5 rounded-full bg-slate-100 text-slate-600">景點</span>
+            </div>
+            <div class="mt-1 font-bold text-slate-900 leading-snug">伏見稻荷大社</div>
+            <div class="mt-1 text-sm text-slate-600 leading-snug">千本鳥居晨間參拜</div>
+          </div>
+          <div class="flex flex-col items-end gap-2 flex-shrink-0">
+            <div class="w-9 h-9 rounded-full bg-slate-100 text-slate-700 flex items-center justify-center">
+              <span class="material-symbols-rounded text-[20px]">temple_buddhist</span>
+            </div>
+            <button class="text-xs font-semibold text-blue-600 hover:text-blue-800"
+              onclick="openNaverDirections(event, 34.9671, 135.7727, '伏見稻荷大社')">
+              NAVER 導航
+            </button>
+          </div>
+        </div>
+      </div>
+    
+
+      <div class="group rounded-2xl border border-slate-200 bg-white hover:bg-slate-50 p-4 transition-all cursor-pointer"
+           onclick="focusLocation(35.0094, 135.667, '嵐山散策')">
+        <div class="flex items-start justify-between gap-3">
+          <div class="min-w-0 flex-1">
+            <div class="flex items-center gap-2">
+              <span class="text-xs font-semibold text-slate-500">10:30</span>
+              <span class="text-[10px] font-bold px-2 py-0.5 rounded-full bg-slate-100 text-slate-600">景點</span>
+            </div>
+            <div class="mt-1 font-bold text-slate-900 leading-snug">嵐山散策</div>
+            <div class="mt-1 text-sm text-slate-600 leading-snug">竹林、渡月橋、天龍寺</div>
+          </div>
+          <div class="flex flex-col items-end gap-2 flex-shrink-0">
+            <div class="w-9 h-9 rounded-full bg-slate-100 text-slate-700 flex items-center justify-center">
+              <span class="material-symbols-rounded text-[20px]">forest</span>
+            </div>
+            <button class="text-xs font-semibold text-blue-600 hover:text-blue-800"
+              onclick="openNaverDirections(event, 35.0094, 135.667, '嵐山散策')">
+              NAVER 導航
+            </button>
+          </div>
+        </div>
+      </div>
+    
+
+      <div class="group rounded-2xl border border-slate-200 bg-white hover:bg-slate-50 p-4 transition-all cursor-pointer"
+           onclick="focusLocation(35.0037, 135.7778, '和服體驗')">
+        <div class="flex items-start justify-between gap-3">
+          <div class="min-w-0 flex-1">
+            <div class="flex items-center gap-2">
+              <span class="text-xs font-semibold text-slate-500">15:00</span>
+              <span class="text-[10px] font-bold px-2 py-0.5 rounded-full bg-slate-100 text-slate-600">體驗</span>
+            </div>
+            <div class="mt-1 font-bold text-slate-900 leading-snug">和服體驗</div>
+            <div class="mt-1 text-sm text-slate-600 leading-snug">清水寺／祇園周邊</div>
+          </div>
+          <div class="flex flex-col items-end gap-2 flex-shrink-0">
+            <div class="w-9 h-9 rounded-full bg-slate-100 text-slate-700 flex items-center justify-center">
+              <span class="material-symbols-rounded text-[20px]">checkroom</span>
+            </div>
+            <button class="text-xs font-semibold text-blue-600 hover:text-blue-800"
+              onclick="openNaverDirections(event, 35.0037, 135.7778, '和服體驗')">
+              NAVER 導航
+            </button>
+          </div>
+        </div>
+      </div>
+    
+
+      <div class="group rounded-2xl border border-blue-200 bg-blue-50 hover:bg-blue-100/40 p-4 transition-all cursor-pointer"
+           onclick="focusLocation(34.9949, 135.785, '清水寺夜間參拜')">
+        <div class="flex items-start justify-between gap-3">
+          <div class="min-w-0 flex-1">
+            <div class="flex items-center gap-2">
+              <span class="text-xs font-semibold text-slate-500">17:00</span>
+              <span class="text-[10px] font-bold px-2 py-0.5 rounded-full bg-slate-100 text-slate-600">景點</span>
+            </div>
+            <div class="mt-1 font-bold text-slate-900 leading-snug">清水寺夜間參拜</div>
+            <div class="mt-1 text-sm text-slate-600 leading-snug">秋季紅葉點燈</div>
+          </div>
+          <div class="flex flex-col items-end gap-2 flex-shrink-0">
+            <div class="w-9 h-9 rounded-full bg-slate-100 text-slate-700 flex items-center justify-center">
+              <span class="material-symbols-rounded text-[20px]">wb_twilight</span>
+            </div>
+            <button class="text-xs font-semibold text-blue-600 hover:text-blue-800"
+              onclick="openNaverDirections(event, 34.9949, 135.785, '清水寺夜間參拜')">
+              NAVER 導航
+            </button>
+          </div>
+        </div>
+      </div>
+    
+    </div>
+  </details>
+
+  <details class="bg-white rounded-2xl shadow-sm border border-slate-200 overflow-hidden">
+    <summary class="cursor-pointer select-none px-4 py-3 flex items-center justify-between gap-3">
+      <div class="min-w-0">
+        <div class="text-[11px] font-bold text-blue-700 bg-blue-100 inline-flex px-2 py-0.5 rounded-full">DAY 3</div>
+        <div class="mt-1 font-semibold text-slate-900 truncate">天橋立一日遊</div>
+        <div class="text-xs text-slate-500">11/29 週六</div>
+      </div>
+      <span class="material-symbols-rounded text-slate-400">expand_more</span>
+    </summary>
+    <div class="p-4 space-y-3 bg-slate-50/60">
+      
+      <div class="group rounded-2xl border border-blue-200 bg-blue-50 hover:bg-blue-100/40 p-4 transition-all cursor-pointer"
+           onclick="focusLocation(34.6766, 135.5008, 'Henn na Hotel Osaka Shinsaibashi')">
+        <div class="flex items-start justify-between gap-3">
+          <div class="min-w-0 flex-1">
+            <div class="flex items-center gap-2">
+              <span class="text-xs font-semibold text-slate-500">—</span>
+              <span class="text-[10px] font-bold px-2 py-0.5 rounded-full bg-slate-100 text-slate-600">今日住宿</span>
+            </div>
+            <div class="mt-1 font-bold text-slate-900 leading-snug">Henn na Hotel Osaka Shinsaibashi</div>
+            <div class="mt-1 text-sm text-slate-600 leading-snug">大阪市中央區南船場 3-5-2</div>
+          </div>
+          <div class="flex flex-col items-end gap-2 flex-shrink-0">
+            <div class="w-9 h-9 rounded-full bg-slate-100 text-slate-700 flex items-center justify-center">
+              <span class="material-symbols-rounded text-[20px]">bed</span>
+            </div>
+            <button class="text-xs font-semibold text-blue-600 hover:text-blue-800"
+              onclick="openNaverDirections(event, 34.6766, 135.5008, 'Henn na Hotel Osaka Shinsaibashi')">
+              NAVER 導航
+            </button>
+          </div>
+        </div>
+      </div>
+    
+      
+      <div class="group rounded-2xl border border-slate-200 bg-white hover:bg-slate-50 p-4 transition-all cursor-pointer"
+           onclick="focusLocation(34.9835, 135.7578, '京都出發')">
+        <div class="flex items-start justify-between gap-3">
+          <div class="min-w-0 flex-1">
+            <div class="flex items-center gap-2">
+              <span class="text-xs font-semibold text-slate-500">07:30</span>
+              <span class="text-[10px] font-bold px-2 py-0.5 rounded-full bg-slate-100 text-slate-600">移動</span>
+            </div>
+            <div class="mt-1 font-bold text-slate-900 leading-snug">京都出發</div>
+            <div class="mt-1 text-sm text-slate-600 leading-snug">京都車站八條口集合</div>
+          </div>
+          <div class="flex flex-col items-end gap-2 flex-shrink-0">
+            <div class="w-9 h-9 rounded-full bg-slate-100 text-slate-700 flex items-center justify-center">
+              <span class="material-symbols-rounded text-[20px]">directions_bus</span>
+            </div>
+            <button class="text-xs font-semibold text-blue-600 hover:text-blue-800"
+              onclick="openNaverDirections(event, 34.9835, 135.7578, '京都出發')">
+              NAVER 導航
+            </button>
+          </div>
+        </div>
+      </div>
+    
+
+      <div class="group rounded-2xl border border-slate-200 bg-white hover:bg-slate-50 p-4 transition-all cursor-pointer"
+           onclick="focusLocation(35.59, 135.2, '天橋立')">
+        <div class="flex items-start justify-between gap-3">
+          <div class="min-w-0 flex-1">
+            <div class="flex items-center gap-2">
+              <span class="text-xs font-semibold text-slate-500">10:00</span>
+              <span class="text-[10px] font-bold px-2 py-0.5 rounded-full bg-slate-100 text-slate-600">景點</span>
+            </div>
+            <div class="mt-1 font-bold text-slate-900 leading-snug">天橋立</div>
+            <div class="mt-1 text-sm text-slate-600 leading-snug">傘松公園展望台</div>
+          </div>
+          <div class="flex flex-col items-end gap-2 flex-shrink-0">
+            <div class="w-9 h-9 rounded-full bg-slate-100 text-slate-700 flex items-center justify-center">
+              <span class="material-symbols-rounded text-[20px]">landscape</span>
+            </div>
+            <button class="text-xs font-semibold text-blue-600 hover:text-blue-800"
+              onclick="openNaverDirections(event, 35.59, 135.2, '天橋立')">
+              NAVER 導航
+            </button>
+          </div>
+        </div>
+      </div>
+    
+
+      <div class="group rounded-2xl border border-blue-200 bg-blue-50 hover:bg-blue-100/40 p-4 transition-all cursor-pointer"
+           onclick="focusLocation(35.67, 135.29, '伊根舟屋')">
+        <div class="flex items-start justify-between gap-3">
+          <div class="min-w-0 flex-1">
+            <div class="flex items-center gap-2">
+              <span class="text-xs font-semibold text-slate-500">13:00</span>
+              <span class="text-[10px] font-bold px-2 py-0.5 rounded-full bg-slate-100 text-slate-600">景點</span>
+            </div>
+            <div class="mt-1 font-bold text-slate-900 leading-snug">伊根舟屋</div>
+            <div class="mt-1 text-sm text-slate-600 leading-snug">伊根灣遊船體驗</div>
+          </div>
+          <div class="flex flex-col items-end gap-2 flex-shrink-0">
+            <div class="w-9 h-9 rounded-full bg-slate-100 text-slate-700 flex items-center justify-center">
+              <span class="material-symbols-rounded text-[20px]">houseboat</span>
+            </div>
+            <button class="text-xs font-semibold text-blue-600 hover:text-blue-800"
+              onclick="openNaverDirections(event, 35.67, 135.29, '伊根舟屋')">
+              NAVER 導航
+            </button>
+          </div>
+        </div>
+      </div>
+    
+    </div>
+  </details>
+
+  <details class="bg-white rounded-2xl shadow-sm border border-slate-200 overflow-hidden">
+    <summary class="cursor-pointer select-none px-4 py-3 flex items-center justify-between gap-3">
+      <div class="min-w-0">
+        <div class="text-[11px] font-bold text-blue-700 bg-blue-100 inline-flex px-2 py-0.5 rounded-full">DAY 4</div>
+        <div class="mt-1 font-semibold text-slate-900 truncate">大阪市區遊</div>
+        <div class="text-xs text-slate-500">11/30 週日</div>
+      </div>
+      <span class="material-symbols-rounded text-slate-400">expand_more</span>
+    </summary>
+    <div class="p-4 space-y-3 bg-slate-50/60">
+      
+      <div class="group rounded-2xl border border-blue-200 bg-blue-50 hover:bg-blue-100/40 p-4 transition-all cursor-pointer"
+           onclick="focusLocation(34.6766, 135.5008, 'Henn na Hotel Osaka Shinsaibashi')">
+        <div class="flex items-start justify-between gap-3">
+          <div class="min-w-0 flex-1">
+            <div class="flex items-center gap-2">
+              <span class="text-xs font-semibold text-slate-500">—</span>
+              <span class="text-[10px] font-bold px-2 py-0.5 rounded-full bg-slate-100 text-slate-600">今日住宿</span>
+            </div>
+            <div class="mt-1 font-bold text-slate-900 leading-snug">Henn na Hotel Osaka Shinsaibashi</div>
+            <div class="mt-1 text-sm text-slate-600 leading-snug">大阪市中央區南船場 3-5-2</div>
+          </div>
+          <div class="flex flex-col items-end gap-2 flex-shrink-0">
+            <div class="w-9 h-9 rounded-full bg-slate-100 text-slate-700 flex items-center justify-center">
+              <span class="material-symbols-rounded text-[20px]">bed</span>
+            </div>
+            <button class="text-xs font-semibold text-blue-600 hover:text-blue-800"
+              onclick="openNaverDirections(event, 34.6766, 135.5008, 'Henn na Hotel Osaka Shinsaibashi')">
+              NAVER 導航
+            </button>
+          </div>
+        </div>
+      </div>
+    
+      
+      <div class="group rounded-2xl border border-slate-200 bg-white hover:bg-slate-50 p-4 transition-all cursor-pointer"
+           onclick="focusLocation(34.6873, 135.5262, '大阪城公園')">
+        <div class="flex items-start justify-between gap-3">
+          <div class="min-w-0 flex-1">
+            <div class="flex items-center gap-2">
+              <span class="text-xs font-semibold text-slate-500">09:30</span>
+              <span class="text-[10px] font-bold px-2 py-0.5 rounded-full bg-slate-100 text-slate-600">景點</span>
+            </div>
+            <div class="mt-1 font-bold text-slate-900 leading-snug">大阪城公園</div>
+            <div class="mt-1 text-sm text-slate-600 leading-snug">天守閣與紅葉</div>
+          </div>
+          <div class="flex flex-col items-end gap-2 flex-shrink-0">
+            <div class="w-9 h-9 rounded-full bg-slate-100 text-slate-700 flex items-center justify-center">
+              <span class="material-symbols-rounded text-[20px]">castle</span>
+            </div>
+            <button class="text-xs font-semibold text-blue-600 hover:text-blue-800"
+              onclick="openNaverDirections(event, 34.6873, 135.5262, '大阪城公園')">
+              NAVER 導航
+            </button>
+          </div>
+        </div>
+      </div>
+    
+
+      <div class="group rounded-2xl border border-slate-200 bg-white hover:bg-slate-50 p-4 transition-all cursor-pointer"
+           onclick="focusLocation(34.704, 135.495, '梅田購物')">
+        <div class="flex items-start justify-between gap-3">
+          <div class="min-w-0 flex-1">
+            <div class="flex items-center gap-2">
+              <span class="text-xs font-semibold text-slate-500">13:00</span>
+              <span class="text-[10px] font-bold px-2 py-0.5 rounded-full bg-slate-100 text-slate-600">購物</span>
+            </div>
+            <div class="mt-1 font-bold text-slate-900 leading-snug">梅田購物</div>
+            <div class="mt-1 text-sm text-slate-600 leading-snug">Grand Front, LUCUA</div>
+          </div>
+          <div class="flex flex-col items-end gap-2 flex-shrink-0">
+            <div class="w-9 h-9 rounded-full bg-slate-100 text-slate-700 flex items-center justify-center">
+              <span class="material-symbols-rounded text-[20px]">shopping_bag</span>
+            </div>
+            <button class="text-xs font-semibold text-blue-600 hover:text-blue-800"
+              onclick="openNaverDirections(event, 34.704, 135.495, '梅田購物')">
+              NAVER 導航
+            </button>
+          </div>
+        </div>
+      </div>
+    
+
+      <div class="group rounded-2xl border border-blue-200 bg-blue-50 hover:bg-blue-100/40 p-4 transition-all cursor-pointer"
+           onclick="focusLocation(34.648, 135.513, '天王寺聖誕市集')">
+        <div class="flex items-start justify-between gap-3">
+          <div class="min-w-0 flex-1">
+            <div class="flex items-center gap-2">
+              <span class="text-xs font-semibold text-slate-500">18:00</span>
+              <span class="text-[10px] font-bold px-2 py-0.5 rounded-full bg-slate-100 text-slate-600">活動</span>
+            </div>
+            <div class="mt-1 font-bold text-slate-900 leading-snug">天王寺聖誕市集</div>
+            <div class="mt-1 text-sm text-slate-600 leading-snug">Tenshiba 燈飾</div>
+          </div>
+          <div class="flex flex-col items-end gap-2 flex-shrink-0">
+            <div class="w-9 h-9 rounded-full bg-slate-100 text-slate-700 flex items-center justify-center">
+              <span class="material-symbols-rounded text-[20px]">christmas_card</span>
+            </div>
+            <button class="text-xs font-semibold text-blue-600 hover:text-blue-800"
+              onclick="openNaverDirections(event, 34.648, 135.513, '天王寺聖誕市集')">
+              NAVER 導航
+            </button>
+          </div>
+        </div>
+      </div>
+    
+    </div>
+  </details>
+
+  <details class="bg-white rounded-2xl shadow-sm border border-slate-200 overflow-hidden">
+    <summary class="cursor-pointer select-none px-4 py-3 flex items-center justify-between gap-3">
+      <div class="min-w-0">
+        <div class="text-[11px] font-bold text-blue-700 bg-blue-100 inline-flex px-2 py-0.5 rounded-full">DAY 5</div>
+        <div class="mt-1 font-semibold text-slate-900 truncate">奈良 / 大阪</div>
+        <div class="text-xs text-slate-500">12/01 週一</div>
+      </div>
+      <span class="material-symbols-rounded text-slate-400">expand_more</span>
+    </summary>
+    <div class="p-4 space-y-3 bg-slate-50/60">
+      
+      <div class="group rounded-2xl border border-blue-200 bg-blue-50 hover:bg-blue-100/40 p-4 transition-all cursor-pointer"
+           onclick="focusLocation(34.6766, 135.5008, 'Henn na Hotel Osaka Shinsaibashi')">
+        <div class="flex items-start justify-between gap-3">
+          <div class="min-w-0 flex-1">
+            <div class="flex items-center gap-2">
+              <span class="text-xs font-semibold text-slate-500">—</span>
+              <span class="text-[10px] font-bold px-2 py-0.5 rounded-full bg-slate-100 text-slate-600">今日住宿</span>
+            </div>
+            <div class="mt-1 font-bold text-slate-900 leading-snug">Henn na Hotel Osaka Shinsaibashi</div>
+            <div class="mt-1 text-sm text-slate-600 leading-snug">大阪市中央區南船場 3-5-2</div>
+          </div>
+          <div class="flex flex-col items-end gap-2 flex-shrink-0">
+            <div class="w-9 h-9 rounded-full bg-slate-100 text-slate-700 flex items-center justify-center">
+              <span class="material-symbols-rounded text-[20px]">bed</span>
+            </div>
+            <button class="text-xs font-semibold text-blue-600 hover:text-blue-800"
+              onclick="openNaverDirections(event, 34.6766, 135.5008, 'Henn na Hotel Osaka Shinsaibashi')">
+              NAVER 導航
+            </button>
+          </div>
+        </div>
+      </div>
+    
+      
+      <div class="group rounded-2xl border border-blue-200 bg-blue-50 hover:bg-blue-100/40 p-4 transition-all cursor-pointer"
+           onclick="focusLocation(34.685, 135.843, '奈良公園')">
+        <div class="flex items-start justify-between gap-3">
+          <div class="min-w-0 flex-1">
+            <div class="flex items-center gap-2">
+              <span class="text-xs font-semibold text-slate-500">10:00</span>
+              <span class="text-[10px] font-bold px-2 py-0.5 rounded-full bg-slate-100 text-slate-600">景點</span>
+            </div>
+            <div class="mt-1 font-bold text-slate-900 leading-snug">奈良公園</div>
+            <div class="mt-1 text-sm text-slate-600 leading-snug">東大寺、餵鹿</div>
+          </div>
+          <div class="flex flex-col items-end gap-2 flex-shrink-0">
+            <div class="w-9 h-9 rounded-full bg-slate-100 text-slate-700 flex items-center justify-center">
+              <span class="material-symbols-rounded text-[20px]">pets</span>
+            </div>
+            <button class="text-xs font-semibold text-blue-600 hover:text-blue-800"
+              onclick="openNaverDirections(event, 34.685, 135.843, '奈良公園')">
+              NAVER 導航
+            </button>
+          </div>
+        </div>
+      </div>
+    
+
+      <div class="group rounded-2xl border border-slate-200 bg-white hover:bg-slate-50 p-4 transition-all cursor-pointer"
+           onclick="focusLocation(34.6655, 135.507, '黑門市場')">
+        <div class="flex items-start justify-between gap-3">
+          <div class="min-w-0 flex-1">
+            <div class="flex items-center gap-2">
+              <span class="text-xs font-semibold text-slate-500">13:00</span>
+              <span class="text-[10px] font-bold px-2 py-0.5 rounded-full bg-slate-100 text-slate-600">美食</span>
+            </div>
+            <div class="mt-1 font-bold text-slate-900 leading-snug">黑門市場</div>
+            <div class="mt-1 text-sm text-slate-600 leading-snug">海鮮午餐</div>
+          </div>
+          <div class="flex flex-col items-end gap-2 flex-shrink-0">
+            <div class="w-9 h-9 rounded-full bg-slate-100 text-slate-700 flex items-center justify-center">
+              <span class="material-symbols-rounded text-[20px]">restaurant</span>
+            </div>
+            <button class="text-xs font-semibold text-blue-600 hover:text-blue-800"
+              onclick="openNaverDirections(event, 34.6655, 135.507, '黑門市場')">
+              NAVER 導航
+            </button>
+          </div>
+        </div>
+      </div>
+    
+
+      <div class="group rounded-2xl border border-slate-200 bg-white hover:bg-slate-50 p-4 transition-all cursor-pointer"
+           onclick="focusLocation(34.671, 135.501, '心齋橋')">
+        <div class="flex items-start justify-between gap-3">
+          <div class="min-w-0 flex-1">
+            <div class="flex items-center gap-2">
+              <span class="text-xs font-semibold text-slate-500">15:00</span>
+              <span class="text-[10px] font-bold px-2 py-0.5 rounded-full bg-slate-100 text-slate-600">購物</span>
+            </div>
+            <div class="mt-1 font-bold text-slate-900 leading-snug">心齋橋</div>
+            <div class="mt-1 text-sm text-slate-600 leading-snug">最後購物行程</div>
+          </div>
+          <div class="flex flex-col items-end gap-2 flex-shrink-0">
+            <div class="w-9 h-9 rounded-full bg-slate-100 text-slate-700 flex items-center justify-center">
+              <span class="material-symbols-rounded text-[20px]">storefront</span>
+            </div>
+            <button class="text-xs font-semibold text-blue-600 hover:text-blue-800"
+              onclick="openNaverDirections(event, 34.671, 135.501, '心齋橋')">
+              NAVER 導航
+            </button>
+          </div>
+        </div>
+      </div>
+    
+    </div>
+  </details>
+
+  <details class="bg-white rounded-2xl shadow-sm border border-slate-200 overflow-hidden">
+    <summary class="cursor-pointer select-none px-4 py-3 flex items-center justify-between gap-3">
+      <div class="min-w-0">
+        <div class="text-[11px] font-bold text-blue-700 bg-blue-100 inline-flex px-2 py-0.5 rounded-full">DAY 6</div>
+        <div class="mt-1 font-semibold text-slate-900 truncate">大阪 → 高雄</div>
+        <div class="text-xs text-slate-500">12/02 週二</div>
+      </div>
+      <span class="material-symbols-rounded text-slate-400">expand_more</span>
+    </summary>
+    <div class="p-4 space-y-3 bg-slate-50/60">
+      
+      
+      <div class="group rounded-2xl border border-slate-200 bg-white hover:bg-slate-50 p-4 transition-all cursor-pointer"
+           onclick="focusLocation(34.6766, 135.5008, '前往機場')">
+        <div class="flex items-start justify-between gap-3">
+          <div class="min-w-0 flex-1">
+            <div class="flex items-center gap-2">
+              <span class="text-xs font-semibold text-slate-500">08:00</span>
+              <span class="text-[10px] font-bold px-2 py-0.5 rounded-full bg-slate-100 text-slate-600">移動</span>
+            </div>
+            <div class="mt-1 font-bold text-slate-900 leading-snug">前往機場</div>
+            <div class="mt-1 text-sm text-slate-600 leading-snug">Check-out</div>
+          </div>
+          <div class="flex flex-col items-end gap-2 flex-shrink-0">
+            <div class="w-9 h-9 rounded-full bg-slate-100 text-slate-700 flex items-center justify-center">
+              <span class="material-symbols-rounded text-[20px]">directions_car</span>
+            </div>
+            <button class="text-xs font-semibold text-blue-600 hover:text-blue-800"
+              onclick="openNaverDirections(event, 34.6766, 135.5008, '前往機場')">
+              NAVER 導航
+            </button>
+          </div>
+        </div>
+      </div>
+    
+
+      <div class="group rounded-2xl border border-blue-200 bg-blue-50 hover:bg-blue-100/40 p-4 transition-all cursor-pointer"
+           onclick="focusLocation(34.4325, 135.2304, '起飛 BR181')">
+        <div class="flex items-start justify-between gap-3">
+          <div class="min-w-0 flex-1">
+            <div class="flex items-center gap-2">
+              <span class="text-xs font-semibold text-slate-500">11:55</span>
+              <span class="text-[10px] font-bold px-2 py-0.5 rounded-full bg-slate-100 text-slate-600">航班</span>
+            </div>
+            <div class="mt-1 font-bold text-slate-900 leading-snug">起飛 BR181</div>
+            <div class="mt-1 text-sm text-slate-600 leading-snug">關西(KIX) ✈ 高雄(KHH)</div>
+          </div>
+          <div class="flex flex-col items-end gap-2 flex-shrink-0">
+            <div class="w-9 h-9 rounded-full bg-slate-100 text-slate-700 flex items-center justify-center">
+              <span class="material-symbols-rounded text-[20px]">flight_takeoff</span>
+            </div>
+            <button class="text-xs font-semibold text-blue-600 hover:text-blue-800"
+              onclick="openNaverDirections(event, 34.4325, 135.2304, '起飛 BR181')">
+              NAVER 導航
+            </button>
+          </div>
+        </div>
+      </div>
+    
+    </div>
+  </details>
+
+      </main>
+    </div>
+
+    <!-- 右側：NAVER 地圖 -->
+    <div id="map-view" class="hidden lg:block flex-1 h-full bg-slate-100 relative">
+      <div class="absolute top-0 left-0 right-0 z-20 bg-white/90 backdrop-blur border-b border-slate-200 px-3 py-2 flex items-center justify-between safe-top">
+        <div class="text-sm font-semibold text-slate-800 flex items-center gap-2">
+          <span class="material-symbols-rounded text-slate-600">map</span>
+          NAVER 地圖
+        </div>
+        <button class="lg:hidden px-3 py-1.5 rounded-lg bg-slate-100 hover:bg-slate-200 text-sm"
+                onclick="switchView('list')">
+          返回行程
+        </button>
+      </div>
+
+      <iframe
+        id="map-frame"
+        class="w-full h-full"
+        frameborder="0"
+        loading="lazy"
+        referrerpolicy="no-referrer-when-downgrade"
+        src="https://map.naver.com/v5/?c=135.5023,34.6937,11,0,0,0,dh">
+      </iframe>
+    </div>
+
+    <!-- 手機版底部導航 -->
+    <nav class="lg:hidden fixed bottom-0 left-0 right-0 bg-white border-t border-slate-200 safe-bottom z-50 shadow-[0_-4px_6px_-1px_rgba(0,0,0,0.05)]">
+      <div class="flex justify-around items-center h-16">
+        <button class="nav-btn flex flex-col items-center justify-center w-full h-full text-blue-600 transition-colors"
+                id="btn-list" onclick="switchView('list')">
+          <span class="material-symbols-rounded text-2xl mb-0.5">format_list_bulleted</span>
+          <span class="text-[10px] font-medium">行程</span>
+        </button>
+        <button class="nav-btn flex flex-col items-center justify-center w-full h-full text-slate-400 transition-colors"
+                id="btn-map" onclick="switchView('map')">
+          <span class="material-symbols-rounded text-2xl mb-0.5">map</span>
+          <span class="text-[10px] font-medium">地圖</span>
+        </button>
+      </div>
+    </nav>
+
+  </div>
 
 <script>
-    // --- 行程資料 ---
-    const tripData = [
-        {
-            id: 1, date: "11/27", day: "週四", title: "高雄 → 大阪",
-            stay: { name: "Henn na Hotel Osaka Shinsaibashi", address: "大阪市中央區南船場 3-5-2", lat: 34.6766, lng: 135.5008, img: "https://r-cf.bstatic.com/xdata/images/hotel/max1024x768/193278631.jpg?k=3f208149f109278913b7e64175510626354483738553258&o=&hp=1" },
-            events: [
-                { time: "07:05", title: "起飛 BR182", desc: "高雄(KHH) ✈ 關西(KIX)", icon: "flight_takeoff", lat: 34.4325, lng: 135.2304, type: "flight" },
-                { time: "10:55", title: "抵達大阪", desc: "入境並前往市區", icon: "flight_land", lat: 34.4325, lng: 135.2304, type: "airport" },
-                { time: "13:00", title: "飯店 Check-in", desc: "心齋橋海茵娜飯店", icon: "hotel", lat: 34.6766, lng: 135.5008, type: "hotel", highlight: true, img: "https://r-cf.bstatic.com/xdata/images/hotel/max1024x768/193278631.jpg?k=3f208149f109278913b7e64175510626354483738553258&o=&hp=1" }
-            ]
-        },
-        {
-            id: 2, date: "11/28", day: "週五", title: "京都古都巡禮",
-            stay: { name: "The Hotel Seiryu Kyoto Kiyomizu", address: "京都市東山區清水二丁目 204-2", lat: 34.9965, lng: 135.7803 },
-            events: [
-                { time: "08:00", title: "伏見稻荷大社", desc: "千本鳥居晨間參拜", icon: "temple_buddhist", lat: 34.9671, lng: 135.7727, type: "sight" },
-                { time: "10:30", title: "嵐山散策", desc: "竹林、渡月橋、天龍寺", icon: "forest", lat: 35.0094, lng: 135.6670, type: "sight" },
-                { time: "15:00", title: "和服體驗", desc: "清水寺／祇園周邊", icon: "checkroom", lat: 35.0037, lng: 135.7778, type: "activity" },
-                { time: "17:00", title: "清水寺夜間參拜", desc: "秋季紅葉點燈", icon: "wb_twilight", lat: 34.9949, lng: 135.7850, type: "sight", highlight: true }
-            ]
-        },
-        {
-            id: 3, date: "11/29", day: "週六", title: "天橋立一日遊",
-            stay: { name: "Henn na Hotel Osaka Shinsaibashi", address: "大阪市中央區南船場 3-5-2", lat: 34.6766, lng: 135.5008 },
-            events: [
-                { time: "07:30", title: "京都出發", desc: "京都車站八條口集合", icon: "directions_bus", lat: 34.9835, lng: 135.7578, type: "transit" },
-                { time: "10:00", title: "天橋立", desc: "傘松公園展望台", icon: "landscape", lat: 35.5900, lng: 135.2000, type: "sight" },
-                { time: "13:00", title: "伊根舟屋", desc: "伊根灣遊船體驗", icon: "houseboat", lat: 35.6700, lng: 135.2900, type: "sight", highlight: true }
-            ]
-        },
-        {
-            id: 4, date: "11/30", day: "週日", title: "大阪市區遊",
-            stay: { name: "Henn na Hotel Osaka Shinsaibashi", address: "大阪市中央區南船場 3-5-2", lat: 34.6766, lng: 135.5008 },
-            events: [
-                { time: "09:30", title: "大阪城公園", desc: "天守閣與紅葉", icon: "castle", lat: 34.6873, lng: 135.5262, type: "sight" },
-                { time: "13:00", title: "梅田購物", desc: "Grand Front, LUCUA", icon: "shopping_bag", lat: 34.7040, lng: 135.4950, type: "shopping" },
-                { time: "18:00", title: "天王寺聖誕市集", desc: "Tenshiba 燈飾", icon: "christmas_card", lat: 34.6480, lng: 135.5130, type: "event", highlight: true }
-            ]
-        },
-        {
-            id: 5, date: "12/01", day: "週一", title: "奈良 / 大阪",
-            stay: { name: "Henn na Hotel Osaka Shinsaibashi", address: "大阪市中央區南船場 3-5-2", lat: 34.6766, lng: 135.5008 },
-            events: [
-                { time: "10:00", title: "奈良公園", desc: "東大寺、餵鹿", icon: "pets", lat: 34.6850, lng: 135.8430, type: "sight", highlight: true },
-                { time: "13:00", title: "黑門市場", desc: "海鮮午餐", icon: "restaurant", lat: 34.6655, lng: 135.5070, type: "food" },
-                { time: "15:00", title: "心齋橋", desc: "最後購物行程", icon: "storefront", lat: 34.6710, lng: 135.5010, type: "shopping" }
-            ]
-        },
-        {
-            id: 6, date: "12/02", day: "週二", title: "大阪 → 高雄",
-            stay: null,
-            events: [
-                { time: "08:00", title: "前往機場", desc: "Check-out", icon: "directions_car", lat: 34.6766, lng: 135.5008, type: "transit" },
-                { time: "11:55", title: "起飛 BR181", desc: "關西(KIX) ✈ 高雄(KHH)", icon: "flight_takeoff", lat: 34.4325, lng: 135.2304, type: "flight", highlight: true }
-            ]
-        }
-    ];
+  function downloadHTML() {
+    const htmlContent = document.documentElement.outerHTML;
+    const blob = new Blob([htmlContent], { type: 'text/html' });
+    const url = URL.createObjectURL(blob);
+    const a = document.createElement('a');
+    a.href = url;
+    a.download = 'osaka_kyoto_trip_naver.html';
+    document.body.appendChild(a);
+    a.click();
+    document.body.removeChild(a);
+    URL.revokeObjectURL(url);
+  }
 
-    // --- 全域變數 ---
-    let map;
-    let markersLayer = null;
-    let currentDayIdx = 0;
-    let currentProvider = 'google'; 
-    let selectedLocation = null;
+  function focusLocation(lat, lng, title) {
+    // NAVER v5 uses c=lng,lat,zoom,...
+    const zoom = 16;
+    const frame = document.getElementById('map-frame');
+    frame.src = `https://map.naver.com/v5/?c=${lng},${lat},${zoom},0,0,0,dh`;
+    // 手機：點了卡片就自動切到地圖
+    if (window.innerWidth < 1024) switchView('map');
+  }
 
-    // --- UI 邏輯 ---
-    function toggleSettings() {
-        const modal = document.getElementById('settings-modal');
-        if (modal.classList.contains('hidden')) {
-            modal.classList.remove('hidden');
-        } else {
-            modal.classList.add('hidden');
-        }
+  function openNaverDirections(e, lat, lng, title) {
+    e.stopPropagation();
+    const name = encodeURIComponent(title || '');
+    const url = `https://map.naver.com/v5/directions/-/${lng},${lat},${name}/-/transit`;
+    window.open(url, '_blank');
+  }
+
+  function switchView(view) {
+    const listView = document.getElementById('list-view');
+    const mapView = document.getElementById('map-view');
+    const btnList = document.getElementById('btn-list');
+    const btnMap  = document.getElementById('btn-map');
+
+    if (view === 'list') {
+      listView.classList.remove('hidden');
+      mapView.classList.add('hidden');
+      if (btnList) btnList.className = "nav-btn flex flex-col items-center justify-center w-full h-full text-blue-600 transition-colors";
+      if (btnMap)  btnMap.className  = "nav-btn flex flex-col items-center justify-center w-full h-full text-slate-400 transition-colors";
+    } else {
+      listView.classList.add('hidden');
+      mapView.classList.remove('hidden');
+      if (btnList) btnList.className = "nav-btn flex flex-col items-center justify-center w-full h-full text-slate-400 transition-colors";
+      if (btnMap)  btnMap.className  = "nav-btn flex flex-col items-center justify-center w-full h-full text-blue-600 transition-colors";
     }
-
-    function updateMapProvider(provider) {
-        currentProvider = provider;
-        const btnText = document.getElementById('nav-btn-text');
-        if(btnText) {
-            if(provider === 'google') btnText.textContent = "Google 導航";
-            else if(provider === 'naver') btnText.textContent = "NAVER 導航";
-            else if(provider === 'apple') btnText.textContent = "Apple 導航";
-        }
-    }
-
-    function openNavigation() {
-        if(!selectedLocation) return;
-        const { lat, lng, title } = selectedLocation;
-        let url = "";
-
-        // 雖然地圖顯示用 OSM，但導航仍可導向 Google/Apple/Naver
-        if (currentProvider === 'naver') {
-            const encodedName = encodeURIComponent(title);
-            url = `nmap://search?query=${encodedName}&appname=com.example.mytrip`; 
-        } else if (currentProvider === 'apple') {
-            url = `http://maps.apple.com/?q=${encodeURIComponent(title)}&ll=${lat},${lng}`;
-        } else {
-            url = `https://www.google.com/maps/search/?api=1&query=${lat},${lng}`;
-        }
-        window.open(url, '_blank');
-    }
-
-    // --- 地圖實作 (Leaflet) ---
-    function initMap() {
-        // 初始化 Leaflet 地圖
-        map = L.map('map', {
-            zoomControl: false // 隱藏預設縮放按鈕，保持介面簡潔
-        }).setView([34.6937, 135.5023], 11);
-
-        // 載入 OpenStreetMap 圖資 (免費、無需金鑰)
-        L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
-            maxZoom: 19,
-            attribution: '© OpenStreetMap'
-        }).addTo(map);
-
-        // 建立標記圖層群組
-        markersLayer = L.layerGroup().addTo(map);
-
-        renderAllTabs();
-        loadDay(0);
-        
-        // 修正地圖大小問題
-        setTimeout(() => { map.invalidateSize(); }, 100);
-    }
-
-    function switchView(view) {
-        if (window.innerWidth >= 1024) return;
-        
-        const listView = document.getElementById('list-view');
-        const mapView = document.getElementById('map-view');
-        const btnList = document.getElementById('btn-list');
-        const btnMap = document.getElementById('btn-map');
-
-        if (view === 'list') {
-            listView.classList.remove('hidden');
-            mapView.classList.add('hidden');
-            btnList.className = "nav-btn flex flex-col items-center justify-center w-full h-full text-blue-600 transition-colors";
-            btnMap.className = "nav-btn flex flex-col items-center justify-center w-full h-full text-slate-400 transition-colors";
-        } else {
-            listView.classList.add('hidden');
-            mapView.classList.remove('hidden');
-            btnList.className = "nav-btn flex flex-col items-center justify-center w-full h-full text-slate-400 transition-colors";
-            btnMap.className = "nav-btn flex flex-col items-center justify-center w-full h-full text-blue-600 transition-colors";
-            if(map) map.invalidateSize();
-        }
-    }
-
-    function renderAllTabs() {
-        const containers = [
-            document.getElementById('date-tabs-mobile'),
-            document.getElementById('date-tabs-desktop')
-        ];
-        
-        containers.forEach(container => {
-            if(!container) return;
-            container.innerHTML = '';
-            tripData.forEach((day, idx) => {
-                const btn = document.createElement('button');
-                const isActive = idx === currentDayIdx;
-                btn.className = `flex-shrink-0 px-4 py-1.5 rounded-full text-sm font-medium transition-all snap-start whitespace-nowrap border ${
-                    isActive 
-                    ? 'bg-slate-800 text-white border-slate-800 shadow-md' 
-                    : 'bg-white text-slate-600 border-slate-200 hover:bg-slate-50'
-                }`;
-                btn.innerHTML = `${day.date} ${day.day}`;
-                btn.onclick = () => loadDay(idx);
-                container.appendChild(btn);
-            });
-        });
-    }
-
-    function loadDay(idx) {
-        currentDayIdx = idx;
-        const data = tripData[idx];
-        renderAllTabs(); 
-
-        const container = document.getElementById('day-content');
-        container.innerHTML = '';
-
-        // 標題區
-        const titleBlock = document.createElement('div');
-        titleBlock.className = "mb-6 pb-2 border-b border-slate-100";
-        titleBlock.innerHTML = `
-            <div class="flex items-center space-x-2 mb-1">
-                <span class="px-2 py-0.5 bg-blue-100 text-blue-800 text-xs font-bold rounded">DAY ${data.id}</span>
-                <span class="text-slate-400 text-sm font-medium">${data.date} ${data.day}</span>
-            </div>
-            <h2 class="text-2xl font-bold text-slate-900">${data.title}</h2>
-        `;
-        container.appendChild(titleBlock);
-
-        // 時間軸容器
-        const timeline = document.createElement('div');
-        timeline.className = "relative pl-4 space-y-8";
-        const line = document.createElement('div');
-        line.className = "timeline-line";
-        timeline.appendChild(line);
-
-        // 住宿區塊
-        if (data.stay) {
-            const stayEl = document.createElement('div');
-            stayEl.className = "relative z-10 pl-8";
-            stayEl.innerHTML = `
-                <div class="absolute left-0 top-0 w-10 flex justify-center">
-                    <div class="w-8 h-8 rounded-full bg-indigo-100 text-indigo-600 flex items-center justify-center border-2 border-white shadow-sm ring-4 ring-slate-50">
-                        <span class="material-symbols-rounded text-lg">bed</span>
-                    </div>
-                </div>
-                <div class="group bg-indigo-50 hover:bg-indigo-100/50 rounded-2xl p-4 transition-all cursor-pointer border border-indigo-100" onclick="focusLocation(${data.stay.lat}, ${data.stay.lng}, '${data.stay.name}', '住宿', '${data.stay.img || ''}')">
-                    <div class="flex items-center justify-between mb-1">
-                        <span class="text-[10px] font-bold text-indigo-500 uppercase tracking-wider">今日住宿</span>
-                        <span class="material-symbols-rounded text-indigo-300 text-lg">chevron_right</span>
-                    </div>
-                    <h3 class="font-bold text-slate-800 text-lg leading-tight">${data.stay.name}</h3>
-                    <p class="text-xs text-slate-500 mt-1 line-clamp-1">${data.stay.address}</p>
-                </div>
-            `;
-            timeline.appendChild(stayEl);
-        }
-
-        // 行程事件區塊
-        data.events.forEach(event => {
-            const el = document.createElement('div');
-            el.className = "relative z-10 pl-8";
-            let iconBg = "bg-white text-slate-500 border-slate-200";
-            if (event.highlight) iconBg = "bg-amber-100 text-amber-600 border-amber-200";
-            else if (event.type === 'flight') iconBg = "bg-sky-100 text-sky-600 border-sky-200";
-
-            const imgHTML = event.img ? `
-                <div class="mt-3 h-32 rounded-xl overflow-hidden bg-slate-200 relative group-hover:shadow-md transition-shadow">
-                    <img src="${event.img}" loading="lazy" class="w-full h-full object-cover transform group-hover:scale-105 transition-transform duration-500">
-                </div>
-            ` : '';
-
-            el.innerHTML = `
-                <div class="absolute left-0 top-0 w-10 flex justify-center">
-                    <div class="w-8 h-8 rounded-full ${iconBg} flex items-center justify-center border-2 border-white shadow-sm text-sm font-bold ring-4 ring-slate-50">
-                        <span class="material-symbols-rounded text-lg">${event.icon}</span>
-                    </div>
-                </div>
-                <div class="group bg-white rounded-2xl p-4 shadow-sm border border-slate-100 hover:shadow-md hover:border-blue-200 transition-all cursor-pointer" onclick="focusLocation(${event.lat}, ${event.lng}, '${event.title}', '${event.desc}', '${event.img || ''}')">
-                    <div class="flex justify-between items-baseline mb-1">
-                        <span class="font-mono text-sm font-bold text-slate-400 bg-slate-50 px-1.5 py-0.5 rounded">${event.time}</span>
-                        ${event.highlight ? '<span class="text-[10px] font-bold text-amber-600 bg-amber-50 px-2 py-0.5 rounded-full border border-amber-100">重點</span>' : ''}
-                    </div>
-                    <h3 class="font-bold text-slate-800 text-lg">${event.title}</h3>
-                    <p class="text-sm text-slate-600 mt-1 leading-relaxed">${event.desc}</p>
-                    ${imgHTML}
-                    <div class="mt-2 pt-2 border-t border-slate-50 flex justify-end opacity-0 group-hover:opacity-100 transition-opacity">
-                         <span class="text-xs font-medium text-blue-500 flex items-center">查看地圖 <span class="material-symbols-rounded text-sm ml-0.5">arrow_forward</span></span>
-                    </div>
-                </div>
-            `;
-            timeline.appendChild(el);
-        });
-
-        container.appendChild(timeline);
-        updateMap(data);
-    }
-
-    function updateMap(data) {
-        if (!map || !markersLayer) return;
-        markersLayer.clearLayers();
-        
-        const points = [];
-        if(data.stay) points.push({...data.stay, type: 'hotel', title: data.stay.name, desc: '住宿飯店'});
-        data.events.forEach(e => points.push({...e}));
-
-        const bounds = [];
-
-        points.forEach(p => {
-            let bg = "#64748b"; // slate-500
-            if(p.type === 'hotel') bg = "#4f46e5"; // indigo-600
-            else if(p.type === 'sight' || p.highlight) bg = "#d97706"; // amber-600
-            
-            // 自定義標記樣式 (CSS+HTML)
-            const customIcon = L.divIcon({
-                className: 'custom-div-icon',
-                html: `
-                    <div style="background-color: ${bg}; border: 2px solid white; width: 30px; height: 30px; border-radius: 50%; display: flex; align-items: center; justify-content: center; box-shadow: 0 4px 6px -1px rgba(0,0,0,0.1);">
-                        <span class="material-symbols-rounded text-white" style="font-size: 18px;">${p.icon || 'place'}</span>
-                    </div>
-                    <div style="width: 0; height: 0; border-left: 6px solid transparent; border-right: 6px solid transparent; border-top: 8px solid ${bg}; margin: -2px auto 0 auto;"></div>
-                `,
-                iconSize: [30, 42],
-                iconAnchor: [15, 42]
-            });
-
-            const marker = L.marker([p.lat, p.lng], { icon: customIcon }).addTo(markersLayer);
-            marker.on('click', () => {
-                showMapCard(p.title, p.desc, p.img || '', p.lat, p.lng);
-            });
-            
-            bounds.push([p.lat, p.lng]);
-        });
-
-        if (bounds.length > 0) {
-            map.fitBounds(bounds, { padding: [50, 50] });
-        }
-    }
-
-    function focusLocation(lat, lng, title, desc, img) {
-        if (window.innerWidth < 1024) {
-            switchView('map');
-        }
-        if(map) {
-            map.flyTo([lat, lng], 15, { duration: 1.5 });
-        }
-        showMapCard(title, desc, img, lat, lng);
-    }
-
-    function showMapCard(title, desc, img, lat, lng) {
-        const card = document.getElementById('map-card');
-        const titleEl = document.getElementById('card-title');
-        const descEl = document.getElementById('card-desc');
-        const imgContainer = document.getElementById('card-img-container');
-        const imgEl = document.getElementById('card-img');
-        
-        selectedLocation = { lat, lng, title };
-
-        titleEl.textContent = title;
-        descEl.textContent = desc || "詳細資訊";
-        updateMapProvider(currentProvider);
-
-        if (img && img.startsWith('http')) {
-            imgEl.src = img;
-            imgContainer.classList.remove('hidden');
-        } else {
-            imgContainer.classList.add('hidden');
-        }
-
-        card.classList.remove('hidden');
-    }
-
-    function closeMapCard() {
-        document.getElementById('map-card').classList.add('hidden');
-    }
-
-    // 啟動
-    document.addEventListener('DOMContentLoaded', initMap);
-
+  }
 </script>
 </body>
 </html>
