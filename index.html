@@ -1,424 +1,604 @@
-
-主頁
-
-視聽樂
-
-月光部落
-CSS 格式化 Html&JS格式化 Html 代碼轉換器 UTF-8編碼轉換 HTML特殊字符
-線上代碼測試
-代碼測試工具支持 Html﹑Javascript﹑Iframe﹑CSS﹑Script 等程式語言。
-
-
 <!DOCTYPE html>
 <html lang="zh-TW">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>2026 釜山冬日度假之旅</title>
-    <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+TC:wght@400;500;700&display=swap" rel="stylesheet">
+    <title>2026 釜山冬日奢華之旅</title>
+    <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+TC:wght@300;400;500;700&display=swap" rel="stylesheet">
+    
     <style>
         :root {
-            --primary-dark: #1a2a3a; /* 深夜藍 */
-            --primary-blue: #2c5282; /* 質感藍 */
-            --ice-blue: #e2e8f0;     /* 冰霜淺藍 */
-            --warm-gold: #dd6b20;    /* 暖陽橙金 (強調色) */
-            --bg-gradient-start: #f0f4f8;
-            --bg-gradient-end: #d9e2ec;
-            --card-bg: rgba(255, 255, 255, 0.95);
+            /* 釜山冬日色票：雪白、深海藍、質感金 */
+            --bg-color: #F5F7FA;
+            --card-bg: #FFFFFF;
+            --text-main: #2D3748;
+            --text-sub: #718096;
+            --accent-blue: #2B6CB0; /* 穩重的藍 */
+            --accent-gold: #B794F4; /* 這裡改用微奢華的淡紫/金搭配，或保持金色 */
+            --gold: #D69E2E;
+            --shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.05), 0 4px 6px -2px rgba(0, 0, 0, 0.025);
+            --radius: 16px;
         }
 
         body {
-            font-family: 'Noto Sans TC', "Microsoft JhengHei", sans-serif;
-            line-height: 1.7;
-            color: var(--primary-dark);
+            font-family: 'Noto Sans TC', sans-serif;
+            background-color: var(--bg-color);
+            color: var(--text-main);
             margin: 0;
             padding: 0;
-            background: linear-gradient(to bottom, var(--bg-gradient-start), var(--bg-gradient-end));
-            min-height: 100vh;
+            line-height: 1.6;
+            -webkit-font-smoothing: antialiased;
         }
 
-        /* Header Banner */
-        .header-banner {
-            background: linear-gradient(135deg, #1e3c72 0%, #2a5298 100%);
+        /* 頂部橫幅 */
+        header {
+            background: linear-gradient(135deg, #1a365d 0%, #2a4365 100%);
             color: white;
-            padding: 40px 20px;
+            padding: 50px 20px 80px; /* 底部留空間給儀表板 */
             text-align: center;
-            box-shadow: 0 4px 12px rgba(0,0,0,0.15);
-            margin-bottom: 30px;
+            border-bottom-left-radius: 30px;
+            border-bottom-right-radius: 30px;
             position: relative;
-            overflow: hidden;
         }
-        /* 裝飾用：模擬雪花或光點 */
-        .header-banner::before {
-            content: ''; position: absolute; top: -50%; left: -50%; width: 200%; height: 200%;
-            background: radial-gradient(circle, rgba(255,255,255,0.1) 10%, transparent 20%);
-            background-size: 20px 20px; transform: rotate(30deg); pointer-events: none;
+
+        header h1 {
+            margin: 0;
+            font-size: 1.8rem;
+            font-weight: 700;
+            letter-spacing: 1px;
         }
-        h1 { margin: 0; font-size: 2.2em; font-weight: 700; letter-spacing: 1px; text-shadow: 0 2px 4px rgba(0,0,0,0.2); }
-        .subtitle { font-size: 1.1em; opacity: 0.9; margin-top: 10px; font-weight: 400; }
+        header p {
+            margin-top: 10px;
+            font-size: 0.95rem;
+            opacity: 0.9;
+            font-weight: 300;
+        }
 
-        .container { max-width: 900px; margin: 0 auto; padding: 0 20px 40px; }
+        .container {
+            max-width: 800px;
+            margin: 0 auto;
+            padding: 0 20px 40px;
+            position: relative;
+            top: -50px; /* 往上推，覆蓋Header */
+        }
 
-        /* Dashboard Widgets */
-        .dashboard { display: flex; flex-wrap: wrap; gap: 20px; margin-bottom: 30px; }
+        /* 儀表板 (匯率+地圖) */
+        .dashboard {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 15px;
+            margin-bottom: 25px;
+        }
+
         .widget {
             background: var(--card-bg);
+            border-radius: var(--radius);
             padding: 20px;
-            border-radius: 16px;
-            box-shadow: 0 10px 25px rgba(0,0,0,0.05);
-            flex: 1;
-            min-width: 300px;
-            border: 1px solid rgba(255,255,255,0.6);
-            backdrop-filter: blur(10px); /* 毛玻璃效果 */
+            box-shadow: var(--shadow);
+            border: 1px solid rgba(255,255,255,0.5);
         }
-        .widget h3 { margin-top: 0; color: var(--primary-blue); font-size: 1.2em; display: flex; align-items: center; }
-        .widget h3::before { margin-right: 8px; font-size: 1.3em; }
 
-        /* Currency Styles */
-        .currency-box h3::before { content: '💰'; }
-        .currency-input { display: flex; align-items: center; gap: 10px; margin-top: 15px; background: var(--ice-blue); padding: 10px; border-radius: 12px; }
-        .currency-input input {
-            width: 100%; padding: 8px 12px; border: none; border-radius: 8px; font-size: 1.1em; outline: none; background: white; box-shadow: inset 0 2px 4px rgba(0,0,0,0.05);
+        .widget h3 {
+            margin: 0 0 15px;
+            font-size: 0.9rem;
+            color: var(--text-sub);
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+
+        /* 匯率輸入框 */
+        .currency-row {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            margin-bottom: 8px;
+        }
+        .currency-row input {
+            width: 70%;
+            border: none;
+            background: #EDF2F7;
+            padding: 8px 12px;
+            border-radius: 8px;
+            font-size: 1.1rem;
+            font-weight: 500;
+            color: var(--text-main);
+            outline: none;
             font-family: 'Noto Sans TC', sans-serif;
         }
-        .currency-input span { font-size: 1.5em; color: var(--primary-blue); }
-        #twdOutput { color: var(--warm-gold); font-weight: bold; background: white; }
-        .rate-setting { font-size: 0.9em; color: #64748b; margin-top: 10px; text-align: right; }
-        .rate-setting input { width: 60px; padding: 4px; border-radius: 4px; border: 1px solid #cbd5e0; text-align: center; }
+        .currency-row span { font-weight: bold; color: var(--text-sub); font-size: 0.9rem; }
+        .rate-hint { font-size: 0.75rem; color: #A0AEC0; text-align: right; margin-top: 5px; }
 
-        /* Map Iframe Style */
-        .map-box h3::before { content: '🗺️'; }
-        iframe.map-frame { width: 100%; height: 200px; border: 0; border-radius: 12px; box-shadow: 0 4px 8px rgba(0,0,0,0.05); }
-
-        /* Day Cards & Timeline */
+        /* 行程卡片 */
         .day-card {
             background: var(--card-bg);
-            border-radius: 20px;
-            padding: 25px;
-            margin-bottom: 25px;
-            box-shadow: 0 12px 30px rgba(44, 82, 130, 0.08); /* 質感藍陰影 */
-            border: 1px solid rgba(255,255,255,0.8);
-            position: relative;
+            border-radius: var(--radius);
+            margin-bottom: 20px;
+            box-shadow: var(--shadow);
             overflow: hidden;
-        }
-        /* 航班卡片特別色 */
-        .flight-card { background: linear-gradient(to right, #fff5f5, #fff); border-left: 6px solid #fc8181; }
-        .flight-card .day-title { color: #c53030; border-bottom-color: #fecaca; }
-        
-        .day-title {
-            font-size: 1.5em; font-weight: 700; color: var(--primary-blue); margin-bottom: 20px; padding-bottom: 15px;
-            border-bottom: 2px solid var(--ice-blue); position: relative;
-        }
-        .day-title::after { /* 裝飾線條 */
-            content: ''; position: absolute; bottom: -2px; left: 0; width: 60px; height: 2px; background: var(--warm-gold);
+            transition: all 0.3s ease;
         }
 
-        /* Timeline Style Events */
-        .timeline-container { padding-left: 15px; }
+        .day-header {
+            padding: 20px;
+            cursor: pointer;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            background: #fff;
+            border-bottom: 1px solid transparent;
+        }
+        .day-header:active { background-color: #f7fafc; }
+
+        .day-info { display: flex; flex-direction: column; }
+        .day-tag {
+            font-size: 0.8rem;
+            font-weight: 700;
+            color: var(--gold);
+            text-transform: uppercase;
+            margin-bottom: 4px;
+        }
+        .day-title {
+            font-size: 1.2rem;
+            font-weight: 700;
+            color: var(--text-main);
+        }
+
+        .toggle-btn {
+            width: 30px; height: 30px;
+            background: #EDF2F7;
+            border-radius: 50%;
+            display: flex; align-items: center; justify-content: center;
+            font-size: 0.8rem; color: var(--text-sub);
+            transition: transform 0.3s ease;
+        }
+        
+        .day-card.active .toggle-btn { transform: rotate(180deg); background: var(--gold); color: white; }
+
+        /* 展開內容區 */
+        .day-body {
+            max-height: 0;
+            overflow: hidden;
+            transition: max-height 0.5s cubic-bezier(0.4, 0, 0.2, 1);
+            background: #fff;
+        }
+
+        .timeline {
+            padding: 10px 20px 30px;
+            border-top: 1px solid #EDF2F7;
+        }
+
         .event {
-            position: relative; padding-left: 30px; margin-bottom: 20px; border-left: 3px solid var(--ice-blue);
+            position: relative;
+            padding-left: 35px;
+            margin-bottom: 25px;
         }
         .event:last-child { margin-bottom: 0; }
-        .event::before { /* 時間軸圓點 */
-            content: ''; position: absolute; left: -8px; top: 6px; width: 13px; height: 13px;
-            background: white; border: 3px solid var(--primary-blue); border-radius: 50%; box-shadow: 0 2px 4px rgba(0,0,0,0.1);
-        }
-        /* 重要行程的圓點變金色 */
-        .event.highlight::before { border-color: var(--warm-gold); background: #fffaf0; }
 
-        .time { display: block; font-weight: 700; color: var(--warm-gold); font-size: 1.05em; margin-bottom: 4px; }
-        .desc { font-size: 1.1em; font-weight: 500; }
-        .desc strong { color: var(--primary-blue); }
+        /* 時間軸線條 */
+        .event::before {
+            content: ''; position: absolute; left: 6px; top: 8px; bottom: -25px;
+            width: 2px; background: #E2E8F0;
+        }
+        .event:last-child::before { display: none; }
+
+        /* 時間軸圓點 */
+        .event::after {
+            content: ''; position: absolute; left: 0; top: 8px;
+            width: 14px; height: 14px;
+            border-radius: 50%;
+            background: white; border: 3px solid var(--text-sub);
+        }
+        .event.highlight::after { border-color: var(--gold); background: #FEFCBF; }
+
+        .time {
+            font-size: 0.9rem;
+            font-weight: 700;
+            color: var(--gold);
+            display: block;
+            margin-bottom: 4px;
+        }
+        .desc {
+            font-size: 1.05rem;
+            color: var(--text-main);
+            margin-bottom: 8px;
+            display: block;
+        }
+        .desc strong { color: var(--accent-blue); }
 
         .note {
-            font-size: 0.95em; color: #555; background: #f8fafc; padding: 10px 15px; border-radius: 8px; margin-top: 8px;
-            border-left: 4px solid #cbd5e0; display: flex; align-items: center;
+            font-size: 0.85rem;
+            background: #F7FAFC;
+            color: var(--text-sub);
+            padding: 8px 12px;
+            border-radius: 8px;
+            margin-top: 8px;
+            display: inline-block;
         }
-        .note::before { content: '💡'; margin-right: 8px; }
 
-        /* Hotel Section */
-        .hotel {
-            margin-top: 25px; padding: 15px 20px; border-radius: 12px;
-            background: linear-gradient(to right, #ebf4ff, #f7fafc);
-            color: var(--primary-blue); font-weight: 700; display: flex; align-items: center; flex-wrap: wrap;
-            box-shadow: inset 0 2px 4px rgba(0,0,0,0.02); border: 1px solid #bee3f8;
+        /* 按鈕群組 */
+        .btn-group {
+            display: flex;
+            gap: 10px;
+            margin-top: 8px;
+            flex-wrap: wrap;
         }
-        .hotel::before { content: '🛏️'; margin-right: 10px; font-size: 1.2em; }
 
-        /* Premium Buttons */
-        .btn-group { margin-top: 10px; display: flex; gap: 8px; flex-wrap: wrap; }
-        a.map-btn {
-            text-decoration: none; padding: 6px 14px; border-radius: 20px; font-size: 0.85em; font-weight: 600; color: white;
-            transition: all 0.3s ease; box-shadow: 0 2px 5px rgba(0,0,0,0.15); display: inline-flex; align-items: center;
+        .map-btn {
+            text-decoration: none;
+            font-size: 0.8rem;
+            font-weight: 500;
+            padding: 6px 12px;
+            border-radius: 20px;
+            display: flex;
+            align-items: center;
+            gap: 5px;
+            transition: transform 0.2s;
         }
-        a.map-btn:hover { transform: translateY(-2px); box-shadow: 0 4px 8px rgba(0,0,0,0.2); }
-        a.map-btn::before { margin-right: 5px; }
+        .map-btn:hover { transform: translateY(-2px); }
+
+        .btn-naver { background: #E6F4EA; color: #03C75A; border: 1px solid rgba(3,199,90,0.2); }
+        .btn-google { background: #E8F0FE; color: #4285F4; border: 1px solid rgba(66,133,244,0.2); }
         
-        /* Naver Green Gradient */
-        .naver { background: linear-gradient(135deg, #03C75A 0%, #02b351 100%); }
-        .naver::before { content: 'N'; font-weight: 900; }
-        /* Google Blue Gradient */
-        .google { background: linear-gradient(135deg, #4285F4 0%, #3367d6 100%); }
-        .google::before { content: 'G'; font-weight: 900; }
+        .map-icon { font-weight: bold; }
 
-        /* RWD Adjustments */
+        /* 住宿區塊 */
+        .hotel-block {
+            margin-top: 15px;
+            padding: 15px;
+            background: #F0F4F8;
+            border-radius: 12px;
+            border: 1px solid #CBD5E0;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            flex-wrap: wrap;
+            gap: 10px;
+        }
+        .hotel-name { font-weight: 700; color: #2C5282; font-size: 0.95rem; display: flex; align-items: center; gap: 8px;}
+        
+        /* 航班卡片 */
+        .flight-card { border-left: 5px solid #E53E3E; }
+        .flight-card .day-tag { color: #E53E3E; }
+
+        /* RWD */
         @media (max-width: 600px) {
-            .header-banner { padding: 30px 15px; }
-            h1 { font-size: 1.8em; }
-            .day-card { padding: 20px 15px; }
-            .event { padding-left: 20px; }
-            .event::before { width: 10px; height: 10px; left: -6.5px; top: 7px; }
+            .dashboard { grid-template-columns: 1fr; }
+            .container { padding: 0 15px 40px; }
+            header h1 { font-size: 1.5rem; }
         }
     </style>
 </head>
 <body>
 
-    <div class="header-banner">
-        <h1>❄️ 2026 釜山冬日度假之旅 ❄️</h1>
-        <div class="subtitle">海雲台絕景放鬆・南浦洞城市漫遊・6天5夜極致體驗</div>
-    </div>
+    <header>
+        <h1>2026 釜山冬日度假</h1>
+        <p>1/23 - 1/28｜海雲台絕景 ‧ 南浦洞漫遊</p>
+    </header>
 
     <div class="container">
 
         <div class="dashboard">
-            <div class="widget currency-box">
-                <h3>匯率換算器 (KRW ⇄ TWD)</h3>
-                <div class="currency-input">
-                    <input type="number" id="krwInput" placeholder="輸入韓元 (KRW)" oninput="convertCurrency()">
-                    <span>→</span>
-                    <input type="number" id="twdOutput" placeholder="約台幣 (TWD)" readonly>
+            <div class="widget">
+                <h3>💰 即時匯率換算</h3>
+                <div class="currency-row">
+                    <input type="number" id="krwInput" placeholder="韓元" oninput="convertCurrency()">
+                    <span>KRW</span>
                 </div>
-                <div class="rate-setting">
-                    設定匯率: 1 TWD ≈ <input type="number" id="rateInput" value="41.5" step="0.1" onchange="convertCurrency()"> KRW
+                <div class="currency-row">
+                    <input type="number" id="twdOutput" placeholder="台幣" readonly style="color:var(--gold); font-weight:700;">
+                    <span>TWD</span>
+                </div>
+                <div class="rate-hint">
+                    設定匯率: 1 TWD = <input type="number" id="rateInput" value="41.5" step="0.1" style="width:40px; border:none; background:transparent; border-bottom:1px solid #ccc; text-align:center;" onchange="convertCurrency()"> KRW
                 </div>
             </div>
 
-            <div class="widget map-box">
-                <h3>釜山地圖概覽</h3>
-                <iframe class="map-frame" src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d203395.69838038675!2d128.9377465057754!3d35.16442657805476!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x3568eb6c0aa4dad5%3A0x9dd7a4fa267b140!2z6ZZc5bGx5buj55Vw5biC!5e0!3m2!1szh-TW!2stw!4v1700000000000!5m2!1szh-TW!2stw" allowfullscreen="" loading="lazy"></iframe>
+            <div class="widget" style="padding:0; overflow:hidden;">
+                <iframe src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d104612.44686967069!2d129.0200!3d35.1500!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x3568eb6c0c242c77%3A0x6b87644265f24250!2sBusan%2C%20South%20Korea!5e0!3m2!1sen!2stw!4v1700000000000!5m2!1sen!2stw" style="width:100%; height:100%; min-height:160px; border:0;" allowfullscreen="" loading="lazy"></iframe>
             </div>
         </div>
 
         <div class="day-card flight-card">
-            <div class="day-title">✈️ 航班資訊</div>
-            <div class="timeline-container">
-                <div class="event">
-                    <span class="time">去程 (1/23 五) BX 796</span>
-                    <span class="desc">高雄 (KHH) 15:00 ➝ <strong>釜山 (PUS) 18:25</strong></span>
+            <div class="day-header" onclick="toggleCard(this)">
+                <div class="day-info">
+                    <span class="day-tag">FLIGHT INFO</span>
+                    <span class="day-title">✈️ 航班時刻表</span>
                 </div>
-                <div class="event">
-                    <span class="time">回程 (1/28 三) BX 795</span>
-                    <span class="desc">釜山 (PUS) 12:00 ➝ <strong>高雄 (KHH) 14:00</strong></span>
+                <div class="toggle-btn">▼</div>
+            </div>
+            <div class="day-body" style="max-height: 500px;"> <div class="timeline">
+                    <div class="event">
+                        <span class="time">去程 1/23 (五) 15:00</span>
+                        <span class="desc">高雄 (KHH) ➝ <strong>釜山 (PUS) 18:25</strong> <br><small>釜山航空 BX 796</small></span>
+                    </div>
+                    <div class="event">
+                        <span class="time">回程 1/28 (三) 12:00</span>
+                        <span class="desc">釜山 (PUS) ➝ <strong>高雄 (KHH) 14:00</strong> <br><small>釜山航空 BX 795</small></span>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="day-card active">
+            <div class="day-header" onclick="toggleCard(this)">
+                <div class="day-info">
+                    <span class="day-tag">DAY 01 . 1/23 (五)</span>
+                    <span class="day-title">抵達釜山 ‧ 海雲台之夜</span>
+                </div>
+                <div class="toggle-btn">▼</div>
+            </div>
+            <div class="day-body" style="max-height: 1000px;">
+                <div class="timeline">
+                    <div class="event">
+                        <span class="time">18:25 - 20:15</span>
+                        <span class="desc">抵達金海機場，搭計程車直達飯店。</span>
+                        <div class="btn-group">
+                            <a href="https://map.naver.com/p/search/김해국제공항" class="map-btn btn-naver" target="_blank"><span class="map-icon">N</span> 導航</a>
+                            <a href="https://www.google.com/maps/search/?api=1&query=Gimhae+International+Airport" class="map-btn btn-google" target="_blank"><span class="map-icon">G</span> 地圖</a>
+                        </div>
+                    </div>
+                    <div class="event highlight">
+                        <span class="time">20:45 - 22:00</span>
+                        <span class="desc">晚餐/宵夜：<strong>海雲台傳統市場</strong></span>
+                        <div class="note">推薦：盲鰻、糖餅、辣炒年糕</div>
+                        <div class="btn-group">
+                            <a href="https://map.naver.com/p/search/해운대전통시장" class="map-btn btn-naver" target="_blank"><span class="map-icon">N</span> 導航</a>
+                            <a href="https://www.google.com/maps/search/?api=1&query=Haeundae+Traditional+Market" class="map-btn btn-google" target="_blank"><span class="map-icon">G</span> 地圖</a>
+                        </div>
+                    </div>
+                    <div class="hotel-block">
+                        <div class="hotel-name">🏨 Shilla Stay Haeundae</div>
+                        <div class="btn-group">
+                            <a href="https://map.naver.com/p/search/신라스테이 해운대" class="map-btn btn-naver" target="_blank">Naver</a>
+                            <a href="https://www.google.com/maps/search/?api=1&query=Shilla+Stay+Haeundae" class="map-btn btn-google" target="_blank">Google</a>
+                        </div>
+                    </div>
                 </div>
             </div>
         </div>
 
         <div class="day-card">
-            <div class="day-title">Day 1｜1/23 (五) 抵達釜山・海雲台之夜</div>
-            <div class="timeline-container">
-                <div class="event">
-                    <span class="time">18:25 - 20:15</span>
-                    <span class="desc">抵達 <strong>金海國際機場</strong>，搭計程車直達海雲台飯店。</span>
-                    <div class="btn-group">
-                        <a href="https://map.naver.com/p/search/김해국제공항" class="map-btn naver" target="_blank">導航</a>
-                        <a href="https://www.google.com/maps/search/?api=1&query=Gimhae+International+Airport" class="map-btn google" target="_blank">地圖</a>
-                    </div>
+            <div class="day-header" onclick="toggleCard(this)">
+                <div class="day-info">
+                    <span class="day-tag">DAY 02 . 1/24 (六)</span>
+                    <span class="day-title">膠囊列車 ‧ 頂級SPA ‧ 無人機秀</span>
                 </div>
-                <div class="event">
-                    <span class="time">20:45 - 22:00</span>
-                    <span class="desc">晚餐宵夜：<strong>海雲台傳統市場</strong> (盲鰻、炸雞、糖餅)</span>
-                    <div class="btn-group">
-                        <a href="https://map.naver.com/p/search/해운대전통시장" class="map-btn naver" target="_blank">導航</a>
-                        <a href="https://www.google.com/maps/search/?api=1&query=Haeundae+Traditional+Market" class="map-btn google" target="_blank">地圖</a>
-                    </div>
-                </div>
+                <div class="toggle-btn">▼</div>
             </div>
-            <div class="hotel">
-                住宿：Shilla Stay Haeundae (海雲台舒羅亞飯店)
-                <div class="btn-group" style="margin-left: auto;">
-                    <a href="https://map.naver.com/p/search/신라스테이 해운대" class="map-btn naver" target="_blank">導航</a>
-                </div>
-            </div>
-        </div>
-
-        <div class="day-card">
-            <div class="day-title">Day 2｜1/24 (六) 膠囊列車・頂級SPA・無人機秀</div>
-            <div class="timeline-container">
-                <div class="event highlight">
-                    <span class="time">09:30 - 10:10 (需預約)</span>
-                    <span class="desc">搭乘：<strong>海雲台藍線公園 (尾浦站)</strong> - 天空膠囊列車</span>
-                    <div class="note">請預訂往「青沙浦」方向，享受早晨最佳海景光線。</div>
-                    <div class="btn-group">
-                        <a href="https://map.naver.com/p/search/해운대블루라인파크 미포정거장" class="map-btn naver" target="_blank">導航</a>
-                        <a href="https://www.google.com/maps/search/?api=1&query=Haeundae+Blue+Line+Park+Mipo" class="map-btn google" target="_blank">地圖</a>
+            <div class="day-body">
+                <div class="timeline">
+                    <div class="event highlight">
+                        <span class="time">09:30 - 10:10 (務必預約)</span>
+                        <span class="desc">體驗：<strong>海雲台藍線公園 (尾浦站)</strong></span>
+                        <div class="note">搭乘天空膠囊列車往「青沙浦」，海景最美。</div>
+                        <div class="btn-group">
+                            <a href="https://map.naver.com/p/search/해운대블루라인파크 미포정거장" class="map-btn btn-naver" target="_blank"><span class="map-icon">N</span> 導航</a>
+                            <a href="https://www.google.com/maps/search/?api=1&query=Haeundae+Blue+Line+Park+Mipo+Station" class="map-btn btn-google" target="_blank"><span class="map-icon">G</span> 地圖</a>
+                        </div>
                     </div>
-                </div>
-                <div class="event">
-                    <span class="time">10:10 - 11:30</span>
-                    <span class="desc">散策：<strong>青沙浦 (Cheongsapo)</strong> 踏石觀景台 & 灌籃高手平交道</span>
-                    <div class="btn-group">
-                        <a href="https://map.naver.com/p/search/청사포" class="map-btn naver" target="_blank">導航</a>
-                        <a href="https://www.google.com/maps/search/?api=1&query=Cheongsapo" class="map-btn google" target="_blank">地圖</a>
+                    <div class="event">
+                        <span class="time">10:10 - 11:30</span>
+                        <span class="desc">散步：<strong>青沙浦 (Cheongsapo)</strong></span>
+                        <div class="note">踏石觀景台、灌籃高手平交道拍照。</div>
+                        <div class="btn-group">
+                            <a href="https://map.naver.com/p/search/청사포" class="map-btn btn-naver" target="_blank"><span class="map-icon">N</span> 導航</a>
+                            <a href="https://www.google.com/maps/search/?api=1&query=Cheongsapo" class="map-btn btn-google" target="_blank"><span class="map-icon">G</span> 地圖</a>
+                        </div>
                     </div>
-                </div>
-                <div class="event highlight">
-                    <span class="time">13:30 - 17:30</span>
-                    <span class="desc">極致放鬆：<strong>ClubD Oasis</strong> (LCT大樓內 汗蒸幕/無邊際水樂園)</span>
-                    <div class="note">冬季泡湯首選！就在尾浦站旁，記得帶泳衣。</div>
-                    <div class="btn-group">
-                        <a href="https://map.naver.com/p/search/클럽디 오아시스" class="map-btn naver" target="_blank">導航</a>
-                        <a href="https://www.google.com/maps/search/?api=1&query=ClubD+Oasis+Busan" class="map-btn google" target="_blank">地圖</a>
+                    <div class="event highlight">
+                        <span class="time">13:30 - 17:30</span>
+                        <span class="desc">放鬆：<strong>ClubD Oasis (LCT)</strong></span>
+                        <div class="note">位於LCT大樓內的汗蒸幕與水上樂園，請帶泳衣。</div>
+                        <div class="btn-group">
+                            <a href="https://map.naver.com/p/search/클럽디 오아시스" class="map-btn btn-naver" target="_blank"><span class="map-icon">N</span> 導航</a>
+                            <a href="https://www.google.com/maps/search/?api=1&query=ClubD+Oasis" class="map-btn btn-google" target="_blank"><span class="map-icon">G</span> 地圖</a>
+                        </div>
                     </div>
-                </div>
-                <div class="event highlight">
-                    <span class="time">19:00 - 19:20</span>
-                    <span class="desc">夜間盛典：<strong>廣安里 M 無人機燈光秀</strong> (週六限定)</span>
-                    <div class="note">建議觀賞 19:00 場次，結束後在廣安里享用晚餐。</div>
-                    <div class="btn-group">
-                        <a href="https://map.naver.com/p/search/광안리해수욕장" class="map-btn naver" target="_blank">導航</a>
-                        <a href="https://www.google.com/maps/search/?api=1&query=Gwangalli+Beach" class="map-btn google" target="_blank">地圖</a>
+                    <div class="event highlight">
+                        <span class="time">19:00 - 19:20</span>
+                        <span class="desc">盛典：<strong>廣安里 M 無人機燈光秀</strong></span>
+                        <div class="note">週六限定表演，建議提早卡位看 19:00 場次。</div>
+                        <div class="btn-group">
+                            <a href="https://map.naver.com/p/search/광안리해수욕장" class="map-btn btn-naver" target="_blank"><span class="map-icon">N</span> 導航</a>
+                            <a href="https://www.google.com/maps/search/?api=1&query=Gwangalli+Beach" class="map-btn btn-google" target="_blank"><span class="map-icon">G</span> 地圖</a>
+                        </div>
                     </div>
-                </div>
-            </div>
-            <div class="hotel">
-                住宿：Shilla Stay Haeundae
-            </div>
-        </div>
-
-        <div class="day-card">
-            <div class="day-title">Day 3｜1/25 (日) 東釜山・樂園冒險一日遊</div>
-            <div class="timeline-container">
-                <div class="event">
-                    <span class="time">10:00 - 12:00</span>
-                    <span class="desc">熱血活動：<strong>Skyline Luge 釜山斜坡滑車</strong></span>
-                    <div class="note">建議購買 3-5 次券，趁中午人潮變多前先玩。</div>
-                    <div class="btn-group">
-                        <a href="https://map.naver.com/p/search/스카이라인루지 부산" class="map-btn naver" target="_blank">導航</a>
-                        <a href="https://www.google.com/maps/search/?api=1&query=Skyline+Luge+Busan" class="map-btn google" target="_blank">地圖</a>
+                    <div class="hotel-block">
+                        <div class="hotel-name">🏨 Shilla Stay Haeundae</div>
                     </div>
-                </div>
-                <div class="event">
-                    <span class="time">13:30 - 19:30</span>
-                    <span class="desc">樂園時光：<strong>釜山樂天世界冒險樂園</strong></span>
-                    <div class="note">體驗遊樂設施，欣賞下午遊行與晚間城堡點燈。</div>
-                    <div class="btn-group">
-                        <a href="https://map.naver.com/p/search/롯데월드 어드벤처 부산" class="map-btn naver" target="_blank">導航</a>
-                        <a href="https://www.google.com/maps/search/?api=1&query=Lotte+World+Adventure+Busan" class="map-btn google" target="_blank">地圖</a>
-                    </div>
-                </div>
-            </div>
-            <div class="hotel">
-                住宿：Shilla Stay Haeundae
-            </div>
-        </div>
-
-        <div class="day-card">
-            <div class="day-title">Day 4｜1/26 (一) 轉場南浦洞・影島風情</div>
-            <div class="timeline-container">
-                <div class="event">
-                    <span class="time">12:00 - 13:00</span>
-                    <span class="desc">移動日：搭計程車前往南浦洞飯店寄放行李。</span>
-                </div>
-                <div class="event">
-                    <span class="time">13:30 - 16:30</span>
-                    <span class="desc">海景散策：<strong>影島 白淺灘文化村</strong></span>
-                    <div class="note">沿著絕影海岸散步路漫步，找間海景咖啡廳休息。</div>
-                    <div class="btn-group">
-                        <a href="https://map.naver.com/p/search/흰여울문화마을" class="map-btn naver" target="_blank">導航</a>
-                        <a href="https://www.google.com/maps/search/?api=1&query=Huinnyeoul+Culture+Village" class="map-btn google" target="_blank">地圖</a>
-                    </div>
-                </div>
-                <div class="event">
-                    <span class="time">16:30 - 18:00</span>
-                    <span class="desc">高空觀景：<strong>樂天百貨 光復店 (頂樓觀景台)</strong></span>
-                    <div class="btn-group">
-                        <a href="https://map.naver.com/p/search/롯데백화점 광복점" class="map-btn naver" target="_blank">導航</a>
-                        <a href="https://www.google.com/maps/search/?api=1&query=Lotte+Department+Store+Gwangbok" class="map-btn google" target="_blank">地圖</a>
-                    </div>
-                </div>
-                <div class="event">
-                    <span class="time">18:00 - 20:00</span>
-                    <span class="desc">海鮮晚餐：<strong>札嘎其市場</strong></span>
-                    <div class="btn-group">
-                        <a href="https://map.naver.com/p/search/자갈치시장" class="map-btn naver" target="_blank">導航</a>
-                        <a href="https://www.google.com/maps/search/?api=1&query=Jagalchi+Market" class="map-btn google" target="_blank">地圖</a>
-                    </div>
-                </div>
-            </div>
-            <div class="hotel">
-                住宿：Hotel Foret Premier Nampo (南浦森林頂級飯店)
-                <div class="btn-group" style="margin-left: auto;">
-                    <a href="https://map.naver.com/p/search/호텔포레 프리미어 남포" class="map-btn naver" target="_blank">導航</a>
                 </div>
             </div>
         </div>
 
         <div class="day-card">
-            <div class="day-title">Day 5｜1/27 (二) 甘川洞童話・南浦洞購物</div>
-            <div class="timeline-container">
-                <div class="event">
-                    <span class="time">10:00 - 12:30</span>
-                    <span class="desc">打卡聖地：<strong>甘川洞文化村</strong> (尋找小王子)</span>
-                    <div class="btn-group">
-                        <a href="https://map.naver.com/p/search/감천문화마을" class="map-btn naver" target="_blank">導航</a>
-                        <a href="https://www.google.com/maps/search/?api=1&query=Gamcheon+Culture+Village" class="map-btn google" target="_blank">地圖</a>
-                    </div>
+            <div class="day-header" onclick="toggleCard(this)">
+                <div class="day-info">
+                    <span class="day-tag">DAY 03 . 1/25 (日)</span>
+                    <span class="day-title">東釜山冒險 ‧ 樂園一日遊</span>
                 </div>
-                <div class="event highlight">
-                    <span class="time">14:00 - 17:00</span>
-                    <span class="desc">深度逛街：<strong>BIFF 廣場 / 國際市場 / 光復路時尚街</strong></span>
-                    <div class="note">享受街頭小吃，挖掘古著與生活雜貨。</div>
-                    <div class="btn-group">
-                        <a href="https://map.naver.com/p/search/BIFF 거리" class="map-btn naver" target="_blank">導航</a>
-                        <a href="https://www.google.com/maps/search/?api=1&query=BIFF+Square" class="map-btn google" target="_blank">地圖</a>
-                    </div>
-                </div>
-                <div class="event">
-                    <span class="time">17:00 - 18:30</span>
-                    <span class="desc">城市日落：<strong>龍頭山公園 (釜山塔)</strong></span>
-                    <div class="btn-group">
-                        <a href="https://map.naver.com/p/search/용두산공원" class="map-btn naver" target="_blank">導航</a>
-                        <a href="https://www.google.com/maps/search/?api=1&query=Yongdusan+Park" class="map-btn google" target="_blank">地圖</a>
-                    </div>
-                </div>
-                <div class="event highlight">
-                    <span class="time">20:00 - 21:30</span>
-                    <span class="desc">最後採買：<strong>樂天超市 (Lotte Mart 光復店)</strong></span>
-                    <div class="note">把握機會買齊零食伴手禮！</div>
-                </div>
+                <div class="toggle-btn">▼</div>
             </div>
-            <div class="hotel">
-                住宿：Hotel Foret Premier Nampo
+            <div class="day-body">
+                <div class="timeline">
+                    <div class="event">
+                        <span class="time">10:00 - 12:00</span>
+                        <span class="desc">活動：<strong>Skyline Luge 釜山斜坡滑車</strong></span>
+                        <div class="note">建議購買3-5次券，趁中午人少先玩。</div>
+                        <div class="btn-group">
+                            <a href="https://map.naver.com/p/search/스카이라인루지 부산" class="map-btn btn-naver" target="_blank"><span class="map-icon">N</span> 導航</a>
+                            <a href="https://www.google.com/maps/search/?api=1&query=Skyline+Luge+Busan" class="map-btn btn-google" target="_blank"><span class="map-icon">G</span> 地圖</a>
+                        </div>
+                    </div>
+                    <div class="event highlight">
+                        <span class="time">13:30 - 19:30</span>
+                        <span class="desc">樂園：<strong>釜山樂天世界冒險樂園</strong></span>
+                        <div class="note">欣賞花車遊行與夜晚城堡點燈。</div>
+                        <div class="btn-group">
+                            <a href="https://map.naver.com/p/search/롯데월드 어드벤처 부산" class="map-btn btn-naver" target="_blank"><span class="map-icon">N</span> 導航</a>
+                            <a href="https://www.google.com/maps/search/?api=1&query=Lotte+World+Adventure+Busan" class="map-btn btn-google" target="_blank"><span class="map-icon">G</span> 地圖</a>
+                        </div>
+                    </div>
+                    <div class="hotel-block">
+                        <div class="hotel-name">🏨 Shilla Stay Haeundae</div>
+                    </div>
+                </div>
             </div>
         </div>
 
         <div class="day-card">
-            <div class="day-title">Day 6｜1/28 (三) 滿載而歸</div>
-            <div class="timeline-container">
-                <div class="event">
-                    <span class="time">09:30</span>
-                    <span class="desc">出發：從南浦洞飯店搭計程車前往 <strong>金海國際機場</strong>。</span>
-                    <div class="note">預留約 40 分鐘車程，避免上班車潮。</div>
-                    <div class="btn-group">
-                        <a href="https://map.naver.com/p/search/김해국제공항" class="map-btn naver" target="_blank">導航</a>
-                    </div>
+            <div class="day-header" onclick="toggleCard(this)">
+                <div class="day-info">
+                    <span class="day-tag">DAY 04 . 1/26 (一)</span>
+                    <span class="day-title">移動日 ‧ 南浦洞與影島</span>
                 </div>
-                <div class="event">
-                    <span class="time">12:00</span>
-                    <span class="desc">起飛：搭乘 BX 795 返回高雄，結束美好旅程。</span>
+                <div class="toggle-btn">▼</div>
+            </div>
+            <div class="day-body">
+                <div class="timeline">
+                    <div class="event">
+                        <span class="time">12:00 - 13:00</span>
+                        <span class="desc">退房移動：搭計程車前往南浦洞飯店。</span>
+                    </div>
+                    <div class="event">
+                        <span class="time">13:30 - 16:30</span>
+                        <span class="desc">散策：<strong>影島 白淺灘文化村</strong></span>
+                        <div class="note">絕影海岸散步路，找間海景咖啡廳休息。</div>
+                        <div class="btn-group">
+                            <a href="https://map.naver.com/p/search/흰여울문화마을" class="map-btn btn-naver" target="_blank"><span class="map-icon">N</span> 導航</a>
+                            <a href="https://www.google.com/maps/search/?api=1&query=Huinnyeoul+Culture+Village" class="map-btn btn-google" target="_blank"><span class="map-icon">G</span> 地圖</a>
+                        </div>
+                    </div>
+                    <div class="event">
+                        <span class="time">16:30 - 18:00</span>
+                        <span class="desc">觀景：<strong>樂天百貨 光復店 (頂樓)</strong></span>
+                        <div class="btn-group">
+                            <a href="https://map.naver.com/p/search/롯데백화점 광복점" class="map-btn btn-naver" target="_blank"><span class="map-icon">N</span> 導航</a>
+                            <a href="https://www.google.com/maps/search/?api=1&query=Lotte+Department+Store+Gwangbok" class="map-btn btn-google" target="_blank"><span class="map-icon">G</span> 地圖</a>
+                        </div>
+                    </div>
+                    <div class="event highlight">
+                        <span class="time">18:00 - 20:00</span>
+                        <span class="desc">晚餐：<strong>札嘎其市場</strong> (海鮮大餐)</span>
+                        <div class="btn-group">
+                            <a href="https://map.naver.com/p/search/자갈치시장" class="map-btn btn-naver" target="_blank"><span class="map-icon">N</span> 導航</a>
+                            <a href="https://www.google.com/maps/search/?api=1&query=Jagalchi+Market" class="map-btn btn-google" target="_blank"><span class="map-icon">G</span> 地圖</a>
+                        </div>
+                    </div>
+                    <div class="hotel-block">
+                        <div class="hotel-name">🏨 Hotel Foret Premier Nampo</div>
+                        <div class="btn-group">
+                            <a href="https://map.naver.com/p/search/호텔포레 프리미어 남포" class="map-btn btn-naver" target="_blank">Naver</a>
+                            <a href="https://www.google.com/maps/search/?api=1&query=Hotel+Foret+Premier+Nampo" class="map-btn btn-google" target="_blank">Google</a>
+                        </div>
+                    </div>
                 </div>
             </div>
         </div>
 
-    </div> <script>
-        // 匯率換算邏輯
+        <div class="day-card">
+            <div class="day-header" onclick="toggleCard(this)">
+                <div class="day-info">
+                    <span class="day-tag">DAY 05 . 1/27 (二)</span>
+                    <span class="day-title">童話村 ‧ 深度購物</span>
+                </div>
+                <div class="toggle-btn">▼</div>
+            </div>
+            <div class="day-body">
+                <div class="timeline">
+                    <div class="event">
+                        <span class="time">10:00 - 12:30</span>
+                        <span class="desc">打卡：<strong>甘川洞文化村</strong> (小王子)</span>
+                        <div class="btn-group">
+                            <a href="https://map.naver.com/p/search/감천문화마을" class="map-btn btn-naver" target="_blank"><span class="map-icon">N</span> 導航</a>
+                            <a href="https://www.google.com/maps/search/?api=1&query=Gamcheon+Culture+Village" class="map-btn btn-google" target="_blank"><span class="map-icon">G</span> 地圖</a>
+                        </div>
+                    </div>
+                    <div class="event highlight">
+                        <span class="time">14:00 - 17:00</span>
+                        <span class="desc">購物：<strong>BIFF 廣場 / 國際市場</strong></span>
+                        <div class="note">街頭小吃、古著、生活雜貨尋寶。</div>
+                        <div class="btn-group">
+                            <a href="https://map.naver.com/p/search/BIFF 거리" class="map-btn btn-naver" target="_blank"><span class="map-icon">N</span> 導航</a>
+                            <a href="https://www.google.com/maps/search/?api=1&query=BIFF+Square" class="map-btn btn-google" target="_blank"><span class="map-icon">G</span> 地圖</a>
+                        </div>
+                    </div>
+                    <div class="event">
+                        <span class="time">17:00 - 18:30</span>
+                        <span class="desc">日落：<strong>龍頭山公園 (釜山塔)</strong></span>
+                        <div class="btn-group">
+                            <a href="https://map.naver.com/p/search/용두산공원" class="map-btn btn-naver" target="_blank"><span class="map-icon">N</span> 導航</a>
+                            <a href="https://www.google.com/maps/search/?api=1&query=Yongdusan+Park" class="map-btn btn-google" target="_blank"><span class="map-icon">G</span> 地圖</a>
+                        </div>
+                    </div>
+                    <div class="event highlight">
+                        <span class="time">20:00 - 21:30</span>
+                        <span class="desc">採買：<strong>樂天超市 (光復店)</strong></span>
+                        <div class="note">把握最後機會買齊伴手禮與零食！</div>
+                        <div class="btn-group">
+                            <a href="https://map.naver.com/p/search/롯데마트 광복점" class="map-btn btn-naver" target="_blank"><span class="map-icon">N</span> 導航</a>
+                            <a href="https://www.google.com/maps/search/?api=1&query=Lotte+Mart+Gwangbok" class="map-btn btn-google" target="_blank"><span class="map-icon">G</span> 地圖</a>
+                        </div>
+                    </div>
+                    <div class="hotel-block">
+                        <div class="hotel-name">🏨 Hotel Foret Premier Nampo</div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="day-card">
+            <div class="day-header" onclick="toggleCard(this)">
+                <div class="day-info">
+                    <span class="day-tag">DAY 06 . 1/28 (三)</span>
+                    <span class="day-title">再見釜山 ‧ 滿載而歸</span>
+                </div>
+                <div class="toggle-btn">▼</div>
+            </div>
+            <div class="day-body">
+                <div class="timeline">
+                    <div class="event">
+                        <span class="time">09:30</span>
+                        <span class="desc">前往機場：搭計程車前往 <strong>金海國際機場</strong>。</span>
+                        <div class="note">請預留約 40 分鐘車程，避免上班車潮。</div>
+                        <div class="btn-group">
+                            <a href="https://map.naver.com/p/search/김해국제공항" class="map-btn btn-naver" target="_blank"><span class="map-icon">N</span> 導航</a>
+                            <a href="https://www.google.com/maps/search/?api=1&query=Gimhae+International+Airport" class="map-btn btn-google" target="_blank"><span class="map-icon">G</span> 地圖</a>
+                        </div>
+                    </div>
+                    <div class="event">
+                        <span class="time">12:00</span>
+                        <span class="desc">起飛：釜山航空 BX 795，飛往高雄。</span>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+    </div>
+
+    <script>
+        // 折疊功能
+        function toggleCard(header) {
+            const card = header.parentElement;
+            const body = card.querySelector('.day-body');
+            
+            card.classList.toggle('active');
+            
+            if (card.classList.contains('active')) {
+                body.style.maxHeight = body.scrollHeight + "px";
+            } else {
+                body.style.maxHeight = null;
+            }
+        }
+
+        // 匯率換算
         function convertCurrency() {
             var krw = document.getElementById("krwInput").value;
             var rate = document.getElementById("rateInput").value;
             if(krw && rate && rate > 0) {
-                // 計算公式：台幣 = 韓元 / (韓元對台幣匯率，例如 41.5)
                 var twd = krw / rate;
-                // 格式化輸出：加上千分位逗號，並取整數
                 document.getElementById("twdOutput").value = Math.round(twd).toLocaleString();
             } else {
                 document.getElementById("twdOutput").value = "";
@@ -428,8 +608,3 @@ CSS 格式化 Html&JS格式化 Html 代碼轉換器 UTF-8編碼轉換 HTML特殊
 
 </body>
 </html>
- 
-日常使用的「表情」符號與圖案，讓貼文者表達不同情感，究竟會有多少人知道其中的含意。 點此看 »
-線上工具 | Sitemap | 聯絡我們 | 繪文字 | 許願樹
-Copyright ©2025 Online Tools,All Rights Reserved. TOP
-讀取中...
