@@ -308,11 +308,38 @@
                     <input type="text" id="twdOutput" class="exchange-input" placeholder="TWD" readonly style="color:var(--accent-gold);">
                     <span class="exchange-unit">$</span>
                 </div>
-                <div class="rate-hint">1 TWD ≈ <input type="number" id="rateInput" value="42" step="0.1" style="width:30px;border:none;background:transparent;text-align:center;" onchange="convertCurrency()"> KRW</div>
+                <div class="rate-hint">1 TWD ≈ <input type="number" id="rateInput" value="41.5" step="0.1" style="width:30px;border:none;background:transparent;text-align:center;" onchange="convertCurrency()"> KRW</div>
             </div>
             
-            <div class="widget" style="padding:0; overflow:hidden;">
-                <iframe src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d104612.44686967069!2d129.0200!3d35.1500!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x3568eb6c0c242c77%3A0x6b87644265f24250!2sBusan%2C%20South%20Korea!5e0!3m2!1sen!2stw!4v1700000000000!5m2!1sen!2stw" style="width:100%; height:100%; min-height:180px; border:0;" allowfullscreen="" loading="lazy"></iframe>
+            <div class="widget">
+                <div class="widget-label">✈️ Flight Information</div>
+                <div class="flight-row">
+                    <div style="display:flex; align-items:center;">
+                        <span class="flight-icon">🛫</span>
+                        <div>
+                            <span class="flight-date">1/23 FRI</span>
+                            <span class="flight-code">BX 796</span>
+                        </div>
+                    </div>
+                    <div style="text-align:right;">
+                        <span class="flight-time">15:00 - 18:25</span>
+                        <span class="flight-route">KHH ➔ PUS</span>
+                    </div>
+                </div>
+                <div style="border-bottom:1px dashed #eee; margin:10px 0;"></div>
+                <div class="flight-row">
+                    <div style="display:flex; align-items:center;">
+                        <span class="flight-icon">🛬</span>
+                        <div>
+                            <span class="flight-date">1/28 WED</span>
+                            <span class="flight-code">BX 795</span>
+                        </div>
+                    </div>
+                    <div style="text-align:right;">
+                        <span class="flight-time">12:00 - 14:00</span>
+                        <span class="flight-route">PUS ➔ KHH</span>
+                    </div>
+                </div>
             </div>
         </div>
 
