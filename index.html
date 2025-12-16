@@ -3,7 +3,7 @@
 <head>
   <meta charset="utf-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1" />
-  <title>大阪京都六日遊（NAVER 可摺疊 DAY 版）</title>
+  <title>大阪京都六日遊（Google 地圖 + NAVER 導航｜可摺疊 DAY 版）</title>
   <script src="https://cdn.tailwindcss.com"></script>
   <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Material+Symbols+Rounded:wght@400;500;600&display=swap" />
   <style>
@@ -37,6 +37,11 @@
             <span class="material-symbols-rounded align-[-4px] mr-1">map</span>
             打開地圖
           </button>
+        </div>
+        <div class="px-4 pb-3">
+          <div class="text-[11px] text-slate-500 leading-relaxed">
+            地圖顯示使用 <b>Google Maps 內嵌</b>（不需 API Key），導航使用 <b>NAVER</b>。
+          </div>
         </div>
       </header>
 
@@ -76,7 +81,6 @@
         </div>
       </div>
     
-      
       <div class="group rounded-2xl border border-slate-200 bg-white hover:bg-slate-50 p-4 transition-all cursor-pointer"
            onclick="focusLocation(34.4325, 135.2304, '起飛 BR182')">
         <div class="flex items-start justify-between gap-3">
@@ -100,7 +104,6 @@
         </div>
       </div>
     
-
       <div class="group rounded-2xl border border-slate-200 bg-white hover:bg-slate-50 p-4 transition-all cursor-pointer"
            onclick="focusLocation(34.4325, 135.2304, '抵達大阪')">
         <div class="flex items-start justify-between gap-3">
@@ -124,7 +127,6 @@
         </div>
       </div>
     
-
       <div class="group rounded-2xl border border-blue-200 bg-blue-50 hover:bg-blue-100/40 p-4 transition-all cursor-pointer"
            onclick="focusLocation(34.6766, 135.5008, '飯店 Check-in')">
         <div class="flex items-start justify-between gap-3">
@@ -185,7 +187,6 @@
         </div>
       </div>
     
-      
       <div class="group rounded-2xl border border-slate-200 bg-white hover:bg-slate-50 p-4 transition-all cursor-pointer"
            onclick="focusLocation(34.9671, 135.7727, '伏見稻荷大社')">
         <div class="flex items-start justify-between gap-3">
@@ -209,7 +210,6 @@
         </div>
       </div>
     
-
       <div class="group rounded-2xl border border-slate-200 bg-white hover:bg-slate-50 p-4 transition-all cursor-pointer"
            onclick="focusLocation(35.0094, 135.667, '嵐山散策')">
         <div class="flex items-start justify-between gap-3">
@@ -233,7 +233,6 @@
         </div>
       </div>
     
-
       <div class="group rounded-2xl border border-slate-200 bg-white hover:bg-slate-50 p-4 transition-all cursor-pointer"
            onclick="focusLocation(35.0037, 135.7778, '和服體驗')">
         <div class="flex items-start justify-between gap-3">
@@ -257,7 +256,6 @@
         </div>
       </div>
     
-
       <div class="group rounded-2xl border border-blue-200 bg-blue-50 hover:bg-blue-100/40 p-4 transition-all cursor-pointer"
            onclick="focusLocation(34.9949, 135.785, '清水寺夜間參拜')">
         <div class="flex items-start justify-between gap-3">
@@ -318,7 +316,6 @@
         </div>
       </div>
     
-      
       <div class="group rounded-2xl border border-slate-200 bg-white hover:bg-slate-50 p-4 transition-all cursor-pointer"
            onclick="focusLocation(34.9835, 135.7578, '京都出發')">
         <div class="flex items-start justify-between gap-3">
@@ -342,7 +339,6 @@
         </div>
       </div>
     
-
       <div class="group rounded-2xl border border-slate-200 bg-white hover:bg-slate-50 p-4 transition-all cursor-pointer"
            onclick="focusLocation(35.59, 135.2, '天橋立')">
         <div class="flex items-start justify-between gap-3">
@@ -366,7 +362,6 @@
         </div>
       </div>
     
-
       <div class="group rounded-2xl border border-blue-200 bg-blue-50 hover:bg-blue-100/40 p-4 transition-all cursor-pointer"
            onclick="focusLocation(35.67, 135.29, '伊根舟屋')">
         <div class="flex items-start justify-between gap-3">
@@ -427,7 +422,6 @@
         </div>
       </div>
     
-      
       <div class="group rounded-2xl border border-slate-200 bg-white hover:bg-slate-50 p-4 transition-all cursor-pointer"
            onclick="focusLocation(34.6873, 135.5262, '大阪城公園')">
         <div class="flex items-start justify-between gap-3">
@@ -451,7 +445,6 @@
         </div>
       </div>
     
-
       <div class="group rounded-2xl border border-slate-200 bg-white hover:bg-slate-50 p-4 transition-all cursor-pointer"
            onclick="focusLocation(34.704, 135.495, '梅田購物')">
         <div class="flex items-start justify-between gap-3">
@@ -475,7 +468,6 @@
         </div>
       </div>
     
-
       <div class="group rounded-2xl border border-blue-200 bg-blue-50 hover:bg-blue-100/40 p-4 transition-all cursor-pointer"
            onclick="focusLocation(34.648, 135.513, '天王寺聖誕市集')">
         <div class="flex items-start justify-between gap-3">
@@ -536,7 +528,6 @@
         </div>
       </div>
     
-      
       <div class="group rounded-2xl border border-blue-200 bg-blue-50 hover:bg-blue-100/40 p-4 transition-all cursor-pointer"
            onclick="focusLocation(34.685, 135.843, '奈良公園')">
         <div class="flex items-start justify-between gap-3">
@@ -560,7 +551,6 @@
         </div>
       </div>
     
-
       <div class="group rounded-2xl border border-slate-200 bg-white hover:bg-slate-50 p-4 transition-all cursor-pointer"
            onclick="focusLocation(34.6655, 135.507, '黑門市場')">
         <div class="flex items-start justify-between gap-3">
@@ -584,7 +574,6 @@
         </div>
       </div>
     
-
       <div class="group rounded-2xl border border-slate-200 bg-white hover:bg-slate-50 p-4 transition-all cursor-pointer"
            onclick="focusLocation(34.671, 135.501, '心齋橋')">
         <div class="flex items-start justify-between gap-3">
@@ -622,7 +611,6 @@
     </summary>
     <div class="p-4 space-y-3 bg-slate-50/60">
       
-      
       <div class="group rounded-2xl border border-slate-200 bg-white hover:bg-slate-50 p-4 transition-all cursor-pointer"
            onclick="focusLocation(34.6766, 135.5008, '前往機場')">
         <div class="flex items-start justify-between gap-3">
@@ -646,7 +634,6 @@
         </div>
       </div>
     
-
       <div class="group rounded-2xl border border-blue-200 bg-blue-50 hover:bg-blue-100/40 p-4 transition-all cursor-pointer"
            onclick="focusLocation(34.4325, 135.2304, '起飛 BR181')">
         <div class="flex items-start justify-between gap-3">
@@ -676,12 +663,12 @@
       </main>
     </div>
 
-    <!-- 右側：NAVER 地圖 -->
+    <!-- 右側：Google 地圖（iframe 內嵌，手機可用） -->
     <div id="map-view" class="hidden lg:block flex-1 h-full bg-slate-100 relative">
       <div class="absolute top-0 left-0 right-0 z-20 bg-white/90 backdrop-blur border-b border-slate-200 px-3 py-2 flex items-center justify-between safe-top">
         <div class="text-sm font-semibold text-slate-800 flex items-center gap-2">
           <span class="material-symbols-rounded text-slate-600">map</span>
-          NAVER 地圖
+          Google 地圖（顯示）
         </div>
         <button class="lg:hidden px-3 py-1.5 rounded-lg bg-slate-100 hover:bg-slate-200 text-sm"
                 onclick="switchView('list')">
@@ -695,7 +682,7 @@
         frameborder="0"
         loading="lazy"
         referrerpolicy="no-referrer-when-downgrade"
-        src="https://map.naver.com/v5/?c=135.5023,34.6937,11,0,0,0,dh">
+        src="https://www.google.com/maps?q=34.6766,135.5008&z=11&output=embed">
       </iframe>
     </div>
 
@@ -724,7 +711,7 @@
     const url = URL.createObjectURL(blob);
     const a = document.createElement('a');
     a.href = url;
-    a.download = 'osaka_kyoto_trip_naver.html';
+    a.download = 'osaka_kyoto_trip_google_naver.html';
     document.body.appendChild(a);
     a.click();
     document.body.removeChild(a);
@@ -732,11 +719,11 @@
   }
 
   function focusLocation(lat, lng, title) {
-    // NAVER v5 uses c=lng,lat,zoom,...
-    const zoom = 16;
+    const zoom = 15;
     const frame = document.getElementById('map-frame');
-    frame.src = `https://map.naver.com/v5/?c=${lng},${lat},${zoom},0,0,0,dh`;
-    // 手機：點了卡片就自動切到地圖
+    frame.src = `https://www.google.com/maps?q=${lat},${lng}&z=${zoom}&output=embed`;
+
+    // 手機：點卡片就切到地圖頁
     if (window.innerWidth < 1024) switchView('map');
   }
 
