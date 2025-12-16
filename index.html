@@ -3,811 +3,823 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>2026 BUSAN | Winter Luxury</title>
-
-  <!-- Fonts (離線時會自動 fallback 到系統字體) -->
-  <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:wght@600;700&family=Noto+Sans+TC:wght@300;400;500;700&display=swap" rel="stylesheet">
+  <title>BUSAN 2026 | Winter Luxury</title>
 
   <style>
-    :root {
-      --bg-body: #Fdfdfd;
-      --primary-dark: #121e2d;
-      --primary-light: #2c3e50;
-      --accent-gold: #c5a47e;
-      --text-body: #4a4a4a;
-      --card-bg: #ffffff;
-      --shadow-soft: 0 10px 40px -10px rgba(0,0,0,0.08);
-      --radius: 12px;
+    :root{
+      --bg:#fbfbfb; --card:#fff; --ink:#121e2d; --text:#4a4a4a; --muted:#7a7a7a;
+      --gold:#c5a47e; --line:rgba(0,0,0,.07); --soft:0 10px 40px -14px rgba(0,0,0,.12);
+      --r:14px; --r2:18px;
+      --mono: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, "Liberation Mono","Courier New", monospace;
+      --sans: system-ui, -apple-system, "PingFang TC", "Microsoft JhengHei", "Noto Sans TC", sans-serif;
+      --serif: ui-serif, "Georgia", "Times New Roman", serif;
     }
+    *{box-sizing:border-box}
+    body{margin:0;background:var(--bg);color:var(--text);font-family:var(--sans);line-height:1.75}
+    a{color:inherit}
 
-    body {
-      font-family: 'Noto Sans TC', system-ui, -apple-system, "PingFang TC", "Microsoft JhengHei", sans-serif;
-      background-color: var(--bg-body);
-      color: var(--text-body);
-      margin: 0;
-      padding: 0;
-      line-height: 1.7;
+    /* Cover */
+    header{
+      background:
+        radial-gradient(1000px 600px at 82% 18%, rgba(197,164,126,.18), transparent 52%),
+        linear-gradient(180deg, #101a27 0%, #121e2d 40%, #0f1824 100%);
+      color:#fff;text-align:center;padding:74px 18px 66px;position:relative;overflow:hidden
     }
+    .cover-kicker{letter-spacing:4px;text-transform:uppercase;font-weight:800;font-size:12px;color:rgba(197,164,126,.95);margin-bottom:12px}
+    .cover-title{margin:0;font-family:var(--serif);font-size:44px;line-height:1.06}
+    .cover-sub{margin-top:14px;font-size:14px;opacity:.88;display:inline-block;padding-top:18px;border-top:1px solid rgba(255,255,255,.12)}
 
-    h1, h2, h3, .serif { font-family: 'Cormorant Garamond', serif; }
+    /* Layout */
+    .wrap{max-width:900px;margin:0 auto;padding:0 14px 64px;transform:translateY(-28px)}
+    .card{background:var(--card);border:1px solid var(--line);border-radius:var(--r2);box-shadow:var(--soft);overflow:hidden}
+    .pad{padding:18px}
 
-    /* Header */
-    header {
-      background-color: var(--primary-dark);
-      color: white;
-      padding: 80px 30px 60px;
-      text-align: center;
-      position: relative;
-      overflow: hidden;
-    }
-    header::before {
-      content: '';
-      position: absolute; top:0; left:0; width:100%; height:100%;
-      background: radial-gradient(circle at 80% 20%, rgba(197, 164, 126, 0.15), transparent 40%);
-      pointer-events: none;
-    }
-    .header-subtitle {
-      font-size: 0.9rem;
-      letter-spacing: 3px;
-      text-transform: uppercase;
-      color: var(--accent-gold);
-      margin-bottom: 10px;
-      font-weight: 500;
-      position: relative;
-    }
-    .header-title {
-      font-size: 3rem;
-      margin: 0;
-      line-height: 1.1;
-      font-weight: 700;
-      position: relative;
-    }
-    .header-date {
-      margin-top: 20px;
-      font-size: 1rem;
-      font-weight: 300;
-      opacity: 0.8;
-      border-top: 1px solid rgba(255,255,255,0.1);
-      display: inline-block;
-      padding-top: 20px;
-      position: relative;
-    }
-
-    /* Container */
-    .container {
-      max-width: 800px;
-      margin: 0 auto;
-      padding: 0 20px 60px;
-      transform: translateY(-40px);
-    }
-
-    /* Widget */
-    .dashboard-grid {
-      display: grid;
-      grid-template-columns: 1fr 1fr;
-      gap: 15px;
-      margin-bottom: 30px;
-    }
-    .widget {
-      background: rgba(255, 255, 255, 0.95);
+    /* Tabs */
+    .tabs{
+      position: sticky; top:0; z-index:20;
       backdrop-filter: blur(10px);
-      padding: 20px;
-      border-radius: var(--radius);
-      box-shadow: var(--shadow-soft);
-      border: 1px solid rgba(0,0,0,0.03);
-      display: flex;
-      flex-direction: column;
-      justify-content: center;
+      background: rgba(251,251,251,.86);
+      border-bottom: 1px solid rgba(0,0,0,.08);
     }
-    .widget-label {
-      font-size: 0.75rem;
-      text-transform: uppercase;
-      letter-spacing: 1px;
-      color: var(--primary-light);
-      margin-bottom: 15px;
-      font-weight: 700;
-      border-bottom: 1px solid #eee;
-      padding-bottom: 8px;
+    .tabs-inner{
+      max-width:900px;margin:0 auto;padding:10px 14px;
+      display:flex;gap:8px;overflow:auto; -webkit-overflow-scrolling: touch;
     }
-
-    /* Currency */
-    .exchange-row {
-      display: flex;
-      justify-content: space-between;
-      align-items: baseline;
-      border-bottom: 1px solid #f4f4f4;
-      padding-bottom: 5px;
-      margin-bottom: 10px;
+    .tab{
+      white-space:nowrap; user-select:none;
+      border:1px solid rgba(0,0,0,.12);
+      background:#fff;
+      padding:8px 12px;
+      border-radius:999px;
+      font-size:12px;
+      font-weight:900;
+      color:rgba(18,30,45,.78);
+      cursor:pointer;
+      -webkit-tap-highlight-color:transparent;
+      display:inline-flex; align-items:center; gap:7px;
+      transition: transform .18s ease, background .18s ease, border-color .18s ease;
     }
-    .exchange-input {
-      width: 70%;
-      border: none;
-      font-size: 1.3rem;
-      font-family: 'Cormorant Garamond', serif;
-      font-weight: 700;
-      color: var(--primary-dark);
-      outline: none;
-      background: transparent;
-    }
-    .exchange-unit {
-      font-size: 0.8rem;
-      font-weight: 700;
-      color: #aaa;
-    }
-    .rate-hint {
-      font-size: 0.75rem;
-      color: #aaa;
-      text-align: right;
-    }
-    .rate-hint input {
-      width: 44px;
-      border: none;
-      background: transparent;
-      text-align: center;
-      outline: none;
-      font-weight: 700;
-      color: var(--primary-light);
+    .tab:active{transform:scale(.98)}
+    .tab:hover{border-color:rgba(0,0,0,.18)}
+    .tab.active{
+      border-color: rgba(197,164,126,.62);
+      background: rgba(197,164,126,.12);
+      color: rgba(18,30,45,.92);
     }
 
-    /* Flight */
-    .flight-row {
-      display: flex;
-      align-items: center;
-      justify-content: space-between;
-      margin-bottom: 12px;
-      font-size: 0.9rem;
-    }
-    .flight-row:last-child { margin-bottom: 0; }
-    .flight-icon { font-size: 1.2rem; margin-right: 8px; }
-    .flight-date {
-      font-weight: 700;
-      color: var(--accent-gold);
-      font-size: 0.8rem;
-      display: block;
-      line-height: 1.2;
-    }
-    .flight-code {
-      font-family: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, "Liberation Mono", "Courier New", monospace;
-      background: #f0f0f0;
-      padding: 2px 6px;
-      border-radius: 4px;
-      font-size: 0.8rem;
-      color: #555;
-    }
-    .flight-time { font-weight: 600; color: var(--primary-dark); display: block; font-size: 1rem; }
-    .flight-route { font-size: 0.75rem; color: #888; letter-spacing: 0.5px; }
+    /* Pages */
+    .page{display:none; margin-top:14px}
+    .page.active{display:block}
+    .section-title{display:flex;justify-content:space-between;gap:12px;align-items:baseline;margin:6px 4px 12px}
+    .section-title h2{margin:0;font-family:var(--serif);font-size:22px;color:var(--ink)}
+    .hint{font-size:12px;color:var(--muted);letter-spacing:.6px;text-transform:uppercase;white-space:nowrap}
 
-    /* Hotel Summary */
-    .hotel-summary-card {
-      background: white;
-      border-radius: var(--radius);
-      box-shadow: var(--shadow-soft);
-      overflow: hidden;
-      margin-bottom: 40px;
-      position: relative;
+    /* Illustration */
+    figure.illus{margin:0 0 14px 0}
+    .illus img{
+      width:100%; height:auto; display:block;
+      border-radius: var(--r2);
+      border: 1px solid rgba(0,0,0,.07);
+      box-shadow: var(--soft);
+      background: #fff;
     }
-    .hotel-summary-card::before {
-      content: '';
-      position: absolute;
-      left: 0; top: 0; bottom: 0;
-      width: 6px;
-      background: var(--accent-gold);
+    .illus figcaption{
+      margin-top:10px;
+      font-size:12px;
+      color: rgba(0,0,0,.52);
+      letter-spacing:.2px;
+      padding: 0 6px;
     }
-    .hotel-row {
-      padding: 20px 25px;
-      border-bottom: 1px dashed #eee;
-      display: flex;
-      justify-content: space-between;
-      align-items: flex-start;
-      flex-wrap: wrap;
-      gap: 15px;
+
+    /* Text blocks */
+    .vibe{
+      border-left:3px solid rgba(197,164,126,.65);
+      padding:10px 12px;border-radius:12px;background:rgba(197,164,126,.08);
+      color:rgba(18,30,45,.78);font-size:13px;margin-bottom:14px
     }
-    .hotel-row:last-child { border-bottom: none; }
-    .hotel-info h4 { margin: 0 0 5px 0; font-size: 1.2rem; color: var(--primary-dark); }
-    .hotel-info span { font-size: 0.9rem; color: #777; display: block; }
-    .hotel-date-badge {
-      display: inline-block;
-      background: #f4f4f4;
-      color: var(--primary-dark);
-      font-size: 0.75rem;
-      padding: 2px 8px;
-      border-radius: 4px;
-      margin-bottom: 5px;
-      font-weight: 600;
+    .vibe b{color:rgba(18,30,45,.92);font-weight:900}
+
+    /* Overview mini cards */
+    .mini-grid{display:grid;grid-template-columns:1fr 1fr;gap:12px}
+    .mini{
+      background:#fff;border:1px solid rgba(0,0,0,.08);
+      border-radius:14px; overflow:hidden;
+    }
+    .mini .top{
+      padding:12px 14px;
+      border-bottom:1px solid rgba(0,0,0,.06);
+      font-weight:900;color:rgba(18,30,45,.92);
+      display:flex;align-items:center;justify-content:space-between;gap:10px;
+    }
+    .pill{
+      display:inline-flex;align-items:center;gap:6px;
+      border:1px solid rgba(197,164,126,.35);
+      color:rgba(197,164,126,.95);
+      background:rgba(197,164,126,.08);
+      padding:4px 10px;border-radius:999px;
+      font-size:12px;font-weight:900;letter-spacing:.3px;
+      white-space:nowrap;
+    }
+    .mini .body{padding:14px}
+
+    /* Timeline */
+    .timeline{padding-left:8px}
+    .event{position:relative;padding-left:40px;padding-bottom:26px}
+    .event:last-child{padding-bottom:0}
+    .event::before{content:'';position:absolute;left:6px;top:12px;bottom:0;width:1px;background:rgba(0,0,0,.14)}
+    .event:last-child::before{display:none}
+    .event::after{content:'';position:absolute;left:0;top:12px;width:13px;height:13px;background:#fff;border:2px solid rgba(44,62,80,.70);border-radius:50%}
+    .event.hl::after{border-color:rgba(197,164,126,.95);background:rgba(197,164,126,.95);box-shadow:0 0 0 4px rgba(197,164,126,.18)}
+    .time{display:block;font-size:12px;letter-spacing:1px;font-weight:900;color:rgba(197,164,126,.95);margin-bottom:4px}
+    .title{font-size:16px;font-weight:900;color:rgba(0,0,0,.72);margin-bottom:6px}
+    .desc{font-size:14px;color:rgba(0,0,0,.55);margin-bottom:8px}
+    .note{
+      display:inline-block;
+      font-size:12px;
+      color: rgba(0,0,0,.62);
+      background: rgba(0,0,0,.04);
+      border: 1px solid rgba(0,0,0,.06);
+      border-left: 3px solid rgba(0,0,0,.18);
+      padding: 6px 10px;
+      border-radius: 10px;
+      margin: 2px 0 8px;
     }
 
     /* Buttons */
-    .action-buttons { display: flex; gap: 8px; margin-top: 8px; flex-wrap: wrap; }
-    .btn {
-      text-decoration: none;
-      font-size: 0.75rem;
-      font-weight: 600;
-      padding: 7px 12px;
-      border-radius: 20px;
-      display: inline-flex;
-      align-items: center;
-      gap: 6px;
-      transition: all 0.2s;
-      background: white;
-      border: 1px solid #e0e0e0;
-      color: var(--primary-light);
-      cursor: pointer;
-      -webkit-tap-highlight-color: transparent;
+    .actions{display:flex;gap:8px;flex-wrap:wrap;margin-top:8px}
+    .btn{
+      border:1px solid rgba(0,0,0,.10);
+      background:#fff;color:rgba(18,30,45,.80);
+      padding:7px 12px;border-radius:999px;font-size:12px;font-weight:900;cursor:pointer;text-decoration:none;
+      display:inline-flex;align-items:center;gap:6px;-webkit-tap-highlight-color:transparent;
     }
-    .btn:hover {
-      border-color: var(--primary-dark);
-      background: var(--primary-dark);
-      color: white;
-      transform: translateY(-2px);
-      box-shadow: 0 4px 6px rgba(0,0,0,0.1);
-    }
-    .btn-naver { color: #03C75A; border-color: #03C75A; }
-    .btn-naver:hover { background: #03C75A; color: white; border-color: #03C75A; }
-    .btn-google { color: #4285F4; border-color: #4285F4; }
-    .btn-google:hover { background: #4285F4; color: white; border-color: #4285F4; }
+    .btn-naver{border-color:rgba(3,199,90,.45);color:rgba(3,199,90,.95);background:rgba(3,199,90,.06)}
+    .btn-google{border-color:rgba(66,133,244,.45);color:rgba(66,133,244,.95);background:rgba(66,133,244,.06)}
 
-    /* Day Collapsible */
-    details.day-section {
-      margin-bottom: 18px;
-      background: white;
-      border-radius: var(--radius);
-      box-shadow: var(--shadow-soft);
-      border: 1px solid rgba(0,0,0,0.04);
-      overflow: hidden;
-    }
-
-    summary.day-header {
-      list-style: none;
-      cursor: pointer;
-      padding: 16px 18px;
-      display: flex;
-      justify-content: space-between;
-      align-items: baseline;
-      gap: 12px;
-      background: rgba(253, 253, 253, 0.98);
-      backdrop-filter: blur(8px);
-      border-bottom: 1px solid rgba(0,0,0,0.06);
-      position: sticky;
-      top: 0;
-      z-index: 10;
-      -webkit-tap-highlight-color: transparent;
-    }
-    summary.day-header::-webkit-details-marker { display: none; }
-
-    .day-left { display:flex; align-items: baseline; gap: 12px; }
-    .day-number {
-      font-family: 'Cormorant Garamond', serif;
-      font-size: 1.9rem;
-      font-weight: 700;
-      color: var(--primary-dark);
-      line-height: 1;
-    }
-    .day-date {
-      font-size: 0.9rem;
-      color: var(--accent-gold);
-      text-transform: uppercase;
-      font-weight: 700;
-      letter-spacing: 1px;
-      white-space: nowrap;
-    }
-
-    .day-toggle {
-      display: inline-flex;
-      align-items: center;
-      gap: 8px;
-      font-size: 0.8rem;
-      color: #888;
-      user-select: none;
-      white-space: nowrap;
-    }
-    details[open] .day-toggle .chev { transform: rotate(180deg); }
-    .chev { display:inline-block; transition: transform 0.2s ease; }
-
-    .day-body { padding: 18px 18px 22px; }
-
-    /* Timeline */
-    .timeline { padding-left: 10px; }
-    .event-item { position: relative; padding-left: 40px; padding-bottom: 35px; }
-    .event-item:last-child { padding-bottom: 0; }
-    .event-item::before {
-      content: '';
-      position: absolute;
-      left: 6px;
-      top: 12px;
-      bottom: 0;
-      width: 1px;
-      background: #e0e0e0;
-    }
-    .event-item:last-child::before { display: none; }
-    .event-item::after {
-      content: '';
-      position: absolute;
-      left: 0;
-      top: 12px;
-      width: 13px;
-      height: 13px;
-      background: white;
-      border: 2px solid var(--primary-light);
-      border-radius: 50%;
-    }
-    .event-item.highlight::after {
-      border-color: var(--accent-gold);
-      background: var(--accent-gold);
-      box-shadow: 0 0 0 4px rgba(197, 164, 126, 0.2);
-    }
-
-    .event-time { font-size: 0.85rem; font-weight: 700; color: var(--accent-gold); margin-bottom: 4px; display: block; }
-    .event-title { font-size: 1.1rem; font-weight: 600; color: var(--text-body); margin-bottom: 6px; }
-    .event-desc { font-size: 0.95rem; color: #666; margin-bottom: 8px; }
-    .note-bubble {
-      display: inline-block;
-      font-size: 0.8rem;
-      color: #555;
-      background: #f7f7f7;
-      padding: 5px 10px;
-      border-radius: 6px;
-      border-left: 3px solid #ccc;
-      margin-bottom: 8px;
-    }
-
-    .night-stay {
+    /* Stay block */
+    .stay{
       margin-top: 14px;
-      padding: 12px 15px;
-      background: #f8f9fa;
-      border-radius: 10px;
-      display: flex;
-      align-items: center;
-      justify-content: space-between;
-      gap: 12px;
-      flex-wrap: wrap;
+      padding: 12px 14px;
+      background: rgba(0,0,0,.03);
+      border: 1px solid rgba(0,0,0,.05);
+      border-radius: 14px;
+      display:flex;align-items:center;justify-content:space-between;gap:12px;flex-wrap:wrap;
     }
-    .night-stay-left { display:flex; flex-direction: column; gap: 2px; }
-    .night-stay-label { font-size: 0.75rem; color: #aaa; text-transform: uppercase; font-weight: 700; }
-    .night-stay-name { font-weight: 600; color: var(--primary-dark); font-size: 0.95rem; }
+    .stay .k{font-size:11px;letter-spacing:1.5px;text-transform:uppercase;font-weight:900;color:rgba(0,0,0,.35)}
+    .stay .n{font-size:14px;font-weight:900;color:rgba(18,30,45,.90);letter-spacing:.2px}
 
-    @media (max-width: 600px) {
-      .dashboard-grid { grid-template-columns: 1fr; }
-      .header-title { font-size: 2.5rem; }
-      .container { padding: 0 15px 60px; }
-      summary.day-header { padding: 14px 14px; }
-      .day-body { padding: 16px 14px 20px; }
+    /* Hotels blocks */
+    .hotel-block{
+      background:#fff;border:1px solid rgba(0,0,0,.08);border-radius:14px;
+      padding:14px;
+    }
+    .badge{display:inline-block;font-size:12px;font-weight:900;letter-spacing:.7px;background:rgba(0,0,0,.04);padding:3px 9px;border-radius:10px;color:rgba(18,30,45,.80)}
+    .hname{margin:8px 0 6px;font-family:var(--serif);font-weight:900;color:var(--ink);font-size:18px}
+    .meta{font-size:13px;color:rgba(0,0,0,.55);line-height:1.65}
+
+    /* Notes page */
+    .notes-grid{display:grid;grid-template-columns:1fr 1fr;gap:12px}
+    .note-card{background:#fff;border:1px solid rgba(0,0,0,.08);border-radius:14px;padding:14px}
+    .note-ttl{font-weight:900;color:rgba(18,30,45,.92);margin-bottom:8px}
+    .note-list{margin:0;padding-left:18px;color:rgba(0,0,0,.62);font-size:14px}
+    .note-list li{margin:8px 0}
+    .note-list b{color:rgba(18,30,45,.88);font-weight:900}
+    .footer-quote{
+      margin-top: 14px;
+      padding: 16px 16px;
+      border-radius: 14px;
+      border: 1px solid rgba(197,164,126,.30);
+      background: rgba(197,164,126,.07);
+      color: rgba(18,30,45,.72);
+      font-family: var(--serif);
+      letter-spacing: .2px;
+    }
+
+    /* Page animation */
+    .page{animation: fadeSlideIn .25s ease both}
+    @keyframes fadeSlideIn{
+      from{opacity:0;transform:translateX(14px)}
+      to{opacity:1;transform:translateX(0)}
+    }
+
+    @media (max-width:720px){
+      .cover-title{font-size:38px}
+      .wrap{transform:translateY(-22px)}
+      .mini-grid{grid-template-columns:1fr}
+      .notes-grid{grid-template-columns:1fr}
     }
   </style>
 </head>
 
 <body>
   <header>
-    <div class="header-subtitle">Travel Itinerary</div>
-    <h1 class="header-title">BUSAN 2026</h1>
-    <div class="header-date">Jan 23 — Jan 28, Winter Escape</div>
+    <div class="cover-kicker">Travel Itinerary</div>
+    <h1 class="cover-title">BUSAN 2026</h1>
+    <div class="cover-sub">Jan 23 — Jan 28 · Winter Escape</div>
   </header>
 
-  <div class="container">
-
-    <!-- Dashboard -->
-    <div class="dashboard-grid">
-      <div class="widget">
-        <div class="widget-label">💰 Currency Converter</div>
-
-        <div class="exchange-row">
-          <input type="number" id="krwInput" class="exchange-input" placeholder="KRW" oninput="convertCurrency()" />
-          <span class="exchange-unit">₩</span>
-        </div>
-
-        <div class="exchange-row" style="border:none; margin:0;">
-          <input type="text" id="twdOutput" class="exchange-input" placeholder="TWD" readonly style="color:var(--accent-gold);" />
-          <span class="exchange-unit">$</span>
-        </div>
-
-        <div class="rate-hint">
-          1 TWD ≈
-          <input type="number" id="rateInput" value="41.5" step="0.1" oninput="convertCurrency()" />
-          KRW
-        </div>
-      </div>
-
-      <div class="widget">
-        <div class="widget-label">✈️ Flight Information</div>
-
-        <div class="flight-row">
-          <div style="display:flex; align-items:center;">
-            <span class="flight-icon">🛫</span>
-            <div>
-              <span class="flight-date">1/23 FRI</span>
-              <span class="flight-code">BX 796</span>
-            </div>
-          </div>
-          <div style="text-align:right;">
-            <span class="flight-time">15:00 - 18:25</span>
-            <span class="flight-route">KHH ➔ PUS</span>
-          </div>
-        </div>
-
-        <div style="border-bottom:1px dashed #eee; margin:10px 0;"></div>
-
-        <div class="flight-row">
-          <div style="display:flex; align-items:center;">
-            <span class="flight-icon">🛬</span>
-            <div>
-              <span class="flight-date">1/28 WED</span>
-              <span class="flight-code">BX 795</span>
-            </div>
-          </div>
-          <div style="text-align:right;">
-            <span class="flight-time">12:00 - 14:00</span>
-            <span class="flight-route">PUS ➔ KHH</span>
-          </div>
-        </div>
-      </div>
+  <!-- Tabs -->
+  <nav class="tabs">
+    <div class="tabs-inner">
+      <button class="tab" data-page="overview">✨ Overview</button>
+      <button class="tab" data-page="d1">Day 01</button>
+      <button class="tab" data-page="d2">Day 02</button>
+      <button class="tab" data-page="d3">Day 03</button>
+      <button class="tab" data-page="d4">Day 04</button>
+      <button class="tab" data-page="d5">Day 05</button>
+      <button class="tab" data-page="d6">Day 06</button>
+      <button class="tab" data-page="notes">🇰🇷 Notes</button>
     </div>
+  </nav>
 
-    <!-- Hotels -->
-    <div class="hotel-summary-card">
-      <div class="hotel-row">
-        <div class="hotel-info">
-          <span class="hotel-date-badge">1/23 - 1/26 (3 Nights)</span>
-          <h4>Shilla Stay Haeundae</h4>
-          <span>海雲台舒羅亞飯店 ｜ Check-out 12:00</span>
-          <span>ADD:부산 해운대구 해운대로570번길 46 (우)48093 (우동 629-6)</span>
-          <span>TEL:051-912-9000</span>
-        </div>
-        <div class="action-buttons">
-          <button class="btn btn-naver" type="button" onclick="openNaver('신라스테이 해운대')">App 導航</button>
-          <a class="btn btn-google" href="https://www.google.com/maps/search/?api=1&query=Shilla+Stay+Haeundae" target="_blank" rel="noopener">Google</a>
-        </div>
-      </div>
+  <main class="wrap">
 
-      <div class="hotel-row" style="background:#fafafa;">
-        <div class="hotel-info">
-          <span class="hotel-date-badge">1/26 - 1/28 (2 Nights)</span>
-          <h4>Hotel Foret Premier Nampo</h4>
-          <span>南浦森林頂級飯店 ｜ Check-out 11:00</span>
-          <span>ADD:부산 중구 구덕로 54-1 4층 ( 남포동5가 8-1 )</span>
-          <span>TEL:051-242-2200</span>
+    <!-- Overview -->
+    <section class="page card active" id="overview">
+      <div class="pad">
+        <div class="section-title">
+          <h2>Overview</h2><div class="hint">Essentials</div>
         </div>
-        <div class="action-buttons">
-          <button class="btn btn-naver" type="button" onclick="openNaver('호텔포레 프리미어 남포')">App 導航</button>
-          <a class="btn btn-google" href="https://www.google.com/maps/search/?api=1&query=Hotel+Foret+Premier+Nampo" target="_blank" rel="noopener">Google</a>
-        </div>
-      </div>
-    </div>
 
-    <!-- Day 01 -->
-    <details class="day-section" open>
-      <summary class="day-header">
-        <div class="day-left">
-          <span class="day-number">Day 01</span>
-          <span class="day-date">Jan 23 ‧ Fri</span>
-        </div>
-        <span class="day-toggle"><span class="chev">⌃</span> 展開 / 收合</span>
-      </summary>
-      <div class="day-body">
-        <div class="timeline">
-          <div class="event-item">
-            <span class="event-time">18:25</span>
-            <div class="event-title">抵達金海國際機場</div>
-            <div class="event-desc">入境後，直接搭乘計程車前往海雲台 (約50分鐘)。</div>
-            <div class="action-buttons">
-              <button class="btn btn-naver" type="button" onclick="openNaver('김해국제공항')">App 導航</button>
-              <a class="btn btn-google" href="https://www.google.com/maps/search/?api=1&query=Gimhae+International+Airport" target="_blank" rel="noopener">Google</a>
+        <div class="vibe"><b>Quick note</b>：請記得攜帶護照！</div>
+
+        <!-- 可選：總覽插圖（你自己做） -->
+        <!--
+        <figure class="illus">
+          <img src="images/overview.jpg" alt="Overview Illustration">
+          <figcaption>Cover Illustration · Busan Winter</figcaption>
+        </figure>
+        -->
+
+        <div class="mini-grid">
+          <!-- Currency -->
+          <div class="mini">
+            <div class="top">💰 Currency Converter <span class="pill">KRW → TWD</span></div>
+            <div class="body">
+              <div style="display:flex;gap:10px;align-items:center;flex-wrap:wrap">
+                <input type="number" id="krwInput" placeholder="KRW" oninput="convertCurrency()"
+                  style="flex:1;min-width:160px;padding:10px 12px;border-radius:12px;border:1px solid rgba(0,0,0,.12);font-size:16px;font-weight:800">
+                <span style="font-weight:900;color:rgba(0,0,0,.45)">→</span>
+                <input type="text" id="twdOutput" placeholder="TWD" readonly
+                  style="flex:1;min-width:160px;padding:10px 12px;border-radius:12px;border:1px solid rgba(197,164,126,.35);font-size:16px;font-weight:900;color:rgba(197,164,126,.95)">
+              </div>
+              <div style="margin-top:10px;color:rgba(0,0,0,.50);font-size:12px;text-align:right">
+                1 TWD ≈
+                <input type="number" id="rateInput" value="41.5" step="0.1" oninput="convertCurrency()"
+                  style="width:64px;text-align:center;padding:6px 8px;border-radius:10px;border:1px solid rgba(0,0,0,.12);font-weight:900">
+                KRW
+              </div>
             </div>
           </div>
 
-          <div class="event-item highlight">
-            <span class="event-time">20:45</span>
-            <div class="event-title">海雲台傳統市場</div>
-            <div class="event-desc">飯店對面宵夜場：盲鰻、糖餅、辣炒年糕。</div>
-            <div class="action-buttons">
-              <button class="btn btn-naver" type="button" onclick="openNaver('해운대전통시장')">App 導航</button>
-              <a class="btn btn-google" href="https://www.google.com/maps/search/?api=1&query=Haeundae+Traditional+Market" target="_blank" rel="noopener">Google</a>
-            </div>
-          </div>
+          <!-- Flights -->
+          <div class="mini">
+            <div class="top">✈️ Flight Information <span class="pill">BX</span></div>
+            <div class="body">
+              <div style="display:flex;justify-content:space-between;gap:12px;flex-wrap:wrap">
+                <div>
+                  <div style="color:rgba(197,164,126,.95);font-weight:900;font-size:12px;letter-spacing:1px">1/23 FRI</div>
+                  <div style="font-family:var(--mono);font-weight:900;font-size:12px;color:rgba(0,0,0,.58);background:rgba(0,0,0,.04);display:inline-block;padding:2px 7px;border-radius:10px;margin-top:4px">BX 796</div>
+                </div>
+                <div style="text-align:right">
+                  <div style="font-weight:900;color:rgba(18,30,45,.92);font-size:16px">15:00 - 18:25</div>
+                  <div style="color:rgba(0,0,0,.45);font-size:12px;letter-spacing:1px">KHH ➔ PUS</div>
+                </div>
+              </div>
 
-          <div class="night-stay">
-            <div class="night-stay-left">
-              <span class="night-stay-label">Stay</span>
-              <span class="night-stay-name">Shilla Stay Haeundae</span>
-            </div>
-            <div class="action-buttons">
-              <button class="btn btn-naver" type="button" onclick="openNaver('신라스테이 해운대')">App 導航</button>
-              <a class="btn btn-google" href="https://www.google.com/maps/search/?api=1&query=Shilla+Stay+Haeundae" target="_blank" rel="noopener">Google</a>
+              <div style="border-top:1px dashed rgba(0,0,0,.12);margin:12px 0"></div>
+
+              <div style="display:flex;justify-content:space-between;gap:12px;flex-wrap:wrap">
+                <div>
+                  <div style="color:rgba(197,164,126,.95);font-weight:900;font-size:12px;letter-spacing:1px">1/28 WED</div>
+                  <div style="font-family:var(--mono);font-weight:900;font-size:12px;color:rgba(0,0,0,.58);background:rgba(0,0,0,.04);display:inline-block;padding:2px 7px;border-radius:10px;margin-top:4px">BX 795</div>
+                </div>
+                <div style="text-align:right">
+                  <div style="font-weight:900;color:rgba(18,30,45,.92);font-size:16px">12:00 - 14:00</div>
+                  <div style="color:rgba(0,0,0,.45);font-size:12px;letter-spacing:1px">PUS ➔ KHH</div>
+                </div>
+              </div>
             </div>
           </div>
         </div>
-      </div>
-    </details>
-
-    <!-- Day 02 -->
-    <details class="day-section" open>
-      <summary class="day-header">
-        <div class="day-left">
-          <span class="day-number">Day 02</span>
-          <span class="day-date">Jan 24 ‧ Sat</span>
-        </div>
-        <span class="day-toggle"><span class="chev">⌃</span> 展開 / 收合</span>
-      </summary>
-      <div class="day-body">
-        <div class="timeline">
-          <div class="event-item highlight">
-            <span class="event-time">09:30 (RSVP)</span>
-            <div class="event-title">海雲台藍線公園 (尾浦站)</div>
-            <div class="event-desc">搭乘天空膠囊列車往「青沙浦」，早晨光線最美。</div>
-            <div class="action-buttons">
-              <button class="btn btn-naver" type="button" onclick="openNaver('해운대블루라인파크 미포정거장')">App 導航</button>
-              <a class="btn btn-google" href="https://www.google.com/maps/search/?api=1&query=Haeundae+Blue+Line+Park+Mipo+Station" target="_blank" rel="noopener">Google</a>
-            </div>
-          </div>
-
-          <div class="event-item">
-            <span class="event-time">10:10</span>
-            <div class="event-title">青沙浦散策</div>
-            <div class="event-desc">踏石觀景台、灌籃高手平交道拍照。</div>
-            <div class="action-buttons">
-              <button class="btn btn-naver" type="button" onclick="openNaver('청사포')">App 導航</button>
-              <a class="btn btn-google" href="https://www.google.com/maps/search/?api=1&query=Cheongsapo" target="_blank" rel="noopener">Google</a>
-            </div>
-          </div>
-
-          <div class="event-item highlight">
-            <span class="event-time">13:30</span>
-            <div class="event-title">ClubD Oasis (LCT)</div>
-            <div class="event-desc">頂級汗蒸幕與無邊際水上樂園。</div>
-            <div class="note-bubble">請記得攜帶泳衣</div>
-            <div class="action-buttons">
-              <button class="btn btn-naver" type="button" onclick="openNaver('클럽디 오아시스')">App 導航</button>
-              <a class="btn btn-google" href="https://www.google.com/maps/search/?api=1&query=ClubD+Oasis" target="_blank" rel="noopener">Google</a>
-            </div>
-          </div>
-
-          <div class="event-item highlight">
-            <span class="event-time">19:00</span>
-            <div class="event-title">廣安里 M 無人機燈光秀</div>
-            <div class="event-desc">週六限定，建議提早卡位 19:00 場次。</div>
-            <div class="action-buttons">
-              <button class="btn btn-naver" type="button" onclick="openNaver('광안리해수욕장')">App 導航</button>
-              <a class="btn btn-google" href="https://www.google.com/maps/search/?api=1&query=Gwangalli+Beach" target="_blank" rel="noopener">Google</a>
-            </div>
-          </div>
-
-          <div class="night-stay">
-            <div class="night-stay-left">
-              <span class="night-stay-label">Stay</span>
-              <span class="night-stay-name">Shilla Stay Haeundae</span>
-            </div>
-            <div class="action-buttons">
-              <button class="btn btn-naver" type="button" onclick="openNaver('신라스테이 해운대')">App 導航</button>
-              <a class="btn btn-google" href="https://www.google.com/maps/search/?api=1&query=Shilla+Stay+Haeundae" target="_blank" rel="noopener">Google</a>
-            </div>
-          </div>
-        </div>
-      </div>
-    </details>
-
-    <!-- Day 03 -->
-    <details class="day-section" open>
-      <summary class="day-header">
-        <div class="day-left">
-          <span class="day-number">Day 03</span>
-          <span class="day-date">Jan 25 ‧ Sun</span>
-        </div>
-        <span class="day-toggle"><span class="chev">⌃</span> 展開 / 收合</span>
-      </summary>
-      <div class="day-body">
-        <div class="timeline">
-          <div class="event-item">
-            <span class="event-time">10:00</span>
-            <div class="event-title">Skyline Luge 釜山斜坡滑車</div>
-            <div class="event-desc">享受飆速快感，建議購買 3-5 次券。</div>
-            <div class="action-buttons">
-              <button class="btn btn-naver" type="button" onclick="openNaver('스카이라인루지 부산')">App 導航</button>
-              <a class="btn btn-google" href="https://www.google.com/maps/search/?api=1&query=Skyline+Luge+Busan" target="_blank" rel="noopener">Google</a>
-            </div>
-          </div>
-
-          <div class="event-item highlight">
-            <span class="event-time">13:30</span>
-            <div class="event-title">釜山樂天世界冒險樂園</div>
-            <div class="event-desc">遊玩設施，欣賞花車遊行與城堡夜景。</div>
-            <div class="action-buttons">
-              <button class="btn btn-naver" type="button" onclick="openNaver('롯데월드 어드벤처 부산')">App 導航</button>
-              <a class="btn btn-google" href="https://www.google.com/maps/search/?api=1&query=Lotte+World+Adventure+Busan" target="_blank" rel="noopener">Google</a>
-            </div>
-          </div>
-
-          <div class="night-stay">
-            <div class="night-stay-left">
-              <span class="night-stay-label">Stay</span>
-              <span class="night-stay-name">Shilla Stay Haeundae</span>
-            </div>
-            <div class="action-buttons">
-              <button class="btn btn-naver" type="button" onclick="openNaver('신라스테이 해운대')">App 導航</button>
-              <a class="btn btn-google" href="https://www.google.com/maps/search/?api=1&query=Shilla+Stay+Haeundae" target="_blank" rel="noopener">Google</a>
-            </div>
-          </div>
-        </div>
-      </div>
-    </details>
-
-    <!-- Day 04 -->
-    <details class="day-section" open>
-      <summary class="day-header">
-        <div class="day-left">
-          <span class="day-number">Day 04</span>
-          <span class="day-date">Jan 26 ‧ Mon</span>
-        </div>
-        <span class="day-toggle"><span class="chev">⌃</span> 展開 / 收合</span>
-      </summary>
-      <div class="day-body">
-        <div class="timeline">
-          <div class="event-item">
-            <span class="event-time">12:00</span>
-            <div class="event-title">飯店移動日</div>
-            <div class="event-desc">退房，搭計程車前往南浦洞飯店寄放行李。</div>
-          </div>
-
-          <div class="event-item">
-            <span class="event-time">13:30</span>
-            <div class="event-title">影島 白淺灘文化村</div>
-            <div class="event-desc">絕影海岸散步路，海景咖啡廳休息。</div>
-            <div class="action-buttons">
-              <button class="btn btn-naver" type="button" onclick="openNaver('흰여울문화마을')">App 導航</button>
-              <a class="btn btn-google" href="https://www.google.com/maps/search/?api=1&query=Huinnyeoul+Culture+Village" target="_blank" rel="noopener">Google</a>
-            </div>
-          </div>
-
-          <div class="event-item">
-            <span class="event-time">16:30</span>
-            <div class="event-title">樂天百貨 光復店</div>
-            <div class="event-desc">前往頂樓觀景台，俯瞰釜山港與影島大橋。</div>
-            <div class="action-buttons">
-              <button class="btn btn-naver" type="button" onclick="openNaver('롯데백화점 광복점')">App 導航</button>
-              <a class="btn btn-google" href="https://www.google.com/maps/search/?api=1&query=Lotte+Department+Store+Gwangbok" target="_blank" rel="noopener">Google</a>
-            </div>
-          </div>
-
-          <div class="event-item highlight">
-            <span class="event-time">18:00</span>
-            <div class="event-title">札嘎其市場</div>
-            <div class="event-desc">晚餐首選：新鮮海鮮料理。</div>
-            <div class="action-buttons">
-              <button class="btn btn-naver" type="button" onclick="openNaver('자갈치시장')">App 導航</button>
-              <a class="btn btn-google" href="https://www.google.com/maps/search/?api=1&query=Jagalchi+Market" target="_blank" rel="noopener">Google</a>
-            </div>
-          </div>
-
-          <div class="night-stay">
-            <div class="night-stay-left">
-              <span class="night-stay-label">Stay</span>
-              <span class="night-stay-name">Hotel Foret Premier Nampo</span>
-            </div>
-            <div class="action-buttons">
-              <button class="btn btn-naver" type="button" onclick="openNaver('호텔포레 프리미어 남포')">App 導航</button>
-              <a class="btn btn-google" href="https://www.google.com/maps/search/?api=1&query=Hotel+Foret+Premier+Nampo" target="_blank" rel="noopener">Google</a>
-            </div>
-          </div>
-        </div>
-      </div>
-    </details>
-
-    <!-- Day 05 -->
-    <details class="day-section" open>
-      <summary class="day-header">
-        <div class="day-left">
-          <span class="day-number">Day 05</span>
-          <span class="day-date">Jan 27 ‧ Tue</span>
-        </div>
-        <span class="day-toggle"><span class="chev">⌃</span> 展開 / 收合</span>
-      </summary>
-      <div class="day-body">
-        <div class="timeline">
-          <div class="event-item">
-            <span class="event-time">10:00</span>
-            <div class="event-title">甘川洞文化村</div>
-            <div class="event-desc">尋找小王子，漫步彩色房子巷弄。</div>
-            <div class="action-buttons">
-              <button class="btn btn-naver" type="button" onclick="openNaver('감천문화마을')">App 導航</button>
-              <a class="btn btn-google" href="https://www.google.com/maps/search/?api=1&query=Gamcheon+Culture+Village" target="_blank" rel="noopener">Google</a>
-            </div>
-          </div>
-
-          <div class="event-item highlight">
-            <span class="event-time">14:00</span>
-            <div class="event-title">BIFF 廣場 / 國際市場</div>
-            <div class="event-desc">深度逛街：街頭小吃、古著、生活雜貨。</div>
-            <div class="action-buttons">
-              <button class="btn btn-naver" type="button" onclick="openNaver('BIFF 거리')">App 導航</button>
-              <a class="btn btn-google" href="https://www.google.com/maps/search/?api=1&query=BIFF+Square" target="_blank" rel="noopener">Google</a>
-            </div>
-          </div>
-
-          <div class="event-item">
-            <span class="event-time">17:00</span>
-            <div class="event-title">龍頭山公園 (釜山塔)</div>
-            <div class="event-desc">欣賞城市日落。</div>
-            <div class="action-buttons">
-              <button class="btn btn-naver" type="button" onclick="openNaver('용두산공원')">App 導航</button>
-              <a class="btn btn-google" href="https://www.google.com/maps/search/?api=1&query=Yongdusan+Park" target="_blank" rel="noopener">Google</a>
-            </div>
-          </div>
-
-          <div class="event-item highlight">
-            <span class="event-time">20:00</span>
-            <div class="event-title">樂天超市 (光復店)</div>
-            <div class="event-desc">最後採買機會，買齊伴手禮與零食。</div>
-            <div class="action-buttons">
-              <button class="btn btn-naver" type="button" onclick="openNaver('롯데마트 광복점')">App 導航</button>
-              <a class="btn btn-google" href="https://www.google.com/maps/search/?api=1&query=Lotte+Mart+Gwangbok" target="_blank" rel="noopener">Google</a>
-            </div>
-          </div>
-
-          <div class="night-stay">
-            <div class="night-stay-left">
-              <span class="night-stay-label">Stay</span>
-              <span class="night-stay-name">Hotel Foret Premier Nampo</span>
-            </div>
-            <div class="action-buttons">
-              <button class="btn btn-naver" type="button" onclick="openNaver('호텔포레 프리미어 남포')">App 導航</button>
-              <a class="btn btn-google" href="https://www.google.com/maps/search/?api=1&query=Hotel+Foret+Premier+Nampo" target="_blank" rel="noopener">Google</a>
-            </div>
-          </div>
-        </div>
-      </div>
-    </details>
-
-    <!-- Day 06 -->
-    <details class="day-section" open>
-      <summary class="day-header">
-        <div class="day-left">
-          <span class="day-number">Day 06</span>
-          <span class="day-date">Jan 28 ‧ Wed</span>
-        </div>
-        <span class="day-toggle"><span class="chev">⌃</span> 展開 / 收合</span>
-      </summary>
-      <div class="day-body">
-        <div class="timeline">
-          <div class="event-item">
-            <span class="event-time">09:30</span>
-            <div class="event-title">前往金海機場 (PUS)</div>
-            <div class="event-desc">從南浦洞搭計程車出發，預留 40 分鐘車程。</div>
-            <div class="action-buttons">
-              <button class="btn btn-naver" type="button" onclick="openNaver('김해국제공항')">App 導航</button>
-              <a class="btn btn-google" href="https://www.google.com/maps/search/?api=1&query=Gimhae+International+Airport" target="_blank" rel="noopener">Google</a>
-            </div>
-          </div>
-
-          <div class="event-item">
-            <span class="event-time">12:00</span>
-            <div class="event-title">搭機返台</div>
-            <div class="event-desc">釜山航空 BX 795 ➝ 高雄 (KHH)。</div>
-          </div>
-        </div>
-      </div>
-    </details>
-
+<!-- Overview · Hotels Summary -->
+<div style="margin-top:22px">
+  <div class="section-title">
+    <h2>Hotels</h2>
+    <div class="hint">Where we stay</div>
   </div>
 
+  <div class="hotel-block">
+    <span class="badge">1/23 - 1/26 · 3 Nights</span>
+          <div class="hname">Shilla Stay Haeundae</div>
+          <div class="meta">
+            海雲台舒羅亞飯店 ｜ Check-out 12:00<br>
+            ADD: 부산 해운대구 해운대로570번길 46 (우)48093 (우동 629-6)<br>
+            TEL: 051-912-9000
+          </div>
+          <div class="actions">
+            <button class="btn btn-naver" type="button" onclick="openNaver('신라스테이 해운대')">🧭 App 導航</button>
+            <a class="btn btn-google" href="https://www.google.com/maps/search/?api=1&query=Shilla+Stay+Haeundae" target="_blank" rel="noopener">🗺 Google</a>
+          </div>
+        </div>
+
+  <div style="height:12px"></div>
+
+  <div class="hotel-block" style="background:rgba(0,0,0,.012)">
+    <span class="badge">1/26 - 1/28 · 2 Nights</span>
+          <div class="hname">Hotel Foret Premier Nampo</div>
+          <div class="meta">
+            南浦森林頂級飯店 ｜ Check-out 11:00<br>
+            ADD: 부산 중구 구덕로 54-1 4층 ( 남포동5가 8-1 )<br>
+            TEL: 051-242-2200
+          </div>
+          <div class="actions">
+            <button class="btn btn-naver" type="button" onclick="openNaver('호텔포레 프리미어 남포')">🧭 App 導航</button>
+            <a class="btn btn-google" href="https://www.google.com/maps/search/?api=1&query=Hotel+Foret+Premier+Nampo" target="_blank" rel="noopener">🗺 Google</a>
+          </div>
+        </div>
+</div>
+      </div>
+    </section>
+
+    <!-- Day 01 -->
+    <section class="page card" id="d1">
+      <div class="pad">
+        <div class="section-title"><h2>Day 01</h2><div class="hint">Jan 23 · Fri</div></div>
+
+        <!-- 你自己的插圖：把檔案放 images/day01-cover.jpg -->
+        <figure class="illus">
+          <img src="images/day01-cover.jpg" alt="Day 01 Illustration">
+          <figcaption>Day 01 · Arrival Night</figcaption>
+        </figure>
+
+        <div class="vibe"><b>Night vibe</b>：風是冷的，但城市的燈很溫柔——先把自己安頓好。</div>
+
+        <div class="timeline">
+          <div class="event">
+            <span class="time">18:25</span>
+            <div class="title">抵達金海國際機場</div>
+            <div class="desc">入境後，直接搭乘計程車前往海雲台（約 50 分鐘）。</div>
+            <div class="actions">
+              <button class="btn btn-naver" type="button" onclick="openNaver('김해국제공항')">🧭 App 導航</button>
+            </div>
+          </div>
+
+          <div class="event hl">
+            <span class="time">20:45</span>
+            <div class="title">海雲台傳統市場</div>
+            <div class="desc">飯店對面宵夜場：盲鰻、糖餅、辣炒年糕。</div>
+            <div class="actions">
+              <button class="btn btn-naver" type="button" onclick="openNaver('해운대전통시장')">🧭 App 導航</button>
+              <a class="btn btn-google" href="https://www.google.com/maps/search/?api=1&query=Haeundae+Traditional+Market" target="_blank" rel="noopener">🗺 Google</a>
+            </div>
+          </div>
+
+          <div class="stay">
+            <div>
+              <div class="k">Stay</div>
+              <div class="n">Shilla Stay Haeundae</div>
+            </div>
+            <div class="actions">
+              <button class="btn btn-naver" type="button" onclick="openNaver('신라스테이 해운대')">🧭 App 導航</button>
+              <a class="btn btn-google" href="https://www.google.com/maps/search/?api=1&query=Shilla+Stay+Haeundae" target="_blank" rel="noopener">🗺 Google</a>
+            </div>
+          </div>
+
+        </div>
+      </div>
+    </section>
+
+    <!-- Day 02 -->
+    <section class="page card" id="d2">
+      <div class="pad">
+        <div class="section-title"><h2>Day 02</h2><div class="hint">Jan 24 · Sat</div></div>
+
+        <figure class="illus">
+          <img src="images/day02-cover.jpg" alt="Day 02 Illustration">
+          <figcaption>Day 02 · Sea & Light</figcaption>
+        </figure>
+
+        <div class="vibe"><b>Morning vibe</b>：早上的光線最奢侈——把最美的留給天空膠囊。</div>
+
+        <div class="timeline">
+          <div class="event hl">
+            <span class="time">09:30 (RSVP)</span>
+            <div class="title">海雲台藍線公園（尾浦站）</div>
+            <div class="desc">搭乘天空膠囊列車往「青沙浦」，早晨光線最美。</div>
+            <div class="actions">
+              <button class="btn btn-naver" type="button" onclick="openNaver('해운대블루라인파크 미포정거장')">🧭 App 導航</button>
+              <a class="btn btn-google" href="https://www.google.com/maps/search/?api=1&query=Haeundae+Blue+Line+Park+Mipo+Station" target="_blank" rel="noopener">🗺 Google</a>
+            </div>
+          </div>
+
+          <div class="event">
+            <span class="time">10:10</span>
+            <div class="title">青沙浦散策</div>
+            <div class="desc">踏石觀景台、灌籃高手平交道拍照。</div>
+            <div class="actions">
+              <button class="btn btn-naver" type="button" onclick="openNaver('청사포')">🧭 App 導航</button>
+              <a class="btn btn-google" href="https://www.google.com/maps/search/?api=1&query=Cheongsapo" target="_blank" rel="noopener">🗺 Google</a>
+            </div>
+          </div>
+
+          <div class="event hl">
+            <span class="time">13:30</span>
+            <div class="title">ClubD Oasis (LCT)</div>
+            <div class="desc">頂級汗蒸幕與無邊際水上樂園。</div>
+            <div class="note">請記得攜帶泳衣</div>
+            <div class="actions">
+              <button class="btn btn-naver" type="button" onclick="openNaver('클럽디 오아시스')">🧭 App 導航</button>
+              <a class="btn btn-google" href="https://www.google.com/maps/search/?api=1&query=ClubD+Oasis" target="_blank" rel="noopener">🗺 Google</a>
+            </div>
+          </div>
+
+          <div class="event hl">
+            <span class="time">19:00</span>
+            <div class="title">廣安里 M 無人機燈光秀</div>
+            <div class="desc">週六限定，建議提早卡位 19:00 場次。</div>
+            <div class="actions">
+              <button class="btn btn-naver" type="button" onclick="openNaver('광안리해수욕장')">🧭 App 導航</button>
+              <a class="btn btn-google" href="https://www.google.com/maps/search/?api=1&query=Gwangalli+Beach" target="_blank" rel="noopener">🗺 Google</a>
+            </div>
+          </div>
+
+          <div class="stay">
+            <div>
+              <div class="k">Stay</div>
+              <div class="n">Shilla Stay Haeundae</div>
+            </div>
+            <div class="actions">
+              <button class="btn btn-naver" type="button" onclick="openNaver('신라스테이 해운대')">🧭 App 導航</button>
+              <a class="btn btn-google" href="https://www.google.com/maps/search/?api=1&query=Shilla+Stay+Haeundae" target="_blank" rel="noopener">🗺 Google</a>
+            </div>
+          </div>
+
+        </div>
+      </div>
+    </section>
+
+    <!-- Day 03 -->
+    <section class="page card" id="d3">
+      <div class="pad">
+        <div class="section-title"><h2>Day 03</h2><div class="hint">Jan 25 · Sun</div></div>
+
+        <figure class="illus">
+          <img src="images/day03-cover.jpg" alt="Day 03 Illustration">
+          <figcaption>Day 03 · Fun & Ride</figcaption>
+        </figure>
+
+        <div class="vibe"><b>Day vibe</b>：今天不需要太精準——只要玩得剛好。</div>
+
+        <div class="timeline">
+          <div class="event">
+            <span class="time">10:00</span>
+            <div class="title">Skyline Luge 釜山斜坡滑車</div>
+            <div class="desc">享受飆速快感，建議購買 3-5 次券。</div>
+            <div class="actions">
+              <button class="btn btn-naver" type="button" onclick="openNaver('스카이라인루지 부산')">🧭 App 導航</button>
+              <a class="btn btn-google" href="https://www.google.com/maps/search/?api=1&query=Skyline+Luge+Busan" target="_blank" rel="noopener">🗺 Google</a>
+            </div>
+          </div>
+
+          <div class="event hl">
+            <span class="time">13:30</span>
+            <div class="title">釜山樂天世界冒險樂園</div>
+            <div class="desc">遊玩設施，欣賞花車遊行與城堡夜景。</div>
+            <div class="actions">
+              <button class="btn btn-naver" type="button" onclick="openNaver('롯데월드 어드벤처 부산')">🧭 App 導航</button>
+              <a class="btn btn-google" href="https://www.google.com/maps/search/?api=1&query=Lotte+World+Adventure+Busan" target="_blank" rel="noopener">🗺 Google</a>
+            </div>
+          </div>
+
+          <div class="stay">
+            <div>
+              <div class="k">Stay</div>
+              <div class="n">Shilla Stay Haeundae</div>
+            </div>
+            <div class="actions">
+              <button class="btn btn-naver" type="button" onclick="openNaver('신라스테이 해운대')">🧭 App 導航</button>
+              <a class="btn btn-google" href="https://www.google.com/maps/search/?api=1&query=Shilla+Stay+Haeundae" target="_blank" rel="noopener">🗺 Google</a>
+            </div>
+          </div>
+
+        </div>
+      </div>
+    </section>
+
+    <!-- Day 04 -->
+    <section class="page card" id="d4">
+      <div class="pad">
+        <div class="section-title"><h2>Day 04</h2><div class="hint">Jan 26 · Mon</div></div>
+
+        <figure class="illus">
+          <img src="images/day04-cover.jpg" alt="Day 04 Illustration">
+          <figcaption>Day 04 · Move Day</figcaption>
+        </figure>
+
+        <div class="vibe"><b>Afternoon vibe</b>：換一個街區，就像翻到旅行的下一章。</div>
+
+        <div class="timeline">
+          <div class="event">
+            <span class="time">12:00</span>
+            <div class="title">飯店移動日</div>
+            <div class="desc">退房，搭計程車前往南浦洞飯店寄放行李。</div>
+          </div>
+
+          <div class="event">
+            <span class="time">13:30</span>
+            <div class="title">影島 白淺灘文化村</div>
+            <div class="desc">絕影海岸散步路，海景咖啡廳休息。</div>
+            <div class="actions">
+              <button class="btn btn-naver" type="button" onclick="openNaver('흰여울문화마을')">🧭 App 導航</button>
+              <a class="btn btn-google" href="https://www.google.com/maps/search/?api=1&query=Huinnyeoul+Culture+Village" target="_blank" rel="noopener">🗺 Google</a>
+            </div>
+          </div>
+
+          <div class="event">
+            <span class="time">16:30</span>
+            <div class="title">樂天百貨 光復店</div>
+            <div class="desc">前往頂樓觀景台，俯瞰釜山港與影島大橋。</div>
+            <div class="actions">
+              <button class="btn btn-naver" type="button" onclick="openNaver('롯데백화점 광복점')">🧭 App 導航</button>
+              <a class="btn btn-google" href="https://www.google.com/maps/search/?api=1&query=Lotte+Department+Store+Gwangbok" target="_blank" rel="noopener">🗺 Google</a>
+            </div>
+          </div>
+
+          <div class="event hl">
+            <span class="time">18:00</span>
+            <div class="title">札嘎其市場</div>
+            <div class="desc">晚餐首選：新鮮海鮮料理。</div>
+            <div class="actions">
+              <button class="btn btn-naver" type="button" onclick="openNaver('자갈치시장')">🧭 App 導航</button>
+              <a class="btn btn-google" href="https://www.google.com/maps/search/?api=1&query=Jagalchi+Market" target="_blank" rel="noopener">🗺 Google</a>
+            </div>
+          </div>
+
+          <div class="stay">
+            <div>
+              <div class="k">Stay</div>
+              <div class="n">Hotel Foret Premier Nampo</div>
+            </div>
+            <div class="actions">
+              <button class="btn btn-naver" type="button" onclick="openNaver('호텔포레 프리미어 남포')">🧭 App 導航</button>
+              <a class="btn btn-google" href="https://www.google.com/maps/search/?api=1&query=Hotel+Foret+Premier+Nampo" target="_blank" rel="noopener">🗺 Google</a>
+            </div>
+          </div>
+
+        </div>
+      </div>
+    </section>
+
+    <!-- Day 05 -->
+    <section class="page card" id="d5">
+      <div class="pad">
+        <div class="section-title"><h2>Day 05</h2><div class="hint">Jan 27 · Tue</div></div>
+
+        <figure class="illus">
+          <img src="images/day05-cover.jpg" alt="Day 05 Illustration">
+          <figcaption>Day 05 · Streets & Souvenirs</figcaption>
+        </figure>
+
+        <div class="vibe"><b>Street vibe</b>：今天的重點不是「買到什麼」，而是「走過什麼」。</div>
+
+        <div class="timeline">
+          <div class="event">
+            <span class="time">10:00</span>
+            <div class="title">甘川洞文化村</div>
+            <div class="desc">尋找小王子，漫步彩色房子巷弄。</div>
+            <div class="actions">
+              <button class="btn btn-naver" type="button" onclick="openNaver('감천문화마을')">🧭 App 導航</button>
+              <a class="btn btn-google" href="https://www.google.com/maps/search/?api=1&query=Gamcheon+Culture+Village" target="_blank" rel="noopener">🗺 Google</a>
+            </div>
+          </div>
+
+          <div class="event hl">
+            <span class="time">14:00</span>
+            <div class="title">BIFF 廣場 / 國際市場</div>
+            <div class="desc">深度逛街：街頭小吃、古著、生活雜貨。</div>
+            <div class="actions">
+              <button class="btn btn-naver" type="button" onclick="openNaver('BIFF 거리')">🧭 App 導航</button>
+              <a class="btn btn-google" href="https://www.google.com/maps/search/?api=1&query=BIFF+Square" target="_blank" rel="noopener">🗺 Google</a>
+            </div>
+          </div>
+
+          <div class="event">
+            <span class="time">17:00</span>
+            <div class="title">龍頭山公園 (釜山塔)</div>
+            <div class="desc">欣賞城市日落。</div>
+            <div class="actions">
+              <button class="btn btn-naver" type="button" onclick="openNaver('용두산공원')">🧭 App 導航</button>
+              <a class="btn btn-google" href="https://www.google.com/maps/search/?api=1&query=Yongdusan+Park" target="_blank" rel="noopener">🗺 Google</a>
+            </div>
+          </div>
+
+          <div class="event hl">
+            <span class="time">20:00</span>
+            <div class="title">樂天超市 (光復店)</div>
+            <div class="desc">最後採買機會，買齊伴手禮與零食。</div>
+            <div class="actions">
+              <button class="btn btn-naver" type="button" onclick="openNaver('롯데마트 광복점')">🧭 App 導航</button>
+              <a class="btn btn-google" href="https://www.google.com/maps/search/?api=1&query=Lotte+Mart+Gwangbok" target="_blank" rel="noopener">🗺 Google</a>
+            </div>
+          </div>
+
+          <div class="stay">
+            <div>
+              <div class="k">Stay</div>
+              <div class="n">Hotel Foret Premier Nampo</div>
+            </div>
+            <div class="actions">
+              <button class="btn btn-naver" type="button" onclick="openNaver('호텔포레 프리미어 남포')">🧭 App 導航</button>
+              <a class="btn btn-google" href="https://www.google.com/maps/search/?api=1&query=Hotel+Foret+Premier+Nampo" target="_blank" rel="noopener">🗺 Google</a>
+            </div>
+          </div>
+
+        </div>
+      </div>
+    </section>
+
+    <!-- Day 06 -->
+    <section class="page card" id="d6">
+      <div class="pad">
+        <div class="section-title"><h2>Day 06</h2><div class="hint">Jan 28 · Wed</div></div>
+
+        <figure class="illus">
+          <img src="images/day06-cover.jpg" alt="Day 06 Illustration">
+          <figcaption>Day 06 · Homebound</figcaption>
+        </figure>
+
+        <div class="vibe"><b>Morning vibe</b>：把行李拉上拉鍊，也把這趟旅程好好收進心裡。</div>
+
+        <div class="timeline">
+          <div class="event">
+            <span class="time">09:30</span>
+            <div class="title">前往金海機場 (PUS)</div>
+            <div class="desc">從南浦洞搭計程車出發，預留 40 分鐘車程。</div>
+            <div class="actions">
+              <button class="btn btn-naver" type="button" onclick="openNaver('김해국제공항')">🧭 App 導航</button>
+              <a class="btn btn-google" href="https://www.google.com/maps/search/?api=1&query=Gimhae+International+Airport" target="_blank" rel="noopener">🗺 Google</a>
+            </div>
+          </div>
+
+          <div class="event">
+            <span class="time">12:00</span>
+            <div class="title">搭機返台</div>
+            <div class="desc">釜山航空 BX 795 ➝ 高雄 (KHH)。</div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- Notes -->
+    <section class="page card" id="notes">
+      <div class="pad">
+        <div class="section-title"><h2>🇰🇷 Korea Travel Notes</h2><div class="hint">Offline</div></div>
+
+        <div class="vibe"><b>Notes</b>：以下是韓國旅行常見注意事項（離線也能翻）。</div>
+
+        <div class="notes-grid">
+          <div class="note-card">
+            <div class="note-ttl">🚇 交通與移動</div>
+            <ul class="note-list">
+              <li><b>T-money 卡必備</b>：地鐵、公車、便利商店多可用。</li>
+              <li><b>夜間計程車加成</b>：22:00–04:00 可能會更貴。</li>
+              <li><b>Naver Map 更準</b>：導航、轉乘、步行建議以 Naver 為主。</li>
+            </ul>
+          </div>
+
+          <div class="note-card">
+            <div class="note-ttl">🍽 餐廳與飲食</div>
+            <ul class="note-list">
+              <li><b>不一定能分開結帳</b>：多人用餐先講好付款方式。</li>
+              <li><b>小菜可續</b>：需要可說「리필 주세요」。</li>
+              <li><b>熱門店排隊很常見</b>：週末晚餐更明顯。</li>
+            </ul>
+          </div>
+
+          <div class="note-card">
+            <div class="note-ttl">💳 付款與金錢</div>
+            <ul class="note-list">
+              <li><b>信用卡很普及</b>：多數店可刷卡。</li>
+              <li><b>傳統市場備現金</b>：小吃攤可能只收現金。</li>
+              <li><b>不給小費</b>：韓國一般沒有小費文化。</li>
+            </ul>
+          </div>
+
+          <div class="note-card">
+            <div class="note-ttl">❄ 冬季（1 月）</div>
+            <ul class="note-list">
+              <li><b>海邊風大</b>：海雲台、廣安里體感更冷。</li>
+              <li><b>洋蔥式穿搭</b>：發熱衣 → 中層 → 防風外套。</li>
+              <li><b>室內暖氣強</b>：進出溫差大，易忽冷忽熱。</li>
+            </ul>
+          </div>
+
+          <div class="note-card">
+            <div class="note-ttl">📱 必裝 App</div>
+            <ul class="note-list">
+              <li><b>Naver Map</b>：導航、地鐵公車。</li>
+              <li><b>Papago</b>：翻譯自然。</li>
+              <li><b>Kakao T</b>：叫車。</li>
+              <li><b>KakaoMap</b>：備用地圖。</li>
+            </ul>
+          </div>
+
+          <div class="note-card">
+            <div class="note-ttl">🧭 生活小提醒</div>
+            <ul class="note-list">
+              <li><b>垃圾桶少</b>：隨身帶小袋子。</li>
+              <li><b>公共場所安靜</b>：地鐵、電梯避免大聲講電話。</li>
+              <li><b>拍照尊重他人</b>：市場、小店避免把人拍進去。</li>
+            </ul>
+          </div>
+        </div>
+
+        <div class="footer-quote">
+          “In winter, the city shines quieter — and somehow, that’s the most luxurious part.”
+        </div>
+      </div>
+    </section>
+
+  </main>
+
   <script>
-    // 1) 匯率計算
-    function convertCurrency() {
-      var inputField = document.getElementById("krwInput");
-      var rateField  = document.getElementById("rateInput");
+    /* Tabs + hash */
+    const tabs = Array.from(document.querySelectorAll('.tab'));
+    const pages = Array.from(document.querySelectorAll('.page'));
+    function showPage(id){
+      pages.forEach(p => p.classList.toggle('active', p.id === id));
+      tabs.forEach(t => t.classList.toggle('active', t.dataset.page === id));
+      location.hash = id;
 
-      var krw  = parseFloat(inputField.value);
-      var rate = parseFloat(rateField.value);
+      // 回到頂部（各平台都盡量穩）
+      try { window.scrollTo({ top: 0, left: 0, behavior: 'auto' }); }
+      catch(e){ window.scrollTo(0,0); }
+    }
+    tabs.forEach(t => t.addEventListener('click', () => showPage(t.dataset.page)));
 
-      if (!isNaN(krw) && !isNaN(rate) && rate > 0) {
-        var twd = krw / rate;
-        document.getElementById("twdOutput").value = Math.round(twd).toLocaleString('en-US');
-      } else {
+    // 初始頁（支援 #d1）
+    const initial = (location.hash || '#overview').replace('#','');
+    showPage(document.getElementById(initial) ? initial : 'overview');
+
+    /* Currency */
+    function convertCurrency(){
+      const krw = parseFloat(document.getElementById("krwInput").value);
+      const rate = parseFloat(document.getElementById("rateInput").value);
+      if(!isNaN(krw) && !isNaN(rate) && rate > 0){
+        document.getElementById("twdOutput").value = Math.round(krw / rate).toLocaleString('en-US');
+      }else{
         document.getElementById("twdOutput").value = "";
       }
     }
 
-    // 2) Naver Map App 深度連結
-    function openNaver(keyword) {
-      var encodedQuery = encodeURIComponent(keyword);
-      window.location.href = "nmap://search?query=" + encodedQuery + "&appname=BusanTrip2026";
+    /* Naver deep link */
+    function openNaver(keyword){
+      const q = encodeURIComponent(keyword);
+      window.location.href = "nmap://search?query=" + q + "&appname=BusanTrip2026";
     }
+
+    /* Swipe navigation (Day01~Day06 only) */
+    const dayOrder = ['d1','d2','d3','d4','d5','d6'];
+    function currentDayIndex(){
+      const active = document.querySelector('.page.active');
+      if(!active) return -1;
+      return dayOrder.indexOf(active.id);
+    }
+    function swipeTo(dir){
+      const idx = currentDayIndex();
+      if(idx === -1) return;
+      if(dir === 'next' && idx < dayOrder.length - 1) showPage(dayOrder[idx + 1]);
+      if(dir === 'prev' && idx > 0) showPage(dayOrder[idx - 1]);
+    }
+
+    let sx=0, sy=0, ex=0, ey=0;
+    const SWIPE_X = 60;     // 需要滑多一點才換頁
+    const SWIPE_Y = 80;     // 如果垂直滑太多，就當作滾動而不是換頁
+
+    document.addEventListener('touchstart', (e) => {
+      sx = e.changedTouches[0].screenX;
+      sy = e.changedTouches[0].screenY;
+    }, {passive:true});
+
+    document.addEventListener('touchend', (e) => {
+      ex = e.changedTouches[0].screenX;
+      ey = e.changedTouches[0].screenY;
+
+      // 只在 Day 頁生效
+      if(currentDayIndex() === -1) return;
+
+      const dx = ex - sx;
+      const dy = ey - sy;
+
+      // 垂直滑動優先（避免你往下滑時誤觸翻頁）
+      if(Math.abs(dy) > SWIPE_Y) return;
+
+      if(Math.abs(dx) > SWIPE_X){
+        if(dx < 0) swipeTo('next'); // 左滑 → 下一天
+        else swipeTo('prev');       // 右滑 → 前一天
+      }
+    }, {passive:true});
   </script>
 </body>
 </html>
