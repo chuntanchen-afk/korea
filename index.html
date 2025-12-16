@@ -729,8 +729,35 @@
 
   function openNaverDirections(e, lat, lng, title) {
     e.stopPropagation();
-    const name = encodeURIComponent(title || '');
-    const url = `https://map.naver.com/v5/directions/-/${lng},${lat},${name}/-/transit`;
+    const dname = encodeURIComponent(title || '');
+    const appname = encodeURIComponent(location.href);
+
+    const isMobile = /Android|iPhone|iPad|iPod/i.test(navigator.userAgent);
+
+    // ✅ 優先用「NAVER 지도 앱 URL Scheme」：可直接進入「目前位置 → 目的地」導航畫面
+    // 參考：nmap://navigation?dlat=...&dlng=...&dname=...&appname=...
+    if (isMobile) {
+      const nmap = `nmap://navigation?dlat=${lat}&dlng=${lng}&dname=${dname}&appname=${appname}`;
+
+      // Android：用 Intent URL（若未安裝會導到 Play Store）
+      if (/Android/i.test(navigator.userAgent)) {
+        const intent = `intent://navigation?dlat=${lat}&dlng=${lng}&dname=${dname}&appname=${appname}` +
+          `#Intent;scheme=nmap;action=android.intent.action.VIEW;category=android.intent.category.BROWSABLE;package=com.nhn.android.nmap;end`;
+        window.location.href = intent;
+        return;
+      }
+
+      // iOS：直接跳 nmap://，若沒安裝就 fallback 到網頁版
+      const fallback = `https://map.naver.com/v5/directions/-/${lng},${lat},${dname}/-/transit`;
+      window.location.href = nmap;
+      setTimeout(() => {
+        window.location.href = fallback;
+      }, 900);
+      return;
+    }
+
+    // 桌機：開網頁版導覽
+    const url = `https://map.naver.com/v5/directions/-/${lng},${lat},${dname}/-/transit`;
     window.open(url, '_blank');
   }
 
