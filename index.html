@@ -1,390 +1,163 @@
-<!doctype html>
-<html lang="zh-Hant">
+<!DOCTYPE html>
+<html lang="zh-TW">
 <head>
-<meta charset="utf-8"/>
-<meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover"/>
-<title>2026 釜山 6天5夜｜可摺疊 DAY＋Google 地圖＋NAVER 導航</title>
-<style>
-:root{
-  --bg:#0b0f14; --card:#111826; --card2:#0f1723; --text:#e8eef6; --muted:#a8b3c7;
-  --line:#1f2a3d; --chip:#16233a; --accent:#7dd3fc; --accent2:#a78bfa;
-  --ok:#86efac; --warn:#fde047;
-}
-*{box-sizing:border-box}
-body{margin:0;font-family: ui-sans-serif, system-ui, -apple-system, "Noto Sans TC", "PingFang TC", "Microsoft JhengHei", sans-serif;background:radial-gradient(1200px 600px at 20% 0%, #132038 0%, var(--bg) 55%);color:var(--text)}
-a{color:inherit}
-header{position:sticky;top:0;z-index:20;background:linear-gradient(180deg, rgba(11,15,20,.92), rgba(11,15,20,.72));backdrop-filter: blur(10px);border-bottom:1px solid var(--line)}
-.wrap{max-width:1180px;margin:0 auto;padding:14px 16px}
-.topbar{display:flex;gap:12px;align-items:center;justify-content:space-between;flex-wrap:wrap}
-.h1{font-weight:800;letter-spacing:.3px}
-.badges{display:flex;gap:8px;flex-wrap:wrap}
-.badge{padding:6px 10px;border:1px solid var(--line);background:rgba(17,24,38,.65);border-radius:999px;color:var(--muted);font-size:12px}
-.badge strong{color:var(--text)}
-.main{display:grid;grid-template-columns: 1.05fr .95fr;gap:14px;align-items:start}
-@media (max-width: 980px){.main{grid-template-columns:1fr}}
-.panel{background:rgba(17,24,38,.72);border:1px solid var(--line);border-radius:18px;overflow:hidden;box-shadow:0 12px 40px rgba(0,0,0,.35)}
-.panel-hd{padding:14px 14px 10px;border-bottom:1px solid var(--line);display:flex;gap:10px;align-items:center;justify-content:space-between;flex-wrap:wrap}
-.tabs{display:flex;gap:8px}
-.tab{border:1px solid var(--line);background:rgba(15,23,35,.6);color:var(--muted);padding:8px 10px;border-radius:12px;font-size:13px;cursor:pointer;user-select:none}
-.tab.active{background:linear-gradient(135deg, rgba(125,211,252,.18), rgba(167,139,250,.12));color:var(--text);border-color:rgba(125,211,252,.35)}
-.panel-bd{padding:12px 12px 14px}
-.mapWrap{position:sticky;top:74px}
-@media (max-width:980px){.mapWrap{position:relative;top:auto}}
-.mapCard{border-radius:18px;overflow:hidden;border:1px solid var(--line);background:rgba(17,24,38,.72);box-shadow:0 12px 40px rgba(0,0,0,.35)}
-.mapHd{padding:12px 12px 10px;border-bottom:1px solid var(--line);display:flex;gap:10px;align-items:center;justify-content:space-between;flex-wrap:wrap}
-.mapHd .small{font-size:12px;color:var(--muted)}
-.mapTools{display:flex;gap:8px;flex-wrap:wrap}
-.btn{padding:8px 10px;border:1px solid var(--line);border-radius:12px;background:rgba(15,23,35,.6);color:var(--text);cursor:pointer;font-size:13px}
-.btn:hover{border-color:rgba(125,211,252,.35)}
-.iframe{width:100%;height:520px;border:0;display:block;background:#0a0f15}
-@media (max-width:980px){.iframe{height:440px}}
-.fxGrid{display:grid;grid-template-columns:1fr;gap:12px}
-.fxBox{padding:14px;border:1px solid var(--line);border-radius:16px;background:rgba(15,23,35,.6)}
-.fxRow{display:grid;grid-template-columns:1fr 1fr;gap:10px}
-@media (max-width:520px){.fxRow{grid-template-columns:1fr}}
-label{font-size:12px;color:var(--muted)}
-input{width:100%;margin-top:6px;padding:10px 12px;border-radius:12px;border:1px solid var(--line);background:rgba(9,13,19,.75);color:var(--text);outline:none}
-input:focus{border-color:rgba(125,211,252,.45)}
-.kpi{display:flex;gap:10px;flex-wrap:wrap;margin-top:10px}
-.kpi .pill{padding:8px 10px;border-radius:999px;border:1px solid var(--line);background:rgba(22,35,58,.55);font-size:12px;color:var(--muted)}
-.kpi .pill strong{color:var(--text)}
-details{border:1px solid var(--line);border-radius:16px;background:rgba(15,23,35,.55);overflow:hidden}
-details+details{margin-top:10px}
-summary{list-style:none;cursor:pointer;padding:14px 14px;display:flex;gap:10px;align-items:center;justify-content:space-between}
-summary::-webkit-details-marker{display:none}
-.sumL{display:flex;flex-direction:column;gap:2px}
-.sumTitle{font-weight:800}
-.sumSub{font-size:12px;color:var(--muted)}
-.chev{transition:transform .2s ease;opacity:.9}
-details[open] .chev{transform:rotate(180deg)}
-.dayBody{padding:0 12px 12px}
-.flight{margin:10px 0 0;padding:10px 12px;border-radius:14px;background:linear-gradient(135deg, rgba(125,211,252,.14), rgba(167,139,250,.10));border:1px solid rgba(125,211,252,.25);color:var(--text);font-size:13px}
-.stay{margin:10px 0 12px;padding:10px 12px;border-radius:14px;background:rgba(17,24,38,.7);border:1px dashed rgba(168,179,199,.25);color:var(--muted);font-size:13px}
-.item{display:grid;grid-template-columns:92px 1fr;gap:10px;padding:12px;border-radius:16px;border:1px solid rgba(31,42,61,.9);background:rgba(17,24,38,.55)}
-.item+.item{margin-top:10px}
-.time{font-weight:800;color:var(--accent)}
-.title{font-weight:800}
-.desc{margin-top:4px;color:var(--muted);font-size:13px;line-height:1.45}
-.actions{margin-top:8px;display:flex;gap:8px;flex-wrap:wrap}
-.chip{padding:7px 10px;border-radius:999px;border:1px solid var(--line);background:rgba(22,35,58,.55);font-size:12px;color:var(--text);cursor:pointer}
-.chip.secondary{color:var(--muted)}
-.chip:hover{border-color:rgba(125,211,252,.35)}
-.footer{color:var(--muted);font-size:12px;margin:14px 0 0;line-height:1.6}
-.notice{color:var(--muted);font-size:12px}
-</style>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>2026 釜山6天5夜行程表 </title>
+    <style>
+        body { font-family: "Helvetica Neue", Helvetica, Arial, sans-serif; line-height: 1.6; color: #333; max-width: 800px; margin: 0 auto; padding: 20px; background-color: #f4f4f4; }
+        h1 { text-align: center; color: #2c3e50; }
+        .flight-info { background: #fff; padding: 15px; border-radius: 8px; margin-bottom: 20px; box-shadow: 0 2px 4px rgba(0,0,0,0.1); }
+        .day-card { background: #fff; border-radius: 10px; padding: 20px; margin-bottom: 20px; box-shadow: 0 2px 8px rgba(0,0,0,0.1); border-left: 5px solid #3498db; }
+        .day-title { font-size: 1.4em; font-weight: bold; color: #2980b9; margin-bottom: 15px; border-bottom: 1px solid #eee; padding-bottom: 10px; }
+        .event { margin-bottom: 12px; display: flex; flex-direction: column; }
+        .time { font-weight: bold; color: #e67e22; width: 100%; margin-bottom: 4px; }
+        .desc { flex: 1; }
+        /* 導航連結樣式 */
+        a.map-link { 
+            color: #ffffff; 
+            background-color: #03C75A; /* Naver Green */
+            text-decoration: none; 
+            padding: 2px 8px; 
+            border-radius: 4px; 
+            font-size: 0.9em; 
+            font-weight: bold;
+            display: inline-block;
+            margin-left: 5px;
+        }
+        a.map-link:before { content: "📍 "; }
+        a.map-link:hover { background-color: #02b351; }
+        
+        .note { font-size: 0.9em; color: #7f8c8d; background: #f9f9f9; padding: 8px; border-radius: 4px; margin-top: 5px; }
+        .hotel { margin-top: 15px; font-weight: bold; color: #8e44ad; background: #f3e5f5; padding: 10px; border-radius: 5px; }
+    </style>
 </head>
 <body>
-<header>
-  <div class="wrap">
-    <div class="topbar">
-      <div class="h1">2026 釜山 6天5夜｜可摺疊 DAY＋Google 地圖＋NAVER 導航</div>
-      <div class="badges">
-        <div class="badge"><strong>點行程卡片</strong> → 右側 Google 地圖定位</div>
-        <div class="badge"><strong>NAVER 導航</strong>：可直接開 App（若裝置支援）</div>
-        <div class="badge">匯率：<strong>KRW ⇄ TWD</strong></div>
-      </div>
+
+    <h1>2026 釜山 6天5夜 詳細行程表</h1>
+
+    <div class="flight-info">
+        <h3>✈️ 航班資訊</h3>
+        <p><strong>去程 (1/23 五)</strong>：BX 796 高雄 (KHH) 15:00 ➝ <a href="https://map.naver.com/p/search/김해국제공항" class="map-link" target="_blank">釜山 (PUS)</a> 18:25</p>
+        <p><strong>回程 (1/28 三)</strong>：BX 795 <a href="https://map.naver.com/p/search/김해국제공항" class="map-link" target="_blank">釜山 (PUS)</a> 12:00 ➝ 高雄 (KHH) 14:00</p>
     </div>
-  </div>
-</header>
 
-<div class="wrap">
-  <div class="main">
-
-    <section class="panel" id="leftPanel">
-      <div class="panel-hd">
-        <div class="tabs">
-          <div class="tab active" data-tab="plan">行程</div>
-          <div class="tab" data-tab="fx">匯率換算</div>
+    <div class="day-card">
+        <div class="day-title">Day 1｜1/23 (五) 抵達釜山</div>
+        <div class="event">
+            <span class="time">18:25 - 20:15</span>
+            <span class="desc">抵達機場，搭計程車前往海雲台。</span>
         </div>
-        <div class="notice">小提醒：如果手機內嵌地圖空白，請改用「在 Google Maps 開啟」按鈕。</div>
-      </div>
-
-      <div class="panel-bd" id="tab-plan">
-        
-      </div>
-
-      <div class="panel-bd" id="tab-fx" style="display:none">
-        <div class="fxGrid">
-          <div class="fxBox">
-            <div class="fxRow">
-              <div>
-                <label>韓元 KRW</label>
-                <input id="krw" inputmode="decimal" placeholder="例如 10000"/>
-              </div>
-              <div>
-                <label>台幣 TWD</label>
-                <input id="twd" inputmode="decimal" placeholder="例如 250"/>
-              </div>
-            </div>
-            <div class="fxRow" style="margin-top:10px">
-              <div>
-                <label>匯率（1 KRW = ? TWD）</label>
-                <input id="rate" inputmode="decimal" placeholder="例如 0.024" />
-              </div>
-              <div>
-                <label>快速倍率（可選）</label>
-                <input id="mult" inputmode="decimal" placeholder="例如 10（一起買 10 份）"/>
-              </div>
-            </div>
-            <div class="kpi" id="fxKpi"></div>
-            <div class="footer">
-              你可以只填其中一邊金額 + 匯率，另一邊會自動算出。匯率請以你當天換匯/刷卡實際為準。
-            </div>
-          </div>
+        <div class="event">
+            <span class="time">20:15 - 20:45</span>
+            <span class="desc">飯店 Check-in。</span>
         </div>
-      </div>
-    </section>
-
-    <aside class="mapWrap">
-      <div class="mapCard">
-        <div class="mapHd">
-          <div>
-            <div style="font-weight:800">地圖</div>
-            <div class="small" id="mapSubtitle">尚未選擇地點</div>
-          </div>
-          <div class="mapTools">
-            <button class="btn" id="btnOpenGoogle">在 Google Maps 開啟</button>
-            <button class="btn" id="btnNaverRoute">NAVER 導航</button>
-          </div>
+        <div class="event">
+            <span class="time">20:45 - 22:00</span>
+            <span class="desc">宵夜時段：<a href="https://map.naver.com/p/search/해운대전통시장" class="map-link" target="_blank">海雲台傳統市場</a></span>
+            <div class="note">推薦：盲鰻、糖餅、辣炒年糕。</div>
         </div>
-        <iframe class="iframe" id="gmap" loading="lazy" referrerpolicy="no-referrer-when-downgrade" src="about:blank"></iframe>
-      </div>
-      <div class="footer">
-        NAVER 導航深連結在不同手機/版本上支援度不一：若無法直接進入「目的地導航」，此頁會自動退回到 NAVER 搜尋結果（至少能一鍵定位到目的地）。
-      </div>
-    </aside>
-
-  </div>
-</div>
-
-<script>
-const DAYS = [{'day': 'Day 1｜1/23 (五) 晚間抵達・海雲台宵夜', 'stay': 'Shilla Stay Busan Haeundae', 'flight': '釜山航空 BX 796｜高雄 KHH 15:00 ➝ 釜山 PUS 18:25', 'items': [{'time': '18:25', 'title': '抵達金海國際機場 (PUS)', 'desc': '', 'q': 'Gimhae International Airport', 'lat': 35.1799, 'lng': 128.9384}, {'time': '18:25 - 19:15', 'title': '入境、領行李', 'desc': '辦理入境手續、領取行李。', 'q': 'Gimhae International Airport Arrival', 'lat': 35.1799, 'lng': 128.9384}, {'time': '19:15 - 20:15', 'title': '機場 ➝ 海雲台（交通移動）', 'desc': '建議：天色已暗，建議直接搭計程車（約 50-60 分鐘）最舒適直達飯店門口。若搭機場巴士，請確認末班車時間。', 'q': 'Haeundae, Busan', 'lat': 35.1586, 'lng': 129.1604}, {'time': '20:15 - 20:45', 'title': 'Shilla Stay Haeundae 辦理入住', 'desc': 'Check-in、放行李。', 'q': 'Shilla Stay Haeundae, Busan', 'lat': 35.15918, 'lng': 129.15903}, {'time': '20:45 - 22:00', 'title': '海雲台傳統市場', 'desc': '就在飯店對面步行幾分鐘。此時適合吃深夜美食（盲鰻、炸雞、糖餅、辣炒年糕）。', 'q': 'Haeundae Traditional Market', 'lat': 35.1638, 'lng': 129.1632}, {'time': '22:00 - 23:00', 'title': '海雲台沙灘散步 或 The Bay 101', 'desc': '視體力而定：有體力可去 The Bay 101 看夜景（營業到很晚）；若累了則在飯店樓下便利商店買飲料回房休息。', 'q': 'The Bay 101', 'lat': 35.1556, 'lng': 129.1527}]}, {'day': 'Day 2｜1/24 (六) 藍線公園・ClubD Oasis・無人機秀', 'stay': 'Shilla Stay Busan Haeundae', 'items': [{'time': '09:00 - 09:30', 'title': '步行前往「尾浦站」(Mipo Station)', 'desc': '', 'q': 'Mipo Station, Busan', 'lat': 35.15821, 'lng': 129.17285}, {'time': '09:30 - 10:10', 'title': '【重點 1】天空膠囊列車 (Sky Capsule)', 'desc': '路線：尾浦站 ➝ 青沙浦站（請務必提前預約此時段）。', 'q': 'Haeundae Blueline Park Sky Capsule Mipo Station', 'lat': 35.15821, 'lng': 129.17285}, {'time': '10:10 - 11:30', 'title': '青沙浦 (Cheongsapo) 散策', 'desc': '踏石觀景台、平交道拍照、海景咖啡廳。', 'q': 'Cheongsapo, Busan', 'lat': 35.16169, 'lng': 129.19011}, {'time': '11:30 - 12:00', 'title': '【重點 2】海岸列車 (Beach Train)', 'desc': '路線：青沙浦站 ➝ 尾浦站（搭火車返回）。', 'q': 'Cheongsapo Station', 'lat': 35.16129, 'lng': 129.19137}, {'time': '12:00 - 13:30', 'title': '午餐時間', 'desc': '（尾浦海鮮或豬肉湯飯）。', 'q': 'Mipo Port Busan restaurants', 'lat': 35.15821, 'lng': 129.17285}, {'time': '13:30 - 17:30', 'title': '【重點 3】ClubD Oasis (LCT)', 'desc': '前往 LCT 大樓（就在尾浦站旁）。下午享受無邊際溫泉泳池 (The Sand) 與 豪華汗蒸幕 (The Horizon)。', 'q': 'ClubD Oasis', 'lat': 35.1569, 'lng': 129.1529}, {'time': '17:30 - 18:30', 'title': '回飯店放泳衣、梳洗', 'desc': '', 'q': 'Shilla Stay Haeundae, Busan', 'lat': 35.15918, 'lng': 129.15903}, {'time': '18:30 - 19:00', 'title': '計程車前往廣安里海水浴場', 'desc': '', 'q': 'Gwangalli Beach', 'lat': 35.1532, 'lng': 129.1187}, {'time': '19:00 - 19:20', 'title': '【重點 4】廣安里 M 無人機燈光秀', 'desc': '備註：週六限定。建議看 19:00 場次。', 'q': 'Gwangalli Beach Drone Show', 'lat': 35.1532, 'lng': 129.1187}, {'time': '19:30 - 21:00', 'title': '晚餐時間', 'desc': '（廣安里周邊烤肉或生魚片）。', 'q': 'Gwangalli Beach restaurants', 'lat': 35.1532, 'lng': 129.1187}, {'time': '21:00', 'title': '搭計程車返回海雲台', 'desc': '', 'q': 'Haeundae, Busan', 'lat': 35.1586, 'lng': 129.1604}]}, {'day': 'Day 3｜1/25 (日) 樂天世界 & 斜坡滑車 (東釜山)', 'stay': 'Shilla Stay Busan Haeundae', 'items': [{'time': '09:30 - 10:00', 'title': '計程車前往奧西利亞 (Osiria) 觀光園區', 'desc': '', 'q': 'Osiria Tourism Complex', 'lat': 35.1969, 'lng': 129.2156}, {'time': '10:00 - 12:00', 'title': '【重點 5】Skyline Luge 釜山斜坡滑車', 'desc': '建議購買 3-5 次券，趁早上人潮較少先玩。', 'q': 'Skyline Luge Busan', 'lat': 35.1969, 'lng': 129.2156}, {'time': '12:00 - 13:30', 'title': '午餐時間', 'desc': '（Luge 旁或樂天 Outlet 內）。', 'q': 'Lotte Premium Outlets Dongbusan', 'lat': 35.1956, 'lng': 129.2141}, {'time': '13:30 - 19:30', 'title': '【重點 6】釜山樂天世界冒險樂園', 'desc': '遊玩遊樂設施、觀賞遊行、欣賞城堡夜景。', 'q': 'Lotte World Adventure Busan', 'lat': 35.1962, 'lng': 129.2159}, {'time': '19:30 - 20:00', 'title': '計程車返回海雲台', 'desc': '', 'q': 'Haeundae, Busan', 'lat': 35.1586, 'lng': 129.1604}, {'time': '20:00 - 21:30', 'title': '晚餐時間', 'desc': '', 'q': 'Haeundae restaurants', 'lat': 35.1586, 'lng': 129.1604}]}, {'day': 'Day 4｜1/26 (一) 移動日・影島與南浦洞', 'stay': 'Hotel Foret Premier Nampo', 'items': [{'time': '11:00', 'title': 'Shilla Stay 退房', 'desc': '', 'q': 'Shilla Stay Haeundae, Busan', 'lat': 35.15918, 'lng': 129.15903}, {'time': '11:00 - 12:00', 'title': '早午餐時間（海雲台周邊）', 'desc': '', 'q': 'Haeundae brunch', 'lat': 35.1586, 'lng': 129.1604}, {'time': '12:00 - 13:00', 'title': '海雲台 ➝ 南浦洞（交通移動）', 'desc': '方式：計程車（最方便，車資約 20,000 - 25,000 韓元）。', 'q': 'Nampo-dong, Busan', 'lat': 35.0982, 'lng': 129.0298}, {'time': '13:00', 'title': '抵達 Hotel Foret Premier Nampo（寄放行李）', 'desc': '', 'q': 'Hotel Foret Premier Nampo', 'lat': 35.09821, 'lng': 129.0298}, {'time': '13:30 - 16:30', 'title': '影島 白淺灘文化村（흰여울문화마을）', 'desc': '搭計程車前往。沿著絕影海岸散步路與文化村小徑散步。', 'q': 'Huinnyeoul Culture Village', 'lat': 35.0799, 'lng': 129.045}, {'time': '16:30 - 18:00', 'title': '樂天百貨 光復店（頂樓觀景台）', 'desc': '俯瞰影島大橋與釜山港景色。', 'q': 'Lotte Department Store Gwangbok', 'lat': 35.097975, 'lng': 129.036781}, {'time': '18:00 - 20:00', 'title': '晚餐：札嘎其市場海鮮', 'desc': '', 'q': 'Jagalchi Market', 'lat': 35.09133, 'lng': 129.02467}, {'time': '20:00', 'title': '回飯店辦理入住', 'desc': '', 'q': 'Hotel Foret Premier Nampo', 'lat': 35.09821, 'lng': 129.0298}]}, {'day': 'Day 5｜1/27 (二) 甘川洞文化村・最後採買', 'stay': 'Hotel Foret Premier Nampo', 'items': [{'time': '10:00 - 12:30', 'title': '甘川洞文化村', 'desc': '搭計程車或公車上山，與小王子合照、集章。', 'q': 'Gamcheon Culture Village', 'lat': 35.0973, 'lng': 129.01}, {'time': '12:30 - 14:00', 'title': '午餐時間', 'desc': '', 'q': 'Nampo-dong restaurants', 'lat': 35.0982, 'lng': 129.0298}, {'time': '14:00 - 17:00', 'title': '南浦洞商圈 深度逛街', 'desc': 'BIFF 廣場、光復路時尚街、國際市場（Vintage 古著區、生活雜貨）。備註：最後完整逛街時間。', 'q': 'BIFF Square', 'lat': 35.0981, 'lng': 129.0291}, {'time': '17:00 - 18:30', 'title': '龍頭山公園 & 釜山塔', 'desc': '就在飯店後方，可搭手扶梯上去看日落/夜景。', 'q': 'Busan Tower', 'lat': 35.1007, 'lng': 129.0324}, {'time': '18:30 - 20:00', 'title': '晚餐時間', 'desc': '', 'q': 'Nampo-dong dinner', 'lat': 35.0982, 'lng': 129.0298}, {'time': '20:00 - 21:30', 'title': '樂天超市 (Lotte Mart 光復店)', 'desc': '重要：明天中午的飛機沒時間逛，今晚務必買齊零食、伴手禮。', 'q': 'LOTTE Mart Gwangbok', 'lat': 35.097975, 'lng': 129.036781}]}, {'day': 'Day 6｜1/28 (三) 前往機場・返台', 'stay': '—', 'flight': '釜山航空 BX 795｜釜山 PUS 12:00 ➝ 高雄 KHH 14:00', 'items': [{'time': '09:00', 'title': '整理行李、退房 (Check-out)', 'desc': '', 'q': 'Hotel Foret Premier Nampo', 'lat': 35.09821, 'lng': 129.0298}, {'time': '09:00 - 09:30', 'title': '簡單早餐（飯店附近）', 'desc': '', 'q': 'Nampo-dong breakfast', 'lat': 35.0982, 'lng': 129.0298}, {'time': '09:30', 'title': '飯店 ➝ 金海機場（交通移動）', 'desc': '方式：請務必搭乘計程車。時間：南浦洞到機場約 30-40 分鐘；考慮上班時段車流，建議 09:30 出發最保險。', 'q': 'Gimhae International Airport', 'lat': 35.1799, 'lng': 128.9384}, {'time': '10:10', 'title': '抵達機場', 'desc': '', 'q': 'Gimhae International Airport', 'lat': 35.1799, 'lng': 128.9384}, {'time': '10:10 - 11:30', 'title': '報到、托運、退稅', 'desc': '', 'q': 'Gimhae International Airport departures', 'lat': 35.1799, 'lng': 128.9384}, {'time': '12:00', 'title': '搭乘 BX 795 起飛', 'desc': '', 'q': 'Gimhae International Airport', 'lat': 35.1799, 'lng': 128.9384}, {'time': '14:00', 'title': '抵達高雄 (KHH)', 'desc': '', 'q': 'Kaohsiung International Airport', 'lat': 22.5771, 'lng': 120.3499}]}];
-
-const state = {
-  current: null, // {q, title, lat, lng}
-};
-
-function enc(s){ return encodeURIComponent(s || ""); }
-
-function googleEmbedUrl(q, lat, lng){
-  // 不用 API key，手機也相對穩定
-  if (lat && lng) return `https://www.google.com/maps?q=${lat},${lng}&z=15&output=embed`;
-  return `https://www.google.com/maps?q=${enc(q)}&z=15&output=embed`;
-}
-
-function googleOpenUrl(q, lat, lng){
-  if (lat && lng) return `https://www.google.com/maps/search/?api=1&query=${lat},${lng}`;
-  return `https://www.google.com/maps/search/?api=1&query=${enc(q)}`;
-}
-
-function naverRouteUrl(q, lat, lng){
-  // 優先：直接進導航（destination）
-  if (lat && lng) {
-    const dname = enc(q);
-    // 嘗試多種 scheme：部分機型只吃其中一種
-    return {
-      app: `nmap://route/car?dlat=${lat}&dlng=${lng}&dname=${dname}&appname=trip.plan`,
-      web: `https://map.naver.com/v5/directions/-/-/${lng},${lat},${dname}?c=${lng},${lat},15,0,0,0,dh`
-    };
-  }
-  // 沒座標：退回搜尋
-  const qq = enc(q);
-  return {
-    app: `nmap://search?query=${qq}&appname=trip.plan`,
-    web: `https://map.naver.com/v5/search/${qq}`
-  };
-}
-
-function setMap(target){
-  state.current = target;
-  const iframe = document.getElementById("gmap");
-  iframe.src = googleEmbedUrl(target.q, target.lat, target.lng);
-  document.getElementById("mapSubtitle").textContent = target.title || target.q || "已定位";
-}
-
-function tryOpen(url){
-  // 用 iframe 觸發 app scheme（iOS/Android 兼容性較好）
-  const i = document.createElement('iframe');
-  i.style.display = 'none';
-  i.src = url;
-  document.body.appendChild(i);
-  setTimeout(() => i.remove(), 1200);
-}
-
-function openNaver(){
-  if(!state.current) return alert("請先點選一個行程地點");
-  const u = naverRouteUrl(state.current.q, state.current.lat, state.current.lng);
-  // 先試 App，失敗就落到 Web
-  const t0 = Date.now();
-  tryOpen(u.app);
-  setTimeout(() => {
-    // 仍在本頁（很可能 app 沒打開）→ 用網頁打開
-    // 這個判斷不可能 100% 準，但夠實用
-    if (Date.now() - t0 > 900) window.open(u.web, "_blank");
-  }, 950);
-}
-
-function openGoogle(){
-  if(!state.current) return alert("請先點選一個行程地點");
-  window.open(googleOpenUrl(state.current.q, state.current.lat, state.current.lng), "_blank");
-}
-
-function renderPlan(){
-  const root = document.getElementById("tab-plan");
-  root.innerHTML = "";
-  DAYS.forEach((d, di) => {
-    const det = document.createElement("details");
-    if(di===0) det.open = true;
-    const sum = document.createElement("summary");
-    sum.innerHTML = `
-      <div class="sumL">
-        <div class="sumTitle">${d.day}</div>
-        <div class="sumSub">住宿：${d.stay || "—"}</div>
-      </div>
-      <div class="chev">▾</div>
-    `;
-    det.appendChild(sum);
-
-    const body = document.createElement("div");
-    body.className = "dayBody";
-
-    if(d.flight){
-      const f = document.createElement("div");
-      f.className = "flight";
-      f.textContent = d.flight;
-      body.appendChild(f);
-    }
-
-    if(d.stay){
-      const s = document.createElement("div");
-      s.className = "stay";
-      s.textContent = `住宿：${d.stay}`;
-      body.appendChild(s);
-    }
-
-    d.items.forEach((it) => {
-      const card = document.createElement("div");
-      card.className = "item";
-      card.innerHTML = `
-        <div class="time">${it.time}</div>
-        <div>
-          <div class="title">${it.title}</div>
-          ${it.desc ? `<div class="desc">${it.desc}</div>` : ""}
-          <div class="actions">
-            <button class="chip" data-act="focus">地圖定位</button>
-            <button class="chip" data-act="naver">NAVER 導航</button>
-            <button class="chip secondary" data-act="google">Google Maps</button>
-          </div>
+        <div class="event">
+            <span class="time">22:00 - 23:00</span>
+            <span class="desc">散步：<a href="https://map.naver.com/p/search/더베이101" class="map-link" target="_blank">The Bay 101</a> (夜景)</span>
         </div>
-      `;
-      const target = {q: it.q || it.title, title: it.title, lat: it.lat, lng: it.lng};
-      card.addEventListener("click", (e) => {
-        // 點卡片任何地方都定位（除了按鈕會另外處理）
-        if(e.target?.dataset?.act) return;
-        setMap(target);
-      });
-      card.querySelectorAll("button").forEach(btn => {
-        btn.addEventListener("click", (e) => {
-          e.stopPropagation();
-          setMap(target);
-          const act = btn.dataset.act;
-          if(act==="naver") openNaver();
-          if(act==="google") openGoogle();
-        });
-      });
-      body.appendChild(card);
-    });
+        <div class="hotel">🏨 住宿：<a href="https://map.naver.com/p/search/신라스테이 해운대" class="map-link" target="_blank">Shilla Stay Haeundae</a></div>
+    </div>
 
-    det.appendChild(body);
-    root.appendChild(det);
-  });
-}
+    <div class="day-card">
+        <div class="day-title">Day 2｜1/24 (六) 膠囊列車 & 無人機秀</div>
+        <div class="event">
+            <span class="time">09:30 - 10:10</span>
+            <span class="desc">搭乘：<a href="https://map.naver.com/p/search/해운대블루라인파크 미포정거장" class="map-link" target="_blank">海雲台藍線公園 (尾浦站)</a></span>
+            <div class="note">⚠️ 請預約天空膠囊列車 (Sky Capsule) 往青沙浦方向。</div>
+        </div>
+        <div class="event">
+            <span class="time">10:10 - 11:30</span>
+            <span class="desc">景點：<a href="https://map.naver.com/p/search/청사포" class="map-link" target="_blank">青沙浦 (Cheongsapo)</a></span>
+        </div>
+        <div class="event">
+            <span class="time">11:30 - 12:00</span>
+            <span class="desc">回程：搭乘海岸列車 (Beach Train) 返回尾浦。</span>
+        </div>
+        <div class="event">
+            <span class="time">13:30 - 17:30</span>
+            <span class="desc">放鬆：<a href="https://map.naver.com/p/search/클럽디 오아시스" class="map-link" target="_blank">ClubD Oasis (汗蒸幕/水樂園)</a></span>
+            <div class="note">位於 LCT 大樓內，就在尾浦站旁。</div>
+        </div>
+        <div class="event">
+            <span class="time">19:00 - 19:20</span>
+            <span class="desc">表演：<a href="https://map.naver.com/p/search/광안리해수욕장" class="map-link" target="_blank">廣安里 M 無人機燈光秀</a></span>
+            <div class="note">請看 19:00 場次。</div>
+        </div>
+        <div class="hotel">🏨 住宿：<a href="https://map.naver.com/p/search/신라스테이 해운대" class="map-link" target="_blank">Shilla Stay Haeundae</a></div>
+    </div>
 
-function fxInit(){
-  const krw = document.getElementById("krw");
-  const twd = document.getElementById("twd");
-  const rate = document.getElementById("rate");
-  const mult = document.getElementById("mult");
-  const kpi = document.getElementById("fxKpi");
+    <div class="day-card">
+        <div class="day-title">Day 3｜1/25 (日) 東釜山樂園</div>
+        <div class="event">
+            <span class="time">10:00 - 12:00</span>
+            <span class="desc">活動：<a href="https://map.naver.com/p/search/스카이라인루지 부산" class="map-link" target="_blank">Skyline Luge 釜山斜坡滑車</a></span>
+        </div>
+        <div class="event">
+            <span class="time">13:30 - 19:30</span>
+            <span class="desc">樂園：<a href="https://map.naver.com/p/search/롯데월드 어드벤처 부산" class="map-link" target="_blank">釜山樂天世界冒險樂園</a></span>
+        </div>
+        <div class="hotel">🏨 住宿：<a href="https://map.naver.com/p/search/신라스테이 해운대" class="map-link" target="_blank">Shilla Stay Haeundae</a></div>
+    </div>
 
-  function num(v) {
-    const n = parseFloat(String(v||"").replace(/,/g,""));
-    return Number.isFinite(n) ? n : null;
-  }
+    <div class="day-card">
+        <div class="day-title">Day 4｜1/26 (一) 移動至南浦洞</div>
+        <div class="event">
+            <span class="time">12:00 - 13:00</span>
+            <span class="desc">移動：搭計程車前往南浦洞飯店寄放行李。</span>
+        </div>
+        <div class="event">
+            <span class="time">13:30 - 16:30</span>
+            <span class="desc">景點：<a href="https://map.naver.com/p/search/흰여울문화마을" class="map-link" target="_blank">影島 白淺灘文化村</a></span>
+        </div>
+        <div class="event">
+            <span class="time">16:30 - 18:00</span>
+            <span class="desc">觀景：<a href="https://map.naver.com/p/search/롯데백화점 광복점" class="map-link" target="_blank">樂天百貨 光復店 (頂樓觀景台)</a></span>
+        </div>
+        <div class="event">
+            <span class="time">18:00 - 20:00</span>
+            <span class="desc">晚餐：<a href="https://map.naver.com/p/search/자갈치시장" class="map-link" target="_blank">札嘎其市場</a></span>
+        </div>
+        <div class="hotel">🏨 住宿：<a href="https://map.naver.com/p/search/호텔포레 프리미어 남포" class="map-link" target="_blank">Hotel Foret Premier Nampo</a></div>
+    </div>
 
-  function renderKpi(r, k, t, m){
-    kpi.innerHTML = "";
-    const pill = (label, value) => {
-      const d = document.createElement("div");
-      d.className = "pill";
-      d.innerHTML = `${label} <strong>${value}</strong>`;
-      kpi.appendChild(d);
-    };
-    if(r!=null) pill("匯率", `1 KRW = ${r.toFixed(6)} TWD`);
-    if(k!=null) pill("KRW", k.toLocaleString());
-    if(t!=null) pill("TWD", t.toLocaleString(undefined, {maximumFractionDigits:2}));
-    if(m!=null && k!=null && t!=null) {
-      pill("× 倍率", m.toLocaleString());
-      pill("總 KRW", (k*m).toLocaleString());
-      pill("總 TWD", (t*m).toLocaleString(undefined, {maximumFractionDigits:2}));
-    }
-  }
+    <div class="day-card">
+        <div class="day-title">Day 5｜1/27 (二) 甘川洞與購物</div>
+        <div class="event">
+            <span class="time">10:00 - 12:30</span>
+            <span class="desc">景點：<a href="https://map.naver.com/p/search/감천문화마을" class="map-link" target="_blank">甘川洞文化村</a></span>
+        </div>
+        <div class="event">
+            <span class="time">14:00 - 17:00</span>
+            <span class="desc">逛街：<a href="https://map.naver.com/p/search/BIFF 거리" class="map-link" target="_blank">BIFF 廣場 / 國際市場</a></span>
+        </div>
+        <div class="event">
+            <span class="time">17:00 - 18:30</span>
+            <span class="desc">景點：<a href="https://map.naver.com/p/search/용두산공원" class="map-link" target="_blank">龍頭山公園 (釜山塔)</a></span>
+        </div>
+        <div class="event">
+            <span class="time">20:00 - 21:30</span>
+            <span class="desc">採買：<a href="https://map.naver.com/p/search/롯데마트 광복점" class="map-link" target="_blank">樂天超市 光復店</a></span>
+        </div>
+        <div class="hotel">🏨 住宿：<a href="https://map.naver.com/p/search/호텔포레 프리미어 남포" class="map-link" target="_blank">Hotel Foret Premier Nampo</a></div>
+    </div>
 
-  function calc(){
-    const r = num(rate.value);
-    let k = num(krw.value);
-    let t = num(twd.value);
-    const m = num(mult.value);
+    <div class="day-card">
+        <div class="day-title">Day 6｜1/28 (三) 返家</div>
+        <div class="event">
+            <span class="time">09:30</span>
+            <span class="desc">出發：從飯店搭計程車前往 <a href="https://map.naver.com/p/search/김해국제공항" class="map-link" target="_blank">金海國際機場</a></span>
+        </div>
+        <div class="event">
+            <span class="time">12:00</span>
+            <span class="desc">起飛：搭乘 BX 795 返回高雄。</span>
+        </div>
+    </div>
 
-    if(r!=null){
-      if(k!=null && t==null) t = k * r;
-      if(t!=null && k==null && r>0) k = t / r;
-    }
-
-    renderKpi(r, k, t, m);
-    // 只在使用者有輸入時才回填，避免跳動感太重
-    if(r!=null && k!=null && document.activeElement!==twd) twd.value = (t!=null? t.toFixed(2):"");
-    if(r!=null && t!=null && document.activeElement!==krw) krw.value = (k!=null? k.toFixed(0):"");
-  }
-
-  ["input","change"].forEach(ev => {
-    krw.addEventListener(ev, calc);
-    twd.addEventListener(ev, calc);
-    rate.addEventListener(ev, calc);
-    mult.addEventListener(ev, calc);
-  });
-
-  // default: 給一個常見刷卡匯率區間提示（不強塞）
-  renderKpi(null, null, null, null);
-}
-
-function initTabs(){
-  document.querySelectorAll(".tab").forEach(t => {
-    t.addEventListener("click", () => {
-      document.querySelectorAll(".tab").forEach(x => x.classList.remove("active"));
-      t.classList.add("active");
-      const name = t.dataset.tab;
-      document.getElementById("tab-plan").style.display = name==="plan" ? "" : "none";
-      document.getElementById("tab-fx").style.display = name==="fx" ? "" : "none";
-    });
-  });
-}
-
-document.getElementById("btnOpenGoogle").addEventListener("click", openGoogle);
-document.getElementById("btnNaverRoute").addEventListener("click", () => {
-  if(!state.current) {
-    alert("請先點選一個行程地點");
-    return;
-  }
-  openNaver();
-});
-
-renderPlan();
-initTabs();
-fxInit();
-
-// 預設先定位到第一個點
-setMap({q:DAYS[0].items[0].q, title:DAYS[0].items[0].title, lat:DAYS[0].items[0].lat, lng:DAYS[0].items[0].lng});
-</script>
 </body>
 </html>
