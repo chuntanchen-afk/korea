@@ -182,7 +182,7 @@
     }
     .badge{display:inline-block;font-size:12px;font-weight:900;letter-spacing:.7px;background:rgba(0,0,0,.04);padding:3px 9px;border-radius:10px;color:rgba(18,30,45,.80)}
     .hname{margin:8px 0 6px;font-family:var(--serif);font-weight:900;color:var(--ink);font-size:18px}
-    .meta{font-size:13px;color:rgba(0,0,0,.55);line-height:1.65}
+    .meta{font-size:12px;color:rgba(0,0,0,.55);line-height:1.65}
 
     /* Notes page */
     .notes-grid{display:grid;grid-template-columns:1fr 1fr;gap:12px}
@@ -443,7 +443,13 @@ details.area .food-card.inline {
 /* 第二行地址（舊制地址 / 補充地址） */
 .addr-alt {
   color: #9e2a2b!important;   /* 比主地址淡 */
-  font-size: 0.82em;        /* 稍小一點 */
+  font-size: 0.9em;        /* 稍小一點 */
+}
+
+/* 第二行地址（舊制地址 / 補充地址） */
+.stay-alt {
+  color: #9e2a2b!important;   /* 比主地址淡 */
+  font-size: 11px;        /* 稍小一點 */
 }
 
   </style>
@@ -553,8 +559,8 @@ details.area .food-card.inline {
           <div class="hname">Shilla Stay Haeundae</div>
           <div class="meta">
             海雲台舒羅亞飯店 ｜ Check-out 12:00<br>
-            ADD: 부산 해운대구 해운대로570번길 46 (우)48093
-            <br>(우동 629-6)<br>
+            ADD: 부산 해운대구 해운대로570번길 46 (우)48093<br>
+            <span class="stay-alt">(우동 629-6)</span><br>
             TEL: 051-912-9000
           </div>
           <div class="actions">
@@ -570,8 +576,8 @@ details.area .food-card.inline {
           <div class="hname">Hotel Foret Premier Nampo</div>
           <div class="meta">
             南浦森林頂級飯店 ｜ Check-out 11:00<br>
-            ADD: 부산 중구 구덕로 54-1 4층 
-            <br>( 남포동5가 8-1 )<br>
+            ADD: 부산 중구 구덕로 54-1 4층 <br>
+            <span class="stay-alt">( 남포동5가 8-1 )</span><br>
             TEL: 051-242-2200
           </div>
           <div class="actions">
@@ -1013,7 +1019,7 @@ details.area .food-card.inline {
           <span class="label">ADD</span>
           <div class="value">
             부산광역시 해운대구 청사포로128번길 12 디아트커피<br>
-          <span class="addr-alt">(중동 586)</span>
+          <span class="addr-alt">(부산 해운대구 중동 586)</span>
           </div>
         </div>
 
@@ -1027,7 +1033,7 @@ details.area .food-card.inline {
       <!-- 導航按鈕 -->
       <div class="food-actions">
         <button class="btn btn-naver"
-          onclick="openNaver('중동 586')">NAVER</button>
+          onclick="openNaver('부산 해운대구 중동 586')">NAVER</button>
 
         <a class="btn btn-google" target="_blank"
           href="https://www.google.com/maps/search/?api=1&query=DIART+coffee+Busan">
@@ -1190,6 +1196,51 @@ details.area .food-card.inline {
   </div>
 </div>
 
+        <!-- 卡片 6 -->
+<div class="food-card">
+
+  <h3 class="food-title">嚴湧帛豬肉湯飯 海雲台店</h3>
+  <div class="desc">釜山式 & 密陽式豬肉湯飯名店</div>
+
+  <div class="food-row">
+
+    <div class="food-img">
+      <img src="images/food/food-006.jpg" alt=“嚴湧帛豬肉湯飯”>
+    </div>
+
+    <div class="food-info">
+
+      <div class="food-meta">
+
+        <div class="meta-row">
+          <span class="label">ADD</span>
+          <div class="value">
+            부산 해운대구 구남로24번길 39<br>
+          <span class="addr-alt">(부산 해운대구 우동 635-6)</span>
+          </div>
+        </div>
+
+        <div class="meta-row">
+          <span class="label">TEL</span>
+          <div class="value">0507-1374-3988</div>
+        </div>
+
+      </div>
+
+      <div class="food-actions">
+        <button class="btn btn-naver"
+          onclick="openNaver('엄용백 돼지국밥 해운대점')">NAVER</button>
+
+        <a class="btn btn-google" target="_blank"
+          href="https://www.google.com/maps/search/?api=1&query=엄용백+돼지국밥+해운대점">
+          Google
+        </a>
+      </div>
+
+    </div>
+  </div>
+</div>
+
 
         <!-- 再加餐廳就複製 food-card -->
       </div>
@@ -1216,6 +1267,141 @@ details.area .food-card.inline {
 
       <div class="area-body">
         <!-- food-card... -->
+                <!-- 卡片 7 -->
+        <div class="food-card">
+
+  <h3 class="food-title">烤肉的男子 西面店</h3>
+  <div class="desc">專人代烤 輕鬆享受美味烤肉</div>
+
+  <div class="food-row">
+
+    <div class="food-img">
+      <img src="images/food/food-007.jpg" alt=“烤肉的男子”>
+    </div>
+
+    <div class="food-info">
+
+      <div class="food-meta">
+
+        <div class="meta-row">
+          <span class="label">ADD</span>
+          <div class="value">
+            부산 부산진구 동천로95번길 13<br>
+          <span class="addr-alt">(부산 부산진구 부전동 168-367)</span>
+          </div>
+        </div>
+
+        <div class="meta-row">
+          <span class="label">TEL</span>
+          <div class="value">051-804-3809</div>
+        </div>
+
+      </div>
+
+      <div class="food-actions">
+        <button class="btn btn-naver"
+          onclick="openNaver('고기굽는남자 서면점')">NAVER</button>
+
+        <a class="btn btn-google" target="_blank"
+          href="https://www.google.com/maps/search/?api=1&query=고기굽는남자+서면점">
+          Google
+        </a>
+      </div>
+
+    </div>
+  </div>
+</div>
+
+        <!-- 卡片 8 -->
+
+<div class="food-card">
+
+  <h3 class="food-title">Old Mansion (老宅邸 燒肉)</h3>
+  <div class="desc">田浦咖啡街 復古老宅熟成豬肉</div>
+
+  <div class="food-row">
+
+    <div class="food-img">
+      <img src="images/food/food-008.jpg" alt=“Old Mansion”>
+    </div>
+
+    <div class="food-info">
+
+      <div class="food-meta">
+
+        <div class="meta-row">
+          <span class="label">ADD</span>
+          <div class="value">
+            부산 부산진구 전포대로209번길 17-6<br>
+          <span class="addr-alt">(부산 부산진구 전포동 687-18)</span>
+          </div>
+        </div>
+
+        <div class="meta-row">
+          <span class="label">TEL</span>
+          <div class="value">0507-1413-2213</div>
+        </div>
+
+      </div>
+
+      <div class="food-actions">
+        <button class="btn btn-naver"
+          onclick="openNaver('올드맨션')">NAVER</button>
+
+        <a class="btn btn-google" target="_blank"
+          href="https://www.google.com/maps/search/?api=1&query=부산+올드맨션">
+          Google
+        </a>
+      </div>
+
+    </div>
+  </div>
+</div>
+
+        <!-- 卡片 9 -->
+<div class="food-card">
+
+  <h3 class="food-title">83獬豸 (83 Haechi)</h3>
+  <div class="desc">西面超人氣排隊烤肉店</div>
+
+  <div class="food-row">
+
+    <div class="food-img">
+      <img src="images/food/food-009.jpg" alt=“83獬豸”>
+    </div>
+
+    <div class="food-info">
+
+      <div class="food-meta">
+
+        <div class="meta-row">
+          <span class="label">ADD</span>
+          <div class="value">
+            부산 부산진구 서전로 11-1<br>
+          <span class="addr-alt">(부산 부산진구 부전동 142-8)</span>
+          </div>
+        </div>
+
+        <div class="meta-row">
+          <span class="label">TEL</span>
+          <div class="value">051-817-8377</div>
+        </div>
+
+      </div>
+
+      <div class="food-actions">
+        <button class="btn btn-naver"
+          onclick="openNaver('83해치')">NAVER</button>
+
+        <a class="btn btn-google" target="_blank"
+          href="https://www.google.com/maps/search/?api=1&query=83해치">
+          Google
+        </a>
+      </div>
+
+    </div>
+  </div>
+</div>
       </div>
     </details>
 
