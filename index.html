@@ -215,6 +215,147 @@
       .mini-grid{grid-template-columns:1fr}
       .notes-grid{grid-template-columns:1fr}
     }
+/* =========================
+   FOOD PAGE · INLINE LAYOUT
+   ========================= */
+
+.food-card.inline {
+  background: #fff;
+  padding: 18px;
+  margin-bottom: 26px;
+  border-radius: 18px;
+  box-shadow:
+    0 1px 0 rgba(0,0,0,.03),
+    0 14px 34px rgba(0,0,0,.06);
+}
+
+/* 標題 */
+.food-title {
+  margin: 0 0 14px;
+  font-size: 1.15rem;
+  font-weight: 600;
+  letter-spacing: 0.02em;
+}
+
+/* 核心：圖片與資訊並排 */
+.food-inline {
+  display: grid;
+  grid-template-columns: 120px 1fr;
+  gap: 18px;
+  align-items: center;
+}
+
+/* 圖片 */
+.food-img img {
+  width: 100%;
+  height: 120px;
+  object-fit: cover;
+  border-radius: 14px;
+}
+
+/* 右側資訊 */
+.food-info {
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  min-height: 120px;
+}
+
+/* ADD / TEL */
+.food-meta {
+  font-size: 0.85rem;
+  line-height: 1.7;
+  color: rgba(0,0,0,.6);
+}
+
+.food-meta span {
+  font-weight: 500;
+  margin-right: 6px;
+  letter-spacing: .05em;
+  color: rgba(0,0,0,.8);
+}
+
+/* 按鈕靠右下 */
+.food-actions {
+  display: flex;
+  justify-content: flex-end;
+  gap: 8px;
+}
+
+/* 手機微調 */
+@media (max-width: 520px) {
+  .food-inline {
+    grid-template-columns: 100px 1fr;
+  }
+
+  .food-img img {
+    height: 100px;
+  }
+}
+
+
+/* =========================
+   FOOD AREAS · COLLAPSIBLE
+   ========================= */
+
+details.area {
+  background: rgba(255,255,255,0.92);
+  border-radius: 16px;
+  box-shadow: 0 10px 28px rgba(0,0,0,.06);
+  margin: 16px 0;
+  overflow: hidden;
+}
+
+details.area summary {
+  list-style: none;
+  cursor: pointer;
+  padding: 16px 18px;
+  display: flex;
+  justify-content: space-between;
+  align-items: baseline;
+  gap: 12px;
+  border-bottom: 1px solid rgba(0,0,0,.06);
+}
+
+details.area summary::-webkit-details-marker {
+  display: none;
+}
+
+.area-title {
+  font-weight: 600;
+  letter-spacing: .02em;
+  color: #121e2d;
+}
+
+.area-sub {
+  font-size: 12px;
+  letter-spacing: .12em;
+  text-transform: uppercase;
+  color: rgba(0,0,0,.45);
+}
+
+/* 小箭頭（純 CSS） */
+details.area summary::after {
+  content: "▾";
+  opacity: .5;
+  transform: translateY(-1px);
+  transition: transform .2s ease, opacity .2s ease;
+}
+
+details.area[open] summary::after {
+  transform: rotate(180deg) translateY(1px);
+  opacity: .75;
+}
+
+.area-body {
+  padding: 14px 14px 6px;
+}
+
+/* 讓每張 food card 在折疊內更貼合 */
+details.area .food-card.inline {
+  margin-bottom: 14px;
+}
+
   </style>
 </head>
 
@@ -235,6 +376,7 @@
       <button class="tab" data-page="d4">Day 04</button>
       <button class="tab" data-page="d5">Day 05</button>
       <button class="tab" data-page="d6">Day 06</button>
+      <button class="tab" data-page="food">Food</button>
       <button class="tab" data-page="notes">🇰🇷 Notes</button>
     </div>
   </nav>
@@ -690,6 +832,98 @@
         </div>
       </div>
     </section>
+
+<section class="page card" id="food">
+  <div class="pad">
+    <div class="section-title">
+      <h2>Restaurants</h2>
+      <div class="hint">Shortlist · by area</div>
+    </div>
+
+    <!-- Area: Haeundae -->
+    <details class="area" open>
+      <summary>
+        <span class="area-title">Haeundae · 海雲台</span>
+        <span class="area-sub">近住宿 / 海邊</span>
+      </summary>
+
+      <div class="area-body">
+        <!-- 卡片 1 -->
+        <div class="food-card inline">
+         <h3 class="food-title">Egg Drop</h3>
+          <div class="food-inline">
+            <div class="food-img">
+              <img src="images/food/food-001.jpg" alt=“Egg Drop”>
+            </div>
+            <div class="food-info">
+              <div class="food-meta">
+                <div><span>ADD</span> 부산 해운대구 해운대로 620 펠릭스호텔 1층 120호</div>
+                                                  <div>부산 해운대구 우동 539-10</div>
+                <div><span>TEL</span> 051-743-7771</div>
+              </div>
+              <div class="food-actions">
+                <button class="btn btn-naver" onclick="openNaver('에그드랍 해운대점샌드위치')">NAVER</button>
+                <a class="btn btn-google" target="_blank"
+                   href="https://www.google.com/maps/search/?api=1&query=Egg+Drop+海雲台店">Google</a>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- 卡片 2 -->
+        <div class="food-card inline">
+          <h3 class="food-title">DIART coffee</h3>
+          <div class="food-inline">
+            <div class="food-img">
+              <img src="images/food/food-002.jpg" alt="DIART coffee">
+            </div>
+            <div class="food-info">
+              <div class="food-meta">
+                <div><span>ADD</span> 부산광역시 해운대구 청사포로128번길 12 디아트커피</div>
+                                                   <div>중동 586'</div>
+                <div><span>TEL</span> 051-743-7771</div>
+              </div>
+              <div class="food-actions">
+                <button class="btn btn-naver" onclick="openNaver('중동 586')">NAVER</button>
+                <a class="btn btn-google" target="_blank"
+                   href="https://www.google.com/maps/search/?api=1&query=DIART+coffee+Busan">Google</a>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- 再加餐廳就複製 food-card -->
+      </div>
+    </details>
+
+    <!-- Area: Nampo -->
+    <details class="area">
+      <summary>
+        <span class="area-title">Nampo · 南浦洞</span>
+        <span class="area-sub">市場 / 夜生活</span>
+      </summary>
+
+      <div class="area-body">
+        <!-- food-card... -->
+      </div>
+    </details>
+
+    <!-- Area: Seomyeon -->
+    <details class="area">
+      <summary>
+        <span class="area-title">Seomyeon · 西面</span>
+        <span class="area-sub">購物 / 交通樞紐</span>
+      </summary>
+
+      <div class="area-body">
+        <!-- food-card... -->
+      </div>
+    </details>
+
+  </div>
+</section>
+
+
 
     <!-- Notes -->
     <section class="page card" id="notes">
