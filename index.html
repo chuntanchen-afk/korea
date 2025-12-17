@@ -356,6 +356,96 @@ details.area .food-card.inline {
   margin-bottom: 14px;
 }
 
+/* =========================
+   FOOD PAGE · STANDARD VERSION
+   ========================= */
+
+.food-card {
+  background: #fff;
+  padding: 18px;
+  margin-bottom: 26px;
+  border-radius: 16px;
+  box-shadow: 0 10px 28px rgba(0,0,0,.06);
+}
+
+/* 標題 */
+.food-title {
+  margin: 0 0 14px;
+  font-size: 1.1rem;
+  font-weight: 600;
+}
+
+/* 圖片 + 資訊並排 */
+.food-row {
+  display: flex;
+  align-items: center;
+  gap: 16px;
+}
+
+/* 圖片 */
+.food-img img {
+  width: 120px;
+  height: 120px;
+  object-fit: cover;
+  border-radius: 14px;
+  flex-shrink: 0;
+}
+
+/* 右側資訊 */
+.food-info {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+}
+
+/* ADD / TEL 對齊核心 */
+.food-meta {
+  font-size: 0.85rem;
+  line-height: 1.6;
+  color: rgba(0,0,0,.6);
+}
+
+.meta-row {
+  display: grid;
+  grid-template-columns: 42px 1fr; /* ADD / TEL 固定寬度 */
+  gap: 6px;
+}
+
+.meta-row .label {
+  font-weight: 500;
+  letter-spacing: .05em;
+  color: rgba(0,0,0,.8);
+}
+
+.meta-row .value {
+  word-break: keep-all;
+}
+
+/* 導航按鈕 */
+.food-actions {
+  display: flex;
+  gap: 8px;
+  margin-top: 6px;
+}
+
+/* 手機微調 */
+@media (max-width: 520px) {
+  .food-row {
+    align-items: flex-start;
+  }
+
+  .food-img img {
+    width: 100px;
+    height: 100px;
+  }
+}
+
+/* 第二行地址（舊制地址 / 補充地址） */
+.addr-alt {
+  color: #9e2a2b!important;   /* 比主地址淡 */
+  font-size: 0.82em;        /* 稍小一點 */
+}
+
   </style>
 </head>
 
@@ -849,50 +939,257 @@ details.area .food-card.inline {
 
       <div class="area-body">
         <!-- 卡片 1 -->
-        <div class="food-card inline">
-         <h3 class="food-title">Egg Drop</h3>
-          <div class="desc">超人氣雞蛋三明治。</div>
-          <div class="food-inline">
-            <div class="food-img">
-              <img src="images/food/food-001.jpg" alt=“Egg Drop”>
-            </div>
-            <div class="food-info">
-              <div class="food-meta">
-                <div><span>ADD</span> 부산 해운대구 해운대로 620 펠릭스호텔 1층 120호</div>
-                                                  <div>부산 해운대구 우동 539-10</div>
-                <div><span>TEL</span> 051-743-7771</div>
-              </div>
-              <div class="food-actions">
-                <button class="btn btn-naver" onclick="openNaver('에그드랍 해운대점샌드위치')">NAVER</button>
-                <a class="btn btn-google" target="_blank"
-                   href="https://www.google.com/maps/search/?api=1&query=Egg+Drop+海雲台店">Google</a>
-              </div>
-            </div>
+<div class="food-card">
+
+  <!-- 餐廳名稱 -->
+  <h3 class="food-title">Egg Drop</h3>
+  <div class="desc">超人氣雞蛋三明治。</div>
+
+  <!-- 圖片 + 資訊並排 -->
+  <div class="food-row">
+
+    <!-- 左：圖片 -->
+    <div class="food-img">
+      <img src="images/food/food-001.jpg" alt=“Egg Drop”>
+    </div>
+
+    <!-- 右：資訊 -->
+    <div class="food-info">
+
+      <!-- ADD / TEL 標準結構 -->
+      <div class="food-meta">
+
+        <div class="meta-row">
+          <span class="label">ADD</span>
+          <div class="value">
+            부산 해운대구 해운대로 620 펠릭스호텔 1층 120호<br>
+            <span class="addr-alt">(부산 해운대구 우동 539-10)</span>
           </div>
         </div>
 
+        <div class="meta-row">
+          <span class="label">TEL</span>
+          <div class="value">051-743-7771</div>
+        </div>
+
+      </div>
+
+      <!-- 導航按鈕 -->
+      <div class="food-actions">
+        <button class="btn btn-naver"
+          onclick="openNaver('에그드랍 해운대점샌드위치')">NAVER</button>
+
+        <a class="btn btn-google" target="_blank"
+          href="https://www.google.com/maps/search/?api=1&query=Egg+Drop+海雲台店">
+          Google
+        </a>
+      </div>
+
+    </div>
+  </div>
+</div>
         <!-- 卡片 2 -->
-        <div class="food-card inline">
-          <h3 class="food-title">DIART coffee</h3>
-          <div class="desc">招牌土耳其蜂蜜奶油吐司（Kaymak）。</div>
-          <div class="food-inline">
-            <div class="food-img">
-              <img src="images/food/food-002.jpg" alt="DIART coffee">
-            </div>
-            <div class="food-info">
-              <div class="food-meta">
-                <div><span>ADD</span> 부산광역시 해운대구 청사포로128번길 12 디아트커피</div>
-                                                   <div>중동 586'</div>
-                <div><span>TEL</span>  </div>
-              </div>
-              <div class="food-actions">
-                <button class="btn btn-naver" onclick="openNaver('중동 586')">NAVER</button>
-                <a class="btn btn-google" target="_blank"
-                   href="https://www.google.com/maps/search/?api=1&query=DIART+coffee+Busan">Google</a>
-              </div>
-            </div>
+<div class="food-card">
+
+  <!-- 餐廳名稱 -->
+  <h3 class="food-title">DIART coffee</h3>
+  <div class="desc">招牌土耳其蜂蜜奶油吐司（Kaymak）</div>
+
+  <!-- 圖片 + 資訊並排 -->
+  <div class="food-row">
+
+    <!-- 左：圖片 -->
+    <div class="food-img">
+      <img src="images/food/food-002.jpg" alt=“DIART coffee”>
+    </div>
+
+    <!-- 右：資訊 -->
+    <div class="food-info">
+
+      <!-- ADD / TEL 標準結構 -->
+      <div class="food-meta">
+
+        <div class="meta-row">
+          <span class="label">ADD</span>
+          <div class="value">
+            부산광역시 해운대구 청사포로128번길 12 디아트커피<br>
+          <span class="addr-alt">(중동 586)</span>
           </div>
         </div>
+
+        <div class="meta-row">
+          <span class="label">TEL</span>
+          <div class="value"> </div>
+        </div>
+
+      </div>
+
+      <!-- 導航按鈕 -->
+      <div class="food-actions">
+        <button class="btn btn-naver"
+          onclick="openNaver('중동 586')">NAVER</button>
+
+        <a class="btn btn-google" target="_blank"
+          href="https://www.google.com/maps/search/?api=1&query=DIART+coffee+Busan">
+          Google
+        </a>
+      </div>
+
+    </div>
+  </div>
+</div>
+
+        <!-- 卡片 3 -->
+<div class="food-card">
+
+  <!-- 餐廳名稱 -->
+  <h3 class="food-title">60雞炸雞 (60계치킨, 60 Chicken)</h3>
+  <div class="desc">超人氣『CCC Chicken 크크크 치킨』口味</div>
+
+  <!-- 圖片 + 資訊並排 -->
+  <div class="food-row">
+
+    <!-- 左：圖片 -->
+    <div class="food-img">
+      <img src="images/food/food-003.jpg" alt=“60 Chicken”>
+    </div>
+
+    <!-- 右：資訊 -->
+    <div class="food-info">
+
+      <!-- ADD / TEL 標準結構 -->
+      <div class="food-meta">
+
+        <div class="meta-row">
+          <span class="label">ADD</span>
+          <div class="value">
+            부산광역시 해운대구 청사포로128번길 12 디아트커피<br>
+          <span class="addr-alt">(부산 해운대구 중동 1380-22)</span>
+          </div>
+        </div>
+
+        <div class="meta-row">
+          <span class="label">TEL</span>
+          <div class="value">051-741-8809</div>
+        </div>
+
+      </div>
+
+      <!-- 導航按鈕 -->
+      <div class="food-actions">
+        <button class="btn btn-naver"
+          onclick="openNaver('60계치킨 부산해운대점치킨,닭강정')">NAVER</button>
+
+        <a class="btn btn-google" target="_blank"
+          href="https://www.google.com/maps/search/?api=1&query=60th+Limited+Chicken">
+          Google
+        </a>
+      </div>
+
+    </div>
+  </div>
+</div>
+        <!-- 卡片 4 -->
+<div class="food-card">
+
+  <!-- 餐廳名稱 -->
+  <h3 class="food-title">螞蟻家辣炒章魚</h3>
+  <div class="desc">53年以上在地老店！白飯殺手</div>
+
+  <!-- 圖片 + 資訊並排 -->
+  <div class="food-row">
+
+    <!-- 左：圖片 -->
+    <div class="food-img">
+      <img src="images/food/food-004.jpg" alt=“螞蟻家”>
+    </div>
+
+    <!-- 右：資訊 -->
+    <div class="food-info">
+
+      <!-- ADD / TEL 標準結構 -->
+      <div class="food-meta">
+
+        <div class="meta-row">
+          <span class="label">ADD</span>
+          <div class="value">
+            부산 해운대구 구남로 34<br>
+          <span class="addr-alt">(부산 해운대구 우동 1338)</span>
+          </div>
+        </div>
+
+        <div class="meta-row">
+          <span class="label">TEL</span>
+          <div class="value">051-747-8569</div>
+        </div>
+
+      </div>
+
+      <!-- 導航按鈕 -->
+      <div class="food-actions">
+        <button class="btn btn-naver"
+          onclick="openNaver('부산 해운대구 우동 1338')">NAVER</button>
+
+        <a class="btn btn-google" target="_blank"
+          href="https://www.google.com/maps/search/?api=1&query=螞蟻家辣炒章魚+haeundae">
+          Google
+        </a>
+      </div>
+
+    </div>
+  </div>
+</div>
+        <!-- 卡片 5 -->
+<div class="food-card">
+
+  <!-- 餐廳名稱 -->
+  <h3 class="food-title">超必殺烤豬皮店</h3>
+  <div class="desc">米其林指南2025及在地人極力推薦</div>
+
+  <!-- 圖片 + 資訊並排 -->
+  <div class="food-row">
+
+    <!-- 左：圖片 -->
+    <div class="food-img">
+      <img src="images/food/food-005.jpg" alt=“超必殺烤豬皮店”>
+    </div>
+
+    <!-- 右：資訊 -->
+    <div class="food-info">
+
+      <!-- ADD / TEL 標準結構 -->
+      <div class="food-meta">
+
+        <div class="meta-row">
+          <span class="label">ADD</span>
+          <div class="value">
+            부산 해운대구 마린시티3로 23 벽산E오렌지프라자 A동 107호<br>
+          <span class="addr-alt">(부산 해운대구 우동 1435)</span>
+          </div>
+        </div>
+
+        <div class="meta-row">
+          <span class="label">TEL</span>
+          <div class="value">0507-1417-5516</div>
+        </div>
+
+      </div>
+
+      <!-- 導航按鈕 -->
+      <div class="food-actions">
+        <button class="btn btn-naver"
+          onclick="openNaver('초필살돼지구이 해운대 본점돼지고기')">NAVER</button>
+
+        <a class="btn btn-google" target="_blank"
+          href="https://www.google.com/maps/search/?api=1&query=超必殺烤豬皮店">
+          Google
+        </a>
+      </div>
+
+    </div>
+  </div>
+</div>
+
 
         <!-- 再加餐廳就複製 food-card -->
       </div>
