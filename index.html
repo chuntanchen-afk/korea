@@ -374,6 +374,44 @@
     }
     #food .food-img img{height:100px}
   }
+  /* =========================
+   FLOATING REFRESH BUTTON
+   ========================= */
+.refresh-fab{
+  position: fixed;
+  right: 14px;
+  bottom: 14px;
+  z-index: 9999;
+  border: 1px solid rgba(0,0,0,.10);
+  background: #fff;
+  color: rgba(18,30,45,.85);
+  padding: 10px 12px;
+  border-radius: 999px;
+  font-size: 12px;
+  font-weight: 900;
+  box-shadow: 0 12px 30px rgba(0,0,0,.10);
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  cursor: pointer;
+  -webkit-tap-highlight-color: transparent;
+}
+.refresh-fab:active{ transform: scale(.98); }
+
+.refresh-fab small{
+  font-size: 11px;
+  font-weight: 900;
+  color: rgba(0,0,0,.45);
+}
+
+/* 避免擋到 iPhone 底部手勢區 */
+@supports (padding: max(0px)){
+  .refresh-fab{
+    bottom: calc(14px + env(safe-area-inset-bottom));
+    right: calc(14px + env(safe-area-inset-right));
+  }
+}
+
 </style>
 </head>
 
@@ -1521,6 +1559,20 @@
       const q = encodeURIComponent(keyword);
       window.location.href = "nmap://search?query=" + q + "&appname=BusanTrip2026";
     }
+    
+    function manualRefresh(){
+  // 盡量確保拿到最新檔案（PWA / Safari 都相對穩）
+  try{
+    if ('caches' in window) {
+      caches.keys()
+        .then(keys => Promise.all(keys.map(k => caches.delete(k))))
+        .finally(() => location.reload());
+      return;
+    }
+  }catch(e){}
+  location.reload();
+}
+
 
     /* Swipe navigation (Day01~Day06 only) */
     const dayOrder = ['d1','d2','d3','d4','d5','d6'];
@@ -1571,5 +1623,8 @@
     });
   }
 </script>
+<button class="refresh-fab" type="button" onclick="manualRefresh()">
+  🔄 更新 <small>Reload</small>
+</button>
 </body>
 </html>
