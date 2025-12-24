@@ -415,88 +415,91 @@
     }
   }
 
-  /* =========================
-     TAXI CARD (MODAL)
-     ========================= */
-  .taxi-modal{
-    position: fixed;
-    inset: 0;
-    z-index: 9998;
-    display: none;
-    align-items: flex-end;
-    justify-content: center;
-    padding: 16px;
-    background: rgba(0,0,0,.45);
-    backdrop-filter: blur(6px);
-  }
-  .taxi-modal.show{ display:flex; }
+ /* =========================
+   TAXI · DRIVER MODE (SINGLE SOURCE OF TRUTH)
+   ========================= */
+.taxi-modal{
+  position: fixed;
+  inset: 0;
+  z-index: 9998;
+  display: none;
+  align-items: center;
+  justify-content: center;
+  padding: 18px;
+  background: rgba(0,0,0,.55);
+  backdrop-filter: blur(6px);
+}
+.taxi-modal.show{ display:flex; }
 
-  .taxi-sheet{
-    width: min(520px, 100%);
-    border-radius: 18px;
-    border: 1px solid rgba(255,255,255,.18);
-    background: rgba(255,255,255,.96);
-    box-shadow: 0 18px 60px rgba(0,0,0,.22);
-    overflow: hidden;
-    transform: translateY(10px);
-    animation: taxiIn .18s ease both;
-  }
-  @keyframes taxiIn{ to{ transform: translateY(0); } }
+.taxi-sheet{
+  width: min(980px, 100%);
+  border-radius: 22px;
+  background: rgba(16, 26, 39, .96);
+  border: 1px solid rgba(197,164,126,.35);
+  box-shadow: 0 24px 80px rgba(0,0,0,.35);
+  overflow: hidden;
+}
 
-  .taxi-top{
-    display:flex;
-    align-items:center;
-    justify-content:space-between;
-    gap:10px;
-    padding: 12px 14px;
-    border-bottom: 1px solid rgba(0,0,0,.06);
-  }
-  .taxi-top .ttl{
-    font-weight: 900;
-    color: rgba(18,30,45,.92);
-    letter-spacing: .2px;
-  }
-  .taxi-close{
-    border: 1px solid rgba(0,0,0,.10);
-    background:#fff;
-    border-radius: 999px;
-    padding: 6px 10px;
-    font-weight: 900;
-    cursor: pointer;
-  }
+.taxi-top{
+  display:flex;
+  align-items:center;
+  justify-content:space-between;
+  gap:10px;
+  padding: 14px 16px;
+  border-bottom: 1px solid rgba(255,255,255,.10);
+}
+.taxi-top .ttl{
+  font-weight: 900;
+  font-size: 16px;
+  color: rgba(255,255,255,.92);
+  letter-spacing: .4px;
+}
+.taxi-close{
+  background: rgba(255,255,255,.10);
+  border: 1px solid rgba(255,255,255,.16);
+  border-radius: 999px;
+  padding: 10px 14px;
+  font-weight: 900;
+  color: rgba(255,255,255,.90);
+  cursor: pointer;
+}
 
-  .taxi-body{ padding: 14px; }
+.taxi-body{ padding: 18px; }
 
-  .taxi-kr{
-    border-radius: 14px;
-    border: 1px solid rgba(0,0,0,.08);
-    background: rgba(0,0,0,.03);
-    padding: 12px 12px;
-  }
-  .taxi-kr .line1{
-    font-weight: 900;
-    font-size: 16px;
-    color: rgba(0,0,0,.72);
-    letter-spacing: .1px;
-  }
-  .taxi-kr .place{
-    margin-top: 8px;
-    font-weight: 900;
-    font-size: 18px;
-    color: rgba(197,164,126,.95);
-    word-break: break-word;
-  }
-  .taxi-sub{
-    margin-top: 10px;
-    font-size: 12px;
-    color: rgba(0,0,0,.52);
-  }
-  .taxi-actions{
-    display:flex;
-    gap:8px;
-    flex-wrap:wrap;
-    margin-top: 12px;
-  }
+.taxi-kr{
+  background: rgba(0,0,0,.35);
+  border: 1px solid rgba(255,255,255,.10);
+  border-radius: 16px;
+  padding: 18px;
+}
+
+.taxi-kr .line1{
+  font-size: 22px;
+  font-weight: 900;
+  color: rgba(255,255,255,.95);
+}
+
+.taxi-kr .place{
+  margin-top: 16px;
+  font-size: clamp(30px, 5.4vw, 56px);
+  line-height: 1.12;
+  font-weight: 900;
+  color: rgba(197,164,126,.98);
+  text-shadow: 0 2px 18px rgba(0,0,0,.35);
+}
+
+.taxi-sub{
+  margin-top: 14px;
+  font-size: 13px;
+  color: rgba(255,255,255,.70);
+}
+
+.taxi-actions{
+  display:flex;
+  gap:10px;
+  flex-wrap:wrap;
+  margin-top: 16px;
+}
   </style>
 </head>
 
@@ -1634,62 +1637,58 @@
       }
     }, {passive:true});
 
-    /* =========================
-       TAXI CARD
-       ========================= */
-    let _taxiKeyword = "";
-    let _taxiKoreanPlace = "";
+/* =========================
+   TAXI CARD
+   ========================= */
+let _taxiKeyword = "";
+let _taxiKoreanPlace = "";
 
-    function openTaxi(placeKo, keyword){
-      _taxiKoreanPlace = placeKo || keyword || "";
-      _taxiKeyword = keyword || placeKo || "";
+const taxiModal = document.getElementById("taxiModal");
+const taxiPlaceEl = document.getElementById("taxiPlace");
 
-      const modal = document.getElementById("taxiModal");
-      document.getElementById("taxiPlace").textContent = _taxiKoreanPlace || "—";
+// 事件只綁一次
+taxiModal.addEventListener("click", (e) => {
+  if (e.target && e.target.id === "taxiModal") closeTaxi();
+});
+document.addEventListener("keydown", (e) => {
+  if (e.key === "Escape") closeTaxi();
+});
 
-      modal.classList.add("show");
-      modal.setAttribute("aria-hidden","false");
+function openTaxi(placeKo, keyword){
+  _taxiKoreanPlace = placeKo || keyword || "";
+  _taxiKeyword = keyword || placeKo || "";
 
-      modal.addEventListener("click", taxiBackdropClose);
-      document.addEventListener("keydown", taxiEscClose);
-    }
+  taxiPlaceEl.textContent = _taxiKoreanPlace || "—";
 
-    function closeTaxi(){
-      const modal = document.getElementById("taxiModal");
-      modal.classList.remove("show");
-      modal.setAttribute("aria-hidden","true");
+  taxiModal.classList.add("show");
+  taxiModal.setAttribute("aria-hidden","false");
+}
 
-      modal.removeEventListener("click", taxiBackdropClose);
-      document.removeEventListener("keydown", taxiEscClose);
-    }
+function closeTaxi(){
+  taxiModal.classList.remove("show");
+  taxiModal.setAttribute("aria-hidden","true");
+}
 
-    function taxiBackdropClose(e){
-      if(e.target && e.target.id === "taxiModal") closeTaxi();
-    }
+function copyTaxi(){
+  const text = `기사님, 여기로 가 주세요.\n${_taxiKoreanPlace}`;
+  if(navigator.clipboard && window.isSecureContext){
+    navigator.clipboard.writeText(text);
+  }else{
+    const ta = document.createElement("textarea");
+    ta.value = text;
+    document.body.appendChild(ta);
+    ta.select();
+    document.execCommand("copy");
+    document.body.removeChild(ta);
+  }
+}
 
-    function taxiEscClose(e){
-      if(e.key === "Escape") closeTaxi();
-    }
+function naverFromTaxi(){
+  if(typeof openNaver === "function"){
+    openNaver(_taxiKeyword || _taxiKoreanPlace);
+  }
+}
 
-    function copyTaxi(){
-      const text = `기사님, 여기로 가 주세요.\n${_taxiKoreanPlace}`;
-      if(navigator.clipboard && window.isSecureContext){
-        navigator.clipboard.writeText(text);
-      }else{
-        const ta = document.createElement("textarea");
-        ta.value = text;
-        document.body.appendChild(ta);
-        ta.select();
-        document.execCommand("copy");
-        document.body.removeChild(ta);
-      }
-    }
-
-    function naverFromTaxi(){
-      if(typeof openNaver === "function"){
-        openNaver(_taxiKeyword || _taxiKoreanPlace);
-      }
-    }
   </script>
 
   <script>
