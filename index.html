@@ -5,7 +5,7 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>BUSAN 2026 | Winter Luxury</title>
 
-    <!-- PWA / App-like settings -->
+  <!-- PWA / App-like settings -->
   <link rel="manifest" href="manifest.webmanifest">
   <meta name="theme-color" content="#121e2d">
   <meta name="apple-mobile-web-app-capable" content="yes">
@@ -47,12 +47,12 @@
   .card{background:var(--card);border:1px solid var(--line);border-radius:var(--r2);box-shadow:var(--soft);overflow:hidden}
   .pad{padding:18px}
 
-  /* Section header (fixed typo) */
+  /* Section header */
   .section-head{display:flex;justify-content:space-between;gap:12px;align-items:baseline;margin:6px 4px 12px}
   .section-head h2{margin:0;font-family:var(--serif);font-size:22px;color:var(--ink)}
   .hint{font-size:12px;color:var(--muted);letter-spacing:.6px;text-transform:uppercase;white-space:nowrap}
 
-  /* Backward compatibility: if HTML still uses .section-title wrapper */
+  /* Backward compatibility */
   .section-title{display:flex;justify-content:space-between;gap:12px;align-items:baseline;margin:6px 4px 12px}
   .section-title h2{margin:0;font-family:var(--serif);font-size:22px;color:var(--ink)}
 
@@ -148,7 +148,6 @@
 
   /* =========================
      SHARED DESCRIPTION TEXT
-     (Timeline + Food 共用)
      ========================= */
   .desc{
     font-size:14px;
@@ -193,6 +192,13 @@
   }
   .btn-naver{border-color:rgba(3,199,90,.45);color:rgba(3,199,90,.95);background:rgba(3,199,90,.06)}
   .btn-google{border-color:rgba(66,133,244,.45);color:rgba(66,133,244,.95);background:rgba(66,133,244,.06)}
+
+  /* Taxi button style */
+  .btn-taxi{
+    border-color: rgba(197,164,126,.45);
+    color: rgba(18,30,45,.92);
+    background: rgba(197,164,126,.10);
+  }
 
   /* =========================
      STAY BLOCK
@@ -251,7 +257,6 @@
 
   /* =========================
      FOOD PAGE (SCOPED)
-     - desc is shared globally
      ========================= */
   #food details.area{
     background: rgba(255,255,255,0.92);
@@ -374,45 +379,125 @@
     }
     #food .food-img img{height:100px}
   }
+
   /* =========================
-   FLOATING REFRESH BUTTON
-   ========================= */
-.refresh-fab{
-  position: fixed;
-  right: 14px;
-  bottom: 14px;
-  z-index: 9999;
-  border: 1px solid rgba(0,0,0,.10);
-  background: #fff;
-  color: rgba(18,30,45,.85);
-  padding: 10px 12px;
-  border-radius: 999px;
-  font-size: 12px;
-  font-weight: 900;
-  box-shadow: 0 12px 30px rgba(0,0,0,.10);
-  display: inline-flex;
-  align-items: center;
-  gap: 8px;
-  cursor: pointer;
-  -webkit-tap-highlight-color: transparent;
-}
-.refresh-fab:active{ transform: scale(.98); }
-
-.refresh-fab small{
-  font-size: 11px;
-  font-weight: 900;
-  color: rgba(0,0,0,.45);
-}
-
-/* 避免擋到 iPhone 底部手勢區 */
-@supports (padding: max(0px)){
+     FLOATING REFRESH BUTTON
+     ========================= */
   .refresh-fab{
-    bottom: calc(14px + env(safe-area-inset-bottom));
-    right: calc(14px + env(safe-area-inset-right));
+    position: fixed;
+    right: 14px;
+    bottom: 14px;
+    z-index: 9999;
+    border: 1px solid rgba(0,0,0,.10);
+    background: #fff;
+    color: rgba(18,30,45,.85);
+    padding: 10px 12px;
+    border-radius: 999px;
+    font-size: 12px;
+    font-weight: 900;
+    box-shadow: 0 12px 30px rgba(0,0,0,.10);
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+    cursor: pointer;
+    -webkit-tap-highlight-color: transparent;
   }
-}
+  .refresh-fab:active{ transform: scale(.98); }
+  .refresh-fab small{
+    font-size: 11px;
+    font-weight: 900;
+    color: rgba(0,0,0,.45);
+  }
+  @supports (padding: max(0px)){
+    .refresh-fab{
+      bottom: calc(14px + env(safe-area-inset-bottom));
+      right: calc(14px + env(safe-area-inset-right));
+    }
+  }
 
-</style>
+  /* =========================
+     TAXI CARD (MODAL)
+     ========================= */
+  .taxi-modal{
+    position: fixed;
+    inset: 0;
+    z-index: 9998;
+    display: none;
+    align-items: flex-end;
+    justify-content: center;
+    padding: 16px;
+    background: rgba(0,0,0,.45);
+    backdrop-filter: blur(6px);
+  }
+  .taxi-modal.show{ display:flex; }
+
+  .taxi-sheet{
+    width: min(520px, 100%);
+    border-radius: 18px;
+    border: 1px solid rgba(255,255,255,.18);
+    background: rgba(255,255,255,.96);
+    box-shadow: 0 18px 60px rgba(0,0,0,.22);
+    overflow: hidden;
+    transform: translateY(10px);
+    animation: taxiIn .18s ease both;
+  }
+  @keyframes taxiIn{ to{ transform: translateY(0); } }
+
+  .taxi-top{
+    display:flex;
+    align-items:center;
+    justify-content:space-between;
+    gap:10px;
+    padding: 12px 14px;
+    border-bottom: 1px solid rgba(0,0,0,.06);
+  }
+  .taxi-top .ttl{
+    font-weight: 900;
+    color: rgba(18,30,45,.92);
+    letter-spacing: .2px;
+  }
+  .taxi-close{
+    border: 1px solid rgba(0,0,0,.10);
+    background:#fff;
+    border-radius: 999px;
+    padding: 6px 10px;
+    font-weight: 900;
+    cursor: pointer;
+  }
+
+  .taxi-body{ padding: 14px; }
+
+  .taxi-kr{
+    border-radius: 14px;
+    border: 1px solid rgba(0,0,0,.08);
+    background: rgba(0,0,0,.03);
+    padding: 12px 12px;
+  }
+  .taxi-kr .line1{
+    font-weight: 900;
+    font-size: 16px;
+    color: rgba(0,0,0,.72);
+    letter-spacing: .1px;
+  }
+  .taxi-kr .place{
+    margin-top: 8px;
+    font-weight: 900;
+    font-size: 18px;
+    color: rgba(197,164,126,.95);
+    word-break: break-word;
+  }
+  .taxi-sub{
+    margin-top: 10px;
+    font-size: 12px;
+    color: rgba(0,0,0,.52);
+  }
+  .taxi-actions{
+    display:flex;
+    gap:8px;
+    flex-wrap:wrap;
+    margin-top: 12px;
+  }
+  </style>
 </head>
 
 <body>
@@ -448,13 +533,10 @@
 
         <div class="vibe"><b>Quick note</b>：請記得攜帶護照！</div>
 
-        <!-- 可選：總覽插圖（你自己做） -->
-
         <figure class="illus">
           <img src="images/overview.png" alt="Overview Illustration">
           <figcaption>Cover Illustration · Busan Winter</figcaption>
         </figure>
-
 
         <div class="mini-grid">
           <!-- Currency -->
@@ -507,45 +589,50 @@
             </div>
           </div>
         </div>
-<!-- Overview · Hotels Summary -->
-<div style="margin-top:22px">
-  <div class="section-title">
-    <h2>Hotels</h2>
-    <div class="hint">Where we stay</div>
-  </div>
 
-  <div class="hotel-block">
-    <span class="badge">1/23 - 1/26 · 3 Nights</span>
-          <div class="hname">Shilla Stay Haeundae</div>
-          <div class="meta">
-            海雲台舒羅亞飯店 ｜ Check-out 12:00<br>
-            ADD: 부산 해운대구 해운대로570번길 46<br>
-            <span class="stay-alt">(부산 해운대구 우동 629-6)</span><br>
-            TEL: 051-912-9000
+        <!-- Overview · Hotels Summary -->
+        <div style="margin-top:22px">
+          <div class="section-title">
+            <h2>Hotels</h2>
+            <div class="hint">Where we stay</div>
           </div>
-          <div class="actions">
-            <button class="btn btn-naver" type="button" onclick="openNaver('신라스테이 해운대')">🧭 App 導航</button>
-            <a class="btn btn-google" href="https://www.google.com/maps/search/?api=1&query=Shilla+Stay+Haeundae" target="_blank" rel="noopener">🗺 Google</a>
+
+          <div class="hotel-block">
+            <span class="badge">1/23 - 1/26 · 3 Nights</span>
+            <div class="hname">Shilla Stay Haeundae</div>
+            <div class="meta">
+              海雲台舒羅亞飯店 ｜ Check-out 12:00<br>
+              ADD: 부산 해운대구 해운대로570번길 46<br>
+              <span class="stay-alt">(부산 해운대구 우동 629-6)</span><br>
+              TEL: 051-912-9000
+            </div>
+            <div class="actions">
+              <button class="btn btn-taxi" type="button"
+                onclick="openTaxi('신라스테이 해운대 (부산 해운대구 해운대로570번길 46)', '신라스테이 해운대')">🚕 Taxi</button>
+              <button class="btn btn-naver" type="button" onclick="openNaver('신라스테이 해운대')">🧭 App 導航</button>
+              <a class="btn btn-google" href="https://www.google.com/maps/search/?api=1&query=Shilla+Stay+Haeundae" target="_blank" rel="noopener">🗺 Google</a>
+            </div>
+          </div>
+
+          <div style="height:12px"></div>
+
+          <div class="hotel-block" style="background:rgba(0,0,0,.012)">
+            <span class="badge">1/26 - 1/28 · 2 Nights</span>
+            <div class="hname">Hotel Foret Premier Nampo</div>
+            <div class="meta">
+              南浦森林頂級飯店 ｜ Check-out 11:00<br>
+              ADD: 부산 중구 구덕로 54-1 호텔포레 프리미어 남포점 <br>
+              <span class="stay-alt">(부산 중구 남포동5가 8-1)</span><br>
+              TEL: 051-242-2200
+            </div>
+            <div class="actions">
+              <button class="btn btn-taxi" type="button"
+                onclick="openTaxi('호텔포레 프리미어 남포 (부산 중구 구덕로 54-1)', '호텔포레 프리미어 남포')">🚕 Taxi</button>
+              <button class="btn btn-naver" type="button" onclick="openNaver('호텔포레 프리미어 남포')">🧭 App 導航</button>
+              <a class="btn btn-google" href="https://www.google.com/maps/search/?api=1&query=Hotel+Foret+Premier+Nampo" target="_blank" rel="noopener">🗺 Google</a>
+            </div>
           </div>
         </div>
-
-  <div style="height:12px"></div>
-
-  <div class="hotel-block" style="background:rgba(0,0,0,.012)">
-    <span class="badge">1/26 - 1/28 · 2 Nights</span>
-          <div class="hname">Hotel Foret Premier Nampo</div>
-          <div class="meta">
-            南浦森林頂級飯店 ｜ Check-out 11:00<br>
-            ADD: 부산 중구 구덕로 54-1 호텔포레 프리미어 남포점 <br>
-            <span class="stay-alt">(부산 중구 남포동5가 8-1)</span><br>
-            TEL: 051-242-2200
-          </div>
-          <div class="actions">
-            <button class="btn btn-naver" type="button" onclick="openNaver('호텔포레 프리미어 남포')">🧭 App 導航</button>
-            <a class="btn btn-google" href="https://www.google.com/maps/search/?api=1&query=Hotel+Foret+Premier+Nampo" target="_blank" rel="noopener">🗺 Google</a>
-          </div>
-        </div>
-</div>
       </div>
     </section>
 
@@ -554,7 +641,6 @@
       <div class="pad">
         <div class="section-title"><h2>Day 01</h2><div class="hint">Jan 23 · Fri</div></div>
 
-        <!-- 你自己的插圖：把檔案放 images/day01-cover.jpg -->
         <figure class="illus">
           <img src="images/day01-cover.png" alt="Day 01 Illustration">
           <figcaption>Day 01 · Arrival Night</figcaption>
@@ -568,6 +654,8 @@
             <div class="title">抵達金海國際機場</div>
             <div class="desc">入境後，直接搭乘計程車前往海雲台（約 50 分鐘）。</div>
             <div class="actions">
+              <button class="btn btn-taxi" type="button"
+                onclick="openTaxi('신라스테이 해운대 (부산 해운대구 해운대로570번길 46)', '신라스테이 해운대')">🚕 Taxi</button>
               <button class="btn btn-naver" type="button" onclick="openNaver('김해국제공항')">🧭 App 導航</button>
               <a class="btn btn-google" href="https://www.google.com/maps/search/?api=1&query=Gimhae+International+Airport" target="_blank" rel="noopener">🗺 Google</a>
             </div>
@@ -589,6 +677,8 @@
               <div class="n">Shilla Stay Haeundae</div>
             </div>
             <div class="actions">
+              <button class="btn btn-taxi" type="button"
+                onclick="openTaxi('신라스테이 해운대 (부산 해운대구 해운대로570번길 46)', '신라스테이 해운대')">🚕 Taxi</button>
               <button class="btn btn-naver" type="button" onclick="openNaver('신라스테이 해운대')">🧭 App 導航</button>
               <a class="btn btn-google" href="https://www.google.com/maps/search/?api=1&query=Shilla+Stay+Haeundae" target="_blank" rel="noopener">🗺 Google</a>
             </div>
@@ -610,29 +700,22 @@
 
         <div class="vibe"><b>Morning vibe</b>：早上的光線最奢侈——把最美的留給天空膠囊。</div>
 
-<div class="event hl">
-  <span class="time">09:30 (RSVP)</span>
-  <div class="title">海雲台藍線公園（尾浦站）</div>
-  <div class="desc">搭乘天空膠囊列車往「青沙浦」，早晨光線最美。</div>
-  <div class="actions">
-    <a class="btn"
-       href="https://tket.me/nF8zzB5"
-       target="_blank"
-       rel="noopener">
-      🎫 Ticket
-    </a>
-    <button class="btn btn-naver" type="button"
-      onclick="openNaver('해운대블루라인파크 미포정거장')">
-      🧭 App 導航
-    </button>
-    <a class="btn btn-google"
-      href="https://www.google.com/maps/search/?api=1&query=Haeundae+Blue+Line+Park+Mipo+Station"
-      target="_blank" rel="noopener">
-      🗺 Google
-    </a>
-  </div>
-</div>
+        <div class="timeline">
+          <div class="event hl">
+            <span class="time">09:30 (RSVP)</span>
+            <div class="title">海雲台藍線公園（尾浦站）</div>
+            <div class="desc">搭乘天空膠囊列車往「青沙浦」，早晨光線最美。</div>
+            <div class="actions">
+              <!-- ✅ 按你的要求：加入你給的票券連結 -->
+              <a class="btn" href="https://www.tbluelinepark.com/m/mobileTicket/RS25023390397/7F130F62FB88666AB23A2A3722FB8B049324AFEDE7238141FF00D28E0B1C4FF9" target="_blank" rel="noopener">🎫 Ticket</a>
 
+              <button class="btn btn-taxi" type="button"
+                onclick="openTaxi('해운대블루라인파크 미포정거장', '해운대블루라인파크 미포정거장')">🚕 Taxi</button>
+
+              <button class="btn btn-naver" type="button" onclick="openNaver('해운대블루라인파크 미포정거장')">🧭 App 導航</button>
+              <a class="btn btn-google" href="https://www.google.com/maps/search/?api=1&query=Haeundae+Blue+Line+Park+Mipo+Station" target="_blank" rel="noopener">🗺 Google</a>
+            </div>
+          </div>
 
           <div class="event">
             <span class="time">10:10</span>
@@ -650,6 +733,8 @@
             <div class="desc">頂級汗蒸幕與無邊際水上樂園。</div>
             <div class="note">請記得攜帶泳衣</div>
             <div class="actions">
+                  <button class="btn btn-taxi" type="button"
+    onclick="openTaxi('클럽디 오아시스(LCT)', '클럽디 오아시스')">🚕 Taxi</button>
               <button class="btn btn-naver" type="button" onclick="openNaver('클럽디 오아시스')">🧭 App 導航</button>
               <a class="btn btn-google" href="https://www.google.com/maps/search/?api=1&query=ClubD+Oasis" target="_blank" rel="noopener">🗺 Google</a>
             </div>
@@ -667,9 +752,11 @@
 
           <div class="event">
             <span class="time">None</span>
-            <div class="title">釜山Emart 海雲台店 </div>
+            <div class="title">釜山Emart 海雲台店</div>
             <div class="desc">大型超市。</div>
             <div class="actions">
+                  <button class="btn btn-taxi" type="button"
+    onclick="openTaxi('이마트 해운대점', '이마트 해운대점')">🚕 Taxi</button>
               <button class="btn btn-naver" type="button" onclick="openNaver('이마트 해운대점슈퍼,마트')">🧭 App 導航</button>
               <a class="btn btn-google" href="https://www.google.com/maps/search/?api=1&query=emart+Haeundae" target="_blank" rel="noopener">🗺 Google</a>
             </div>
@@ -681,11 +768,12 @@
               <div class="n">Shilla Stay Haeundae</div>
             </div>
             <div class="actions">
+              <button class="btn btn-taxi" type="button"
+                onclick="openTaxi('신라스테이 해운대 (부산 해운대구 해운대로570번길 46)', '신라스테이 해운대')">🚕 Taxi</button>
               <button class="btn btn-naver" type="button" onclick="openNaver('신라스테이 해운대')">🧭 App 導航</button>
               <a class="btn btn-google" href="https://www.google.com/maps/search/?api=1&query=Shilla+Stay+Haeundae" target="_blank" rel="noopener">🗺 Google</a>
             </div>
           </div>
-
         </div>
       </div>
     </section>
@@ -708,6 +796,8 @@
             <div class="title">Skyline Luge 釜山斜坡滑車</div>
             <div class="desc">享受飆速快感，建議購買 3-5 次券。</div>
             <div class="actions">
+                  <button class="btn btn-taxi" type="button"
+    onclick="openTaxi('스카이라인루지 부산', '스카이라인루지 부산')">🚕 Taxi</button>
               <button class="btn btn-naver" type="button" onclick="openNaver('스카이라인루지 부산')">🧭 App 導航</button>
               <a class="btn btn-google" href="https://www.google.com/maps/search/?api=1&query=Skyline+Luge+Busan" target="_blank" rel="noopener">🗺 Google</a>
             </div>
@@ -718,6 +808,8 @@
             <div class="title">釜山樂天世界冒險樂園</div>
             <div class="desc">遊玩設施，欣賞花車遊行與城堡夜景。</div>
             <div class="actions">
+                  <button class="btn btn-taxi" type="button"
+    onclick="openTaxi('흰여울문화마을', '흰여울문화마을')">🚕 Taxi</button>
               <button class="btn btn-naver" type="button" onclick="openNaver('롯데월드 어드벤처 부산')">🧭 App 導航</button>
               <a class="btn btn-google" href="https://www.google.com/maps/search/?api=1&query=Lotte+World+Adventure+Busan" target="_blank" rel="noopener">🗺 Google</a>
             </div>
@@ -729,11 +821,12 @@
               <div class="n">Shilla Stay Haeundae</div>
             </div>
             <div class="actions">
+              <button class="btn btn-taxi" type="button"
+                onclick="openTaxi('신라스테이 해운대 (부산 해운대로570번길 46)', '신라스테이 해운대')">🚕 Taxi</button>
               <button class="btn btn-naver" type="button" onclick="openNaver('신라스테이 해운대')">🧭 App 導航</button>
               <a class="btn btn-google" href="https://www.google.com/maps/search/?api=1&query=Shilla+Stay+Haeundae" target="_blank" rel="noopener">🗺 Google</a>
             </div>
           </div>
-
         </div>
       </div>
     </section>
@@ -755,6 +848,10 @@
             <span class="time">12:00</span>
             <div class="title">飯店移動日</div>
             <div class="desc">退房，搭計程車前往南浦洞飯店寄放行李。</div>
+            <div class="actions">
+              <button class="btn btn-taxi" type="button"
+                onclick="openTaxi('호텔포레 프리미어 남포 (부산 중구 구덕로 54-1)', '호텔포레 프리미어 남포')">🚕 Taxi</button>
+            </div>
           </div>
 
           <div class="event">
@@ -762,6 +859,8 @@
             <div class="title">影島 白淺灘文化村</div>
             <div class="desc">絕影海岸散步路，海景咖啡廳休息。</div>
             <div class="actions">
+              <button class="btn btn-taxi" type="button"
+    onclick="openTaxi('흰여울문화마을', '흰여울문화마을')">🚕 Taxi</button>
               <button class="btn btn-naver" type="button" onclick="openNaver('흰여울문화마을')">🧭 App 導航</button>
               <a class="btn btn-google" href="https://www.google.com/maps/search/?api=1&query=Huinnyeoul+Culture+Village" target="_blank" rel="noopener">🗺 Google</a>
             </div>
@@ -772,6 +871,8 @@
             <div class="title">樂天百貨 光復店</div>
             <div class="desc">前往頂樓觀景台，俯瞰釜山港與影島大橋。</div>
             <div class="actions">
+                  <button class="btn btn-taxi" type="button"
+    onclick="openTaxi('롯데백화점 광복점', '롯데백화점 광복점')">🚕 Taxi</button>
               <button class="btn btn-naver" type="button" onclick="openNaver('롯데백화점 광복점')">🧭 App 導航</button>
               <a class="btn btn-google" href="https://www.google.com/maps/search/?api=1&query=Lotte+Department+Store+Gwangbok" target="_blank" rel="noopener">🗺 Google</a>
             </div>
@@ -782,6 +883,8 @@
             <div class="title">札嘎其市場</div>
             <div class="desc">晚餐首選：新鮮海鮮料理。</div>
             <div class="actions">
+                  <button class="btn btn-taxi" type="button"
+    onclick="openTaxi('자갈치시장', '자갈치시장')">🚕 Taxi</button>
               <button class="btn btn-naver" type="button" onclick="openNaver('자갈치시장')">🧭 App 導航</button>
               <a class="btn btn-google" href="https://www.google.com/maps/search/?api=1&query=Jagalchi+Market" target="_blank" rel="noopener">🗺 Google</a>
             </div>
@@ -793,11 +896,12 @@
               <div class="n">Hotel Foret Premier Nampo</div>
             </div>
             <div class="actions">
+              <button class="btn btn-taxi" type="button"
+                onclick="openTaxi('호텔포레 프리미어 남포 (부산 중구 구덕로 54-1)', '호텔포레 프리미어 남포')">🚕 Taxi</button>
               <button class="btn btn-naver" type="button" onclick="openNaver('호텔포레 프리미어 남포')">🧭 App 導航</button>
               <a class="btn btn-google" href="https://www.google.com/maps/search/?api=1&query=Hotel+Foret+Premier+Nampo" target="_blank" rel="noopener">🗺 Google</a>
             </div>
           </div>
-
         </div>
       </div>
     </section>
@@ -820,6 +924,8 @@
             <div class="title">甘川洞文化村</div>
             <div class="desc">尋找小王子，漫步彩色房子巷弄。</div>
             <div class="actions">
+                  <button class="btn btn-taxi" type="button"
+    onclick="openTaxi('감천문화마을', '감천문화마을')">🚕 Taxi</button>
               <button class="btn btn-naver" type="button" onclick="openNaver('감천문화마을')">🧭 App 導航</button>
               <a class="btn btn-google" href="https://www.google.com/maps/search/?api=1&query=Gamcheon+Culture+Village" target="_blank" rel="noopener">🗺 Google</a>
             </div>
@@ -830,6 +936,8 @@
             <div class="title">BIFF 廣場 / 國際市場</div>
             <div class="desc">深度逛街：街頭小吃、古著、生活雜貨。</div>
             <div class="actions">
+                  <button class="btn btn-taxi" type="button"
+    onclick="openTaxi('BIFF 광장', 'BIFF 광장')">🚕 Taxi</button>
               <button class="btn btn-naver" type="button" onclick="openNaver('BIFF 거리')">🧭 App 導航</button>
               <a class="btn btn-google" href="https://www.google.com/maps/search/?api=1&query=BIFF+Square" target="_blank" rel="noopener">🗺 Google</a>
             </div>
@@ -840,6 +948,8 @@
             <div class="title">龍頭山公園 (釜山塔)</div>
             <div class="desc">欣賞城市日落。</div>
             <div class="actions">
+              <button class="btn btn-taxi" type="button"
+    onclick="openTaxi('용두산공원(부산타워)', '용두산공원')">🚕 Taxi</button>
               <button class="btn btn-naver" type="button" onclick="openNaver('용두산공원')">🧭 App 導航</button>
               <a class="btn btn-google" href="https://www.google.com/maps/search/?api=1&query=Yongdusan+Park" target="_blank" rel="noopener">🗺 Google</a>
             </div>
@@ -850,6 +960,8 @@
             <div class="title">樂天超市 (光復店)</div>
             <div class="desc">最後採買機會，買齊伴手禮與零食。</div>
             <div class="actions">
+              <button class="btn btn-taxi" type="button"
+    onclick="openTaxi('롯데마트 광복점', '롯데마트 광복점')">🚕 Taxi</button>
               <button class="btn btn-naver" type="button" onclick="openNaver('롯데마트 광복점')">🧭 App 導航</button>
               <a class="btn btn-google" href="https://www.google.com/maps/search/?api=1&query=Lotte+Mart+Gwangbok" target="_blank" rel="noopener">🗺 Google</a>
             </div>
@@ -861,11 +973,12 @@
               <div class="n">Hotel Foret Premier Nampo</div>
             </div>
             <div class="actions">
+              <button class="btn btn-taxi" type="button"
+                onclick="openTaxi('호텔포레 프리미어 남포 (부산 중구 구덕로 54-1)', '호텔포레 프리미어 남포')">🚕 Taxi</button>
               <button class="btn btn-naver" type="button" onclick="openNaver('호텔포레 프리미어 남포')">🧭 App 導航</button>
               <a class="btn btn-google" href="https://www.google.com/maps/search/?api=1&query=Hotel+Foret+Premier+Nampo" target="_blank" rel="noopener">🗺 Google</a>
             </div>
           </div>
-
         </div>
       </div>
     </section>
@@ -888,6 +1001,8 @@
             <div class="title">前往金海機場 (PUS)</div>
             <div class="desc">從南浦洞搭計程車出發，預留 40 分鐘車程。</div>
             <div class="actions">
+              <button class="btn btn-taxi" type="button"
+                onclick="openTaxi('김해국제공항', '김해국제공항')">🚕 Taxi</button>
               <button class="btn btn-naver" type="button" onclick="openNaver('김해국제공항')">🧭 App 導航</button>
               <a class="btn btn-google" href="https://www.google.com/maps/search/?api=1&query=Gimhae+International+Airport" target="_blank" rel="noopener">🗺 Google</a>
             </div>
@@ -902,555 +1017,439 @@
       </div>
     </section>
 
-<section class="page card" id="food">
-  <div class="pad">
-    <div class="section-title">
-      <h2>Restaurants</h2>
-      <div class="hint">Shortlist · by area</div>
-    </div>
+    <!-- Food -->
+    <section class="page card" id="food">
+      <div class="pad">
+        <div class="section-title">
+          <h2>Restaurants</h2>
+          <div class="hint">Shortlist · by area</div>
+        </div>
 
-    <!-- Area: Haeundae -->
-    <details class="area" open>
-      <summary>
-        <span class="area-title">Haeundae · 海雲台</span>
-        <span class="area-sub">近住宿 / 海邊</span>
-      </summary>
+        <!-- Area: Haeundae -->
+        <details class="area" open>
+          <summary>
+            <span class="area-title">Haeundae · 海雲台</span>
+            <span class="area-sub">近住宿 / 海邊</span>
+          </summary>
 
-      <div class="area-body">
-        <!-- 卡片 1 -->
-<div class="food-card">
+          <div class="area-body">
 
-  <!-- 餐廳名稱 -->
-  <h3 class="food-title">Egg Drop</h3>
-  <div class="desc">超人氣雞蛋三明治。</div>
+            <!-- Card 1 -->
+            <div class="food-card">
+              <h3 class="food-title">Egg Drop</h3>
+              <div class="desc">超人氣雞蛋三明治。</div>
 
-  <!-- 圖片 + 資訊並排 -->
-  <div class="food-row">
+              <div class="food-row">
+                <div class="food-img">
+                  <img src="images/food/food-001.jpg" alt="Egg Drop">
+                </div>
 
-    <!-- 左：圖片 -->
-    <div class="food-img">
-      <img src="images/food/food-001.jpg" alt="Egg Drop">
-    </div>
+                <div class="food-info">
+                  <div class="food-meta">
+                    <div class="meta-row">
+                      <span class="label">ADD</span>
+                      <div class="value">
+                        부산 해운대구 해운대로 620 펠릭스호텔 1층 120호<br>
+                        <span class="addr-alt">(부산 해운대구 우동 539-10)</span>
+                      </div>
+                    </div>
+                    <div class="meta-row">
+                      <span class="label">TEL</span>
+                      <div class="value">051-743-7771</div>
+                    </div>
+                  </div>
 
-    <!-- 右：資訊 -->
-    <div class="food-info">
+                  <div class="food-actions">
+                    <button class="btn btn-taxi" type="button"
+                      onclick="openTaxi('에그드랍 해운대점', '에그드랍 해운대점')">🚕 Taxi</button>
+                    <button class="btn btn-naver" onclick="openNaver('에그드랍 해운대점샌드위치')">NAVER</button>
+                    <a class="btn btn-google" target="_blank" href="https://www.google.com/maps/search/?api=1&query=Egg+Drop+海雲台店">Google</a>
+                  </div>
+                </div>
+              </div>
+            </div>
 
-      <!-- ADD / TEL 標準結構 -->
-      <div class="food-meta">
+            <!-- Card 2 -->
+            <div class="food-card">
+              <h3 class="food-title">DIART coffee</h3>
+              <div class="desc">招牌土耳其蜂蜜奶油吐司（Kaymak）</div>
 
-        <div class="meta-row">
-          <span class="label">ADD</span>
-          <div class="value">
-            부산 해운대구 해운대로 620 펠릭스호텔 1층 120호<br>
-            <span class="addr-alt">(부산 해운대구 우동 539-10)</span>
+              <div class="food-row">
+                <div class="food-img">
+                  <img src="images/food/food-002.jpg" alt="DIART coffee">
+                </div>
+
+                <div class="food-info">
+                  <div class="food-meta">
+                    <div class="meta-row">
+                      <span class="label">ADD</span>
+                      <div class="value">
+                        부산광역시 해운대구 청사포로128번길 12 디아트커피<br>
+                        <span class="addr-alt">(부산 해운대구 중동 586)</span>
+                      </div>
+                    </div>
+                    <div class="meta-row">
+                      <span class="label">TEL</span>
+                      <div class="value"></div>
+                    </div>
+                  </div>
+
+                  <div class="food-actions">
+                    <button class="btn btn-taxi" type="button"
+                      onclick="openTaxi('디아트커피 (부산 해운대구 중동 586)', '디아트커피')">🚕 Taxi</button>
+                    <button class="btn btn-naver" onclick="openNaver('부산 해운대구 중동 586')">NAVER</button>
+                    <a class="btn btn-google" target="_blank" href="https://www.google.com/maps/search/?api=1&query=DIART+coffee+Busan">Google</a>
+                  </div>
+                </div>
+              </div>
+            </div>
+
+            <!-- Card 3 -->
+            <div class="food-card">
+              <h3 class="food-title">60雞炸雞 (60계치킨, 60 Chicken)</h3>
+              <div class="desc">超人氣『CCC Chicken 크크크 치킨』口味</div>
+
+              <div class="food-row">
+                <div class="food-img">
+                  <img src="images/food/food-003.jpg" alt="60 Chicken">
+                </div>
+
+                <div class="food-info">
+                  <div class="food-meta">
+                    <div class="meta-row">
+                      <span class="label">ADD</span>
+                      <div class="value">
+                        부산광역시 해운대구 청사포로128번길 12 디아트커피<br>
+                        <span class="addr-alt">(부산 해운대구 중동 1380-22)</span>
+                      </div>
+                    </div>
+                    <div class="meta-row">
+                      <span class="label">TEL</span>
+                      <div class="value">051-741-8809</div>
+                    </div>
+                  </div>
+
+                  <div class="food-actions">
+                    <button class="btn btn-taxi" type="button"
+                      onclick="openTaxi('60계치킨 부산해운대점', '60계치킨 부산해운대점')">🚕 Taxi</button>
+                    <button class="btn btn-naver" onclick="openNaver('60계치킨 부산해운대점치킨,닭강정')">NAVER</button>
+                    <a class="btn btn-google" target="_blank" href="https://www.google.com/maps/search/?api=1&query=60th+Limited+Chicken">Google</a>
+                  </div>
+                </div>
+              </div>
+            </div>
+
+            <!-- Card 4 -->
+            <div class="food-card">
+              <h3 class="food-title">螞蟻家辣炒章魚</h3>
+              <div class="desc">53年以上在地老店！白飯殺手</div>
+
+              <div class="food-row">
+                <div class="food-img">
+                  <img src="images/food/food-004.jpg" alt="螞蟻家">
+                </div>
+
+                <div class="food-info">
+                  <div class="food-meta">
+                    <div class="meta-row">
+                      <span class="label">ADD</span>
+                      <div class="value">
+                        부산 해운대구 구남로 34<br>
+                        <span class="addr-alt">(부산 해운대구 우동 1338)</span>
+                      </div>
+                    </div>
+                    <div class="meta-row">
+                      <span class="label">TEL</span>
+                      <div class="value">051-747-8569</div>
+                    </div>
+                  </div>
+
+                  <div class="food-actions">
+                    <button class="btn btn-taxi" type="button"
+                      onclick="openTaxi('개미집 해운대점 (부산 해운대구 구남로 34)', '개미집 해운대점')">🚕 Taxi</button>
+                    <button class="btn btn-naver" onclick="openNaver('부산 해운대구 우동 1338')">NAVER</button>
+                    <a class="btn btn-google" target="_blank" href="https://www.google.com/maps/search/?api=1&query=螞蟻家辣炒章魚+haeundae">Google</a>
+                  </div>
+                </div>
+              </div>
+            </div>
+
+            <!-- Card 5 -->
+            <div class="food-card">
+              <h3 class="food-title">超必殺烤豬皮店</h3>
+              <div class="desc">米其林指南2025及在地人極力推薦</div>
+
+              <div class="food-row">
+                <div class="food-img">
+                  <img src="images/food/food-005.jpg" alt="超必殺烤豬皮店">
+                </div>
+
+                <div class="food-info">
+                  <div class="food-meta">
+                    <div class="meta-row">
+                      <span class="label">ADD</span>
+                      <div class="value">
+                        부산 해운대구 마린시티3로 23 벽산E오렌지프라자 A동 107호<br>
+                        <span class="addr-alt">(부산 해운대구 우동 1435)</span>
+                      </div>
+                    </div>
+                    <div class="meta-row">
+                      <span class="label">TEL</span>
+                      <div class="value">0507-1417-5516</div>
+                    </div>
+                  </div>
+
+                  <div class="food-actions">
+                    <button class="btn btn-taxi" type="button"
+                      onclick="openTaxi('초필살돼지구이 해운대 본점', '초필살돼지구이 해운대 본점')">🚕 Taxi</button>
+                    <button class="btn btn-naver" onclick="openNaver('초필살돼지구이 해운대 본점돼지고기')">NAVER</button>
+                    <a class="btn btn-google" target="_blank" href="https://www.google.com/maps/search/?api=1&query=超必殺烤豬皮店">Google</a>
+                  </div>
+                </div>
+              </div>
+            </div>
+
+            <!-- Card 6 -->
+            <div class="food-card">
+              <h3 class="food-title">嚴湧帛豬肉湯飯 海雲台店</h3>
+              <div class="desc">釜山式 & 密陽式豬肉湯飯名店</div>
+
+              <div class="food-row">
+                <div class="food-img">
+                  <img src="images/food/food-006.jpg" alt="嚴湧帛豬肉湯飯">
+                </div>
+
+                <div class="food-info">
+                  <div class="food-meta">
+                    <div class="meta-row">
+                      <span class="label">ADD</span>
+                      <div class="value">
+                        부산 해운대구 구남로24번길 39<br>
+                        <span class="addr-alt">(부산 해운대구 우동 635-6)</span>
+                      </div>
+                    </div>
+                    <div class="meta-row">
+                      <span class="label">TEL</span>
+                      <div class="value">0507-1374-3988</div>
+                    </div>
+                  </div>
+
+                  <div class="food-actions">
+                    <button class="btn btn-taxi" type="button"
+                      onclick="openTaxi('엄용백 돼지국밥 해운대점', '엄용백 돼지국밥 해운대점')">🚕 Taxi</button>
+                    <button class="btn btn-naver" onclick="openNaver('엄용백 돼지국밥 해운대점')">NAVER</button>
+                    <a class="btn btn-google" target="_blank" href="https://www.google.com/maps/search/?api=1&query=엄용백+돼지국밥+해운대점">Google</a>
+                  </div>
+                </div>
+              </div>
+            </div>
+
+            <!-- Card 10 -->
+            <div class="food-card">
+              <h3 class="food-title">水邊最高豬肉湯飯 (尾浦店)</h3>
+              <div class="desc">釜山三大豬肉湯飯之一，推薦「抗正肉(松阪豬)湯飯」。</div>
+
+              <div class="food-row">
+                <div class="food-img">
+                  <img src="images/food/food-010.jpg" alt="水邊最高豬肉湯飯">
+                </div>
+
+                <div class="food-info">
+                  <div class="food-meta">
+                    <div class="meta-row">
+                      <span class="label">ADD</span>
+                      <div class="value">
+                        부산 해운대구 달맞이길62번길 27<br>
+                        <span class="addr-alt">(중동 1032)</span>
+                      </div>
+                    </div>
+                    <div class="meta-row">
+                      <span class="label">TEL</span>
+                      <div class="value">0507-1488-2256</div>
+                    </div>
+                    <div class="meta-row">
+                      <span class="label">TIME</span>
+                      <div class="value">24小時營業</div>
+                    </div>
+                  </div>
+
+                  <div class="food-actions">
+                    <button class="btn btn-taxi" type="button"
+                      onclick="openTaxi('수변최고돼지국밥 미포점', '수변최고돼지국밥 미포점')">🚕 Taxi</button>
+                    <button class="btn btn-naver" onclick="openNaver('수변최고돼지국밥 미포점')">NAVER</button>
+                    <a class="btn btn-google" target="_blank" href="https://www.google.com/maps/search/?api=1&query=水邊最高豬肉湯飯&query_place_id=ChIJdeWjcgCNaDURdLmpwK1bhlQ">Google</a>
+                  </div>
+                </div>
+              </div>
+            </div>
+
           </div>
-        </div>
+        </details>
 
-        <div class="meta-row">
-          <span class="label">TEL</span>
-          <div class="value">051-743-7771</div>
-        </div>
+        <!-- Area: Nampo -->
+        <details class="area">
+          <summary>
+            <span class="area-title">Nampo · 南浦洞</span>
+            <span class="area-sub">市場 / 夜生活</span>
+          </summary>
 
-      </div>
+          <div class="area-body">
+            <div class="food-card">
+              <h3 class="food-title">三進魚糕 (影島本店)</h3>
+              <div class="desc">韓國魚糕始祖，像麵包店一樣夾取，必吃「炸蝦魚糕」。</div>
 
-      <!-- 導航按鈕 -->
-      <div class="food-actions">
-        <button class="btn btn-naver"
-          onclick="openNaver('에그드랍 해운대점샌드위치')">NAVER</button>
+              <div class="food-row">
+                <div class="food-img">
+                  <img src="images/food/food-011.jpg" alt="三進魚糕">
+                </div>
 
-        <a class="btn btn-google" target="_blank"
-          href="https://www.google.com/maps/search/?api=1&query=Egg+Drop+海雲台店">
-          Google
-        </a>
-      </div>
+                <div class="food-info">
+                  <div class="food-meta">
+                    <div class="meta-row">
+                      <span class="label">ADD</span>
+                      <div class="value">
+                        부산 영도구 태종로99번길 36<br>
+                        <span class="addr-alt">(봉래동2가 39-1)</span>
+                      </div>
+                    </div>
+                    <div class="meta-row">
+                      <span class="label">TEL</span>
+                      <div class="value">051-412-5468</div>
+                    </div>
+                    <div class="meta-row">
+                      <span class="label">TIME</span>
+                      <div class="value">09:00 - 19:00</div>
+                    </div>
+                  </div>
 
-    </div>
-  </div>
-</div>
-        <!-- 卡片 2 -->
-<div class="food-card">
-
-  <!-- 餐廳名稱 -->
-  <h3 class="food-title">DIART coffee</h3>
-  <div class="desc">招牌土耳其蜂蜜奶油吐司（Kaymak）</div>
-
-  <!-- 圖片 + 資訊並排 -->
-  <div class="food-row">
-
-    <!-- 左：圖片 -->
-    <div class="food-img">
-      <img src="images/food/food-002.jpg" alt="DIART coffee">
-    </div>
-
-    <!-- 右：資訊 -->
-    <div class="food-info">
-
-      <!-- ADD / TEL 標準結構 -->
-      <div class="food-meta">
-
-        <div class="meta-row">
-          <span class="label">ADD</span>
-          <div class="value">
-            부산광역시 해운대구 청사포로128번길 12 디아트커피<br>
-          <span class="addr-alt">(부산 해운대구 중동 586)</span>
+                  <div class="food-actions">
+                    <button class="btn btn-taxi" type="button"
+                      onclick="openTaxi('삼진어묵 본점', '삼진어묵 본점')">🚕 Taxi</button>
+                    <button class="btn btn-naver" onclick="openNaver('삼진어묵 본점')">NAVER</button>
+                    <a class="btn btn-google" target="_blank" href="https://www.google.com/maps/search/?api=1&query=三津魚餅本店&query_place_id=ChIJZX4drhPpaDURHtzv5OmjLuY">Google</a>
+                  </div>
+                </div>
+              </div>
+            </div>
           </div>
-        </div>
+        </details>
 
-        <div class="meta-row">
-          <span class="label">TEL</span>
-          <div class="value"> </div>
-        </div>
+        <!-- Area: Seomyeon -->
+        <details class="area">
+          <summary>
+            <span class="area-title">Seomyeon · 西面</span>
+            <span class="area-sub">購物 / 交通樞紐</span>
+          </summary>
 
-      </div>
+          <div class="area-body">
 
-      <!-- 導航按鈕 -->
-      <div class="food-actions">
-        <button class="btn btn-naver"
-          onclick="openNaver('부산 해운대구 중동 586')">NAVER</button>
+            <div class="food-card">
+              <h3 class="food-title">烤肉的男子 西面店</h3>
+              <div class="desc">專人代烤 輕鬆享受美味烤肉</div>
 
-        <a class="btn btn-google" target="_blank"
-          href="https://www.google.com/maps/search/?api=1&query=DIART+coffee+Busan">
-          Google
-        </a>
-      </div>
+              <div class="food-row">
+                <div class="food-img">
+                  <img src="images/food/food-007.jpg" alt="烤肉的男子">
+                </div>
 
-    </div>
-  </div>
-</div>
+                <div class="food-info">
+                  <div class="food-meta">
+                    <div class="meta-row">
+                      <span class="label">ADD</span>
+                      <div class="value">
+                        부산 부산진구 동천로95번길 13<br>
+                        <span class="addr-alt">(부산 부산진구 부전동 168-367)</span>
+                      </div>
+                    </div>
+                    <div class="meta-row">
+                      <span class="label">TEL</span>
+                      <div class="value">051-804-3809</div>
+                    </div>
+                  </div>
 
-        <!-- 卡片 3 -->
-<div class="food-card">
+                  <div class="food-actions">
+                    <button class="btn btn-taxi" type="button"
+                      onclick="openTaxi('고기굽는남자 서면점', '고기굽는남자 서면점')">🚕 Taxi</button>
+                    <button class="btn btn-naver" onclick="openNaver('고기굽는남자 서면점')">NAVER</button>
+                    <a class="btn btn-google" target="_blank" href="https://www.google.com/maps/search/?api=1&query=고기굽는남자+서면점">Google</a>
+                  </div>
+                </div>
+              </div>
+            </div>
 
-  <!-- 餐廳名稱 -->
-  <h3 class="food-title">60雞炸雞 (60계치킨, 60 Chicken)</h3>
-  <div class="desc">超人氣『CCC Chicken 크크크 치킨』口味</div>
+            <div class="food-card">
+              <h3 class="food-title">Old Mansion (老宅邸 燒肉)</h3>
+              <div class="desc">田浦咖啡街 復古老宅熟成豬肉</div>
 
-  <!-- 圖片 + 資訊並排 -->
-  <div class="food-row">
+              <div class="food-row">
+                <div class="food-img">
+                  <img src="images/food/food-008.jpg" alt="Old Mansion">
+                </div>
 
-    <!-- 左：圖片 -->
-    <div class="food-img">
-      <img src="images/food/food-003.jpg" alt="60 Chicken">
-    </div>
+                <div class="food-info">
+                  <div class="food-meta">
+                    <div class="meta-row">
+                      <span class="label">ADD</span>
+                      <div class="value">
+                        부산 부산진구 전포대로209번길 17-6<br>
+                        <span class="addr-alt">(부산 부산진구 전포동 687-18)</span>
+                      </div>
+                    </div>
+                    <div class="meta-row">
+                      <span class="label">TEL</span>
+                      <div class="value">0507-1413-2213</div>
+                    </div>
+                  </div>
 
-    <!-- 右：資訊 -->
-    <div class="food-info">
+                  <div class="food-actions">
+                    <button class="btn btn-taxi" type="button"
+                      onclick="openTaxi('올드맨션', '올드맨션')">🚕 Taxi</button>
+                    <button class="btn btn-naver" onclick="openNaver('올드맨션')">NAVER</button>
+                    <a class="btn btn-google" target="_blank" href="https://www.google.com/maps/search/?api=1&query=부산+올드맨션">Google</a>
+                  </div>
+                </div>
+              </div>
+            </div>
 
-      <!-- ADD / TEL 標準結構 -->
-      <div class="food-meta">
+            <div class="food-card">
+              <h3 class="food-title">83獬豸 (83 Haechi)</h3>
+              <div class="desc">西面超人氣排隊烤肉店</div>
 
-        <div class="meta-row">
-          <span class="label">ADD</span>
-          <div class="value">
-            부산광역시 해운대구 청사포로128번길 12 디아트커피<br>
-          <span class="addr-alt">(부산 해운대구 중동 1380-22)</span>
+              <div class="food-row">
+                <div class="food-img">
+                  <img src="images/food/food-009.jpg" alt="83獬豸">
+                </div>
+
+                <div class="food-info">
+                  <div class="food-meta">
+                    <div class="meta-row">
+                      <span class="label">ADD</span>
+                      <div class="value">
+                        부산 부산진구 서전로 11-1<br>
+                        <span class="addr-alt">(부산 부산진구 부전동 142-8)</span>
+                      </div>
+                    </div>
+                    <div class="meta-row">
+                      <span class="label">TEL</span>
+                      <div class="value">051-817-8377</div>
+                    </div>
+                  </div>
+
+                  <div class="food-actions">
+                    <button class="btn btn-taxi" type="button"
+                      onclick="openTaxi('83해치', '83해치')">🚕 Taxi</button>
+                    <button class="btn btn-naver" onclick="openNaver('83해치')">NAVER</button>
+                    <a class="btn btn-google" target="_blank" href="https://www.google.com/maps/search/?api=1&query=83해치">Google</a>
+                  </div>
+                </div>
+              </div>
+            </div>
+
           </div>
-        </div>
-
-        <div class="meta-row">
-          <span class="label">TEL</span>
-          <div class="value">051-741-8809</div>
-        </div>
+        </details>
 
       </div>
-
-      <!-- 導航按鈕 -->
-      <div class="food-actions">
-        <button class="btn btn-naver"
-          onclick="openNaver('60계치킨 부산해운대점치킨,닭강정')">NAVER</button>
-
-        <a class="btn btn-google" target="_blank"
-          href="https://www.google.com/maps/search/?api=1&query=60th+Limited+Chicken">
-          Google
-        </a>
-      </div>
-
-    </div>
-  </div>
-</div>
-        <!-- 卡片 4 -->
-<div class="food-card">
-
-  <!-- 餐廳名稱 -->
-  <h3 class="food-title">螞蟻家辣炒章魚</h3>
-  <div class="desc">53年以上在地老店！白飯殺手</div>
-
-  <!-- 圖片 + 資訊並排 -->
-  <div class="food-row">
-
-    <!-- 左：圖片 -->
-    <div class="food-img">
-      <img src="images/food/food-004.jpg" alt="螞蟻家">
-    </div>
-
-    <!-- 右：資訊 -->
-    <div class="food-info">
-
-      <!-- ADD / TEL 標準結構 -->
-      <div class="food-meta">
-
-        <div class="meta-row">
-          <span class="label">ADD</span>
-          <div class="value">
-            부산 해운대구 구남로 34<br>
-          <span class="addr-alt">(부산 해운대구 우동 1338)</span>
-          </div>
-        </div>
-
-        <div class="meta-row">
-          <span class="label">TEL</span>
-          <div class="value">051-747-8569</div>
-        </div>
-
-      </div>
-
-      <!-- 導航按鈕 -->
-      <div class="food-actions">
-        <button class="btn btn-naver"
-          onclick="openNaver('부산 해운대구 우동 1338')">NAVER</button>
-
-        <a class="btn btn-google" target="_blank"
-          href="https://www.google.com/maps/search/?api=1&query=螞蟻家辣炒章魚+haeundae">
-          Google
-        </a>
-      </div>
-
-    </div>
-  </div>
-</div>
-        <!-- 卡片 5 -->
-<div class="food-card">
-
-  <!-- 餐廳名稱 -->
-  <h3 class="food-title">超必殺烤豬皮店</h3>
-  <div class="desc">米其林指南2025及在地人極力推薦</div>
-
-  <!-- 圖片 + 資訊並排 -->
-  <div class="food-row">
-
-    <!-- 左：圖片 -->
-    <div class="food-img">
-      <img src="images/food/food-005.jpg" alt="超必殺烤豬皮店">
-    </div>
-
-    <!-- 右：資訊 -->
-    <div class="food-info">
-
-      <!-- ADD / TEL 標準結構 -->
-      <div class="food-meta">
-
-        <div class="meta-row">
-          <span class="label">ADD</span>
-          <div class="value">
-            부산 해운대구 마린시티3로 23 벽산E오렌지프라자 A동 107호<br>
-          <span class="addr-alt">(부산 해운대구 우동 1435)</span>
-          </div>
-        </div>
-
-        <div class="meta-row">
-          <span class="label">TEL</span>
-          <div class="value">0507-1417-5516</div>
-        </div>
-
-      </div>
-
-      <!-- 導航按鈕 -->
-      <div class="food-actions">
-        <button class="btn btn-naver"
-          onclick="openNaver('초필살돼지구이 해운대 본점돼지고기')">NAVER</button>
-
-        <a class="btn btn-google" target="_blank"
-          href="https://www.google.com/maps/search/?api=1&query=超必殺烤豬皮店">
-          Google
-        </a>
-      </div>
-
-    </div>
-  </div>
-</div>
-
-        <!-- 卡片 6 -->
-<div class="food-card">
-
-  <h3 class="food-title">嚴湧帛豬肉湯飯 海雲台店</h3>
-  <div class="desc">釜山式 & 密陽式豬肉湯飯名店</div>
-
-  <div class="food-row">
-
-    <div class="food-img">
-      <img src="images/food/food-006.jpg" alt="嚴湧帛豬肉湯飯">
-    </div>
-
-    <div class="food-info">
-
-      <div class="food-meta">
-
-        <div class="meta-row">
-          <span class="label">ADD</span>
-          <div class="value">
-            부산 해운대구 구남로24번길 39<br>
-          <span class="addr-alt">(부산 해운대구 우동 635-6)</span>
-          </div>
-        </div>
-
-        <div class="meta-row">
-          <span class="label">TEL</span>
-          <div class="value">0507-1374-3988</div>
-        </div>
-
-      </div>
-
-      <div class="food-actions">
-        <button class="btn btn-naver"
-          onclick="openNaver('엄용백 돼지국밥 해운대점')">NAVER</button>
-
-        <a class="btn btn-google" target="_blank"
-          href="https://www.google.com/maps/search/?api=1&query=엄용백+돼지국밥+해운대점">
-          Google
-        </a>
-      </div>
-
-    </div>
-  </div>
-</div>
-        <!-- 卡片 10 -->
-<div class="food-card">
-  <h3 class="food-title">水邊最高豬肉湯飯 (尾浦店)</h3>
-  <div class="desc">釜山三大豬肉湯飯之一，推薦「抗正肉(松阪豬)湯飯」。</div>
-  <div class="food-row">
-    <div class="food-img">
-      <img src="images/food/food-010.jpg" alt="水邊最高豬肉湯飯">
-    </div>
-    <div class="food-info">
-      <div class="food-meta">
-        <div class="meta-row">
-          <span class="label">ADD</span>
-          <div class="value">
-            부산 해운대구 달맞이길62번길 27<br>
-            <span class="addr-alt">(중동 1032)</span>
-          </div>
-        </div>
-        <div class="meta-row">
-          <span class="label">TEL</span>
-          <div class="value">0507-1488-2256</div>
-        </div>
-        <div class="meta-row">
-          <span class="label">TIME</span>
-          <div class="value">24小時營業</div>
-        </div>
-      </div>
-      <div class="food-actions">
-        <button class="btn btn-naver" onclick="openNaver('수변최고돼지국밥 미포점')">NAVER</button>
-        <a class="btn btn-google" target="_blank" href="https://www.google.com/maps/search/?api=1&query=水邊最高豬肉湯飯&query_place_id=ChIJdeWjcgCNaDURdLmpwK1bhlQ">Google</a>
-      </div>
-    </div>
-  </div>
-</div>
-
-
-        <!-- 再加餐廳就複製 food-card -->
-      </div>
-    </details>
-
-    <!-- Area: Nampo -->
-    <details class="area">
-      <summary>
-        <span class="area-title">Nampo · 南浦洞</span>
-        <span class="area-sub">市場 / 夜生活</span>
-      </summary>
-
-      <div class="area-body">
-        <!-- food-card... -->
-                <!-- 卡片 11 -->
-<div class="food-card">
-  <h3 class="food-title">三進魚糕 (影島本店)</h3>
-  <div class="desc">韓國魚糕始祖，像麵包店一樣夾取，必吃「炸蝦魚糕」。</div>
-  <div class="food-row">
-    <div class="food-img">
-      <img src="images/food/food-011.jpg" alt="三進魚糕">
-    </div>
-    <div class="food-info">
-      <div class="food-meta">
-        <div class="meta-row">
-          <span class="label">ADD</span>
-          <div class="value">
-            부산 영도구 태종로99번길 36<br>
-            <span class="addr-alt">(봉래동2가 39-1)</span>
-          </div>
-        </div>
-        <div class="meta-row">
-          <span class="label">TEL</span>
-          <div class="value">051-412-5468</div>
-        </div>
-        <div class="meta-row">
-          <span class="label">TIME</span>
-          <div class="value">09:00 - 19:00</div>
-        </div>
-      </div>
-      <div class="food-actions">
-        <button class="btn btn-naver" onclick="openNaver('삼진어묵 본점')">NAVER</button>
-        <a class="btn btn-google" target="_blank" 
-           href="https://www.google.com/maps/search/?api=1&query=三津魚餅本店&query_place_id=ChIJZX4drhPpaDURHtzv5OmjLuY">
-          Google
-        </a>
-      </div>
-    </div>
-  </div>
-</div>
-      </div>
-    </details>
-
-    <!-- Area: Seomyeon -->
-    <details class="area">
-      <summary>
-        <span class="area-title">Seomyeon · 西面</span>
-        <span class="area-sub">購物 / 交通樞紐</span>
-      </summary>
-
-      <div class="area-body">
-        <!-- food-card... -->
-                <!-- 卡片 7 -->
-        <div class="food-card">
-
-  <h3 class="food-title">烤肉的男子 西面店</h3>
-  <div class="desc">專人代烤 輕鬆享受美味烤肉</div>
-
-  <div class="food-row">
-
-    <div class="food-img">
-      <img src="images/food/food-007.jpg" alt="烤肉的男子">
-    </div>
-
-    <div class="food-info">
-
-      <div class="food-meta">
-
-        <div class="meta-row">
-          <span class="label">ADD</span>
-          <div class="value">
-            부산 부산진구 동천로95번길 13<br>
-          <span class="addr-alt">(부산 부산진구 부전동 168-367)</span>
-          </div>
-        </div>
-
-        <div class="meta-row">
-          <span class="label">TEL</span>
-          <div class="value">051-804-3809</div>
-        </div>
-
-      </div>
-
-      <div class="food-actions">
-        <button class="btn btn-naver"
-          onclick="openNaver('고기굽는남자 서면점')">NAVER</button>
-
-        <a class="btn btn-google" target="_blank"
-          href="https://www.google.com/maps/search/?api=1&query=고기굽는남자+서면점">
-          Google
-        </a>
-      </div>
-
-    </div>
-  </div>
-</div>
-
-        <!-- 卡片 8 -->
-
-<div class="food-card">
-
-  <h3 class="food-title">Old Mansion (老宅邸 燒肉)</h3>
-  <div class="desc">田浦咖啡街 復古老宅熟成豬肉</div>
-
-  <div class="food-row">
-
-    <div class="food-img">
-      <img src="images/food/food-008.jpg" alt="Old Mansion">
-    </div>
-
-    <div class="food-info">
-
-      <div class="food-meta">
-
-        <div class="meta-row">
-          <span class="label">ADD</span>
-          <div class="value">
-            부산 부산진구 전포대로209번길 17-6<br>
-          <span class="addr-alt">(부산 부산진구 전포동 687-18)</span>
-          </div>
-        </div>
-
-        <div class="meta-row">
-          <span class="label">TEL</span>
-          <div class="value">0507-1413-2213</div>
-        </div>
-
-      </div>
-
-      <div class="food-actions">
-        <button class="btn btn-naver"
-          onclick="openNaver('올드맨션')">NAVER</button>
-
-        <a class="btn btn-google" target="_blank"
-          href="https://www.google.com/maps/search/?api=1&query=부산+올드맨션">
-          Google
-        </a>
-      </div>
-
-    </div>
-  </div>
-</div>
-
-        <!-- 卡片 9 -->
-<div class="food-card">
-
-  <h3 class="food-title">83獬豸 (83 Haechi)</h3>
-  <div class="desc">西面超人氣排隊烤肉店</div>
-
-  <div class="food-row">
-
-    <div class="food-img">
-      <img src="images/food/food-009.jpg" alt="83獬豸">
-    </div>
-
-    <div class="food-info">
-
-      <div class="food-meta">
-
-        <div class="meta-row">
-          <span class="label">ADD</span>
-          <div class="value">
-            부산 부산진구 서전로 11-1<br>
-          <span class="addr-alt">(부산 부산진구 부전동 142-8)</span>
-          </div>
-        </div>
-
-        <div class="meta-row">
-          <span class="label">TEL</span>
-          <div class="value">051-817-8377</div>
-        </div>
-
-      </div>
-
-      <div class="food-actions">
-        <button class="btn btn-naver"
-          onclick="openNaver('83해치')">NAVER</button>
-
-        <a class="btn btn-google" target="_blank"
-          href="https://www.google.com/maps/search/?api=1&query=83해치">
-          Google
-        </a>
-      </div>
-
-    </div>
-  </div>
-</div>
-      </div>
-    </details>
-
-  </div>
-</section>
-
-
+    </section>
 
     <!-- Notes -->
     <section class="page card" id="notes">
@@ -1524,6 +1523,30 @@
 
   </main>
 
+  <!-- Taxi Modal -->
+  <div class="taxi-modal" id="taxiModal" role="dialog" aria-modal="true" aria-hidden="true">
+    <div class="taxi-sheet" role="document">
+      <div class="taxi-top">
+        <div class="ttl">🚕 Taxi Phrase</div>
+        <button class="taxi-close" type="button" onclick="closeTaxi()">關閉</button>
+      </div>
+
+      <div class="taxi-body">
+        <div class="taxi-kr">
+          <div class="line1">기사님, 여기로 가 주세요.</div>
+          <div class="place" id="taxiPlace">—</div>
+        </div>
+
+        <div class="taxi-sub">提示：把這張卡直接給司機看就可以。</div>
+
+        <div class="taxi-actions">
+          <button class="btn btn-taxi" type="button" onclick="copyTaxi()">📋 複製韓文</button>
+          <button class="btn btn-naver" type="button" onclick="naverFromTaxi()">🧭 Naver 搜尋</button>
+        </div>
+      </div>
+    </div>
+  </div>
+
   <script>
     /* Tabs + hash */
     const tabs = Array.from(document.querySelectorAll('.tab'));
@@ -1533,13 +1556,11 @@
       tabs.forEach(t => t.classList.toggle('active', t.dataset.page === id));
       location.hash = id;
 
-      // 回到頂部（各平台都盡量穩）
       try { window.scrollTo({ top: 0, left: 0, behavior: 'auto' }); }
       catch(e){ window.scrollTo(0,0); }
     }
     tabs.forEach(t => t.addEventListener('click', () => showPage(t.dataset.page)));
 
-    // 初始頁（支援 #d1）
     const initial = (location.hash || '#overview').replace('#','');
     showPage(document.getElementById(initial) ? initial : 'overview');
 
@@ -1559,20 +1580,19 @@
       const q = encodeURIComponent(keyword);
       window.location.href = "nmap://search?query=" + q + "&appname=BusanTrip2026";
     }
-    
-    function manualRefresh(){
-  // 盡量確保拿到最新檔案（PWA / Safari 都相對穩）
-  try{
-    if ('caches' in window) {
-      caches.keys()
-        .then(keys => Promise.all(keys.map(k => caches.delete(k))))
-        .finally(() => location.reload());
-      return;
-    }
-  }catch(e){}
-  location.reload();
-}
 
+    /* Manual refresh */
+    function manualRefresh(){
+      try{
+        if ('caches' in window) {
+          caches.keys()
+            .then(keys => Promise.all(keys.map(k => caches.delete(k))))
+            .finally(() => location.reload());
+          return;
+        }
+      }catch(e){}
+      location.reload();
+    }
 
     /* Swipe navigation (Day01~Day06 only) */
     const dayOrder = ['d1','d2','d3','d4','d5','d6'];
@@ -1589,8 +1609,8 @@
     }
 
     let sx=0, sy=0, ex=0, ey=0;
-    const SWIPE_X = 60;     // 需要滑多一點才換頁
-    const SWIPE_Y = 80;     // 如果垂直滑太多，就當作滾動而不是換頁
+    const SWIPE_X = 60;
+    const SWIPE_Y = 80;
 
     document.addEventListener('touchstart', (e) => {
       sx = e.changedTouches[0].screenX;
@@ -1601,30 +1621,88 @@
       ex = e.changedTouches[0].screenX;
       ey = e.changedTouches[0].screenY;
 
-      // 只在 Day 頁生效
       if(currentDayIndex() === -1) return;
 
       const dx = ex - sx;
       const dy = ey - sy;
 
-      // 垂直滑動優先（避免你往下滑時誤觸翻頁）
       if(Math.abs(dy) > SWIPE_Y) return;
 
       if(Math.abs(dx) > SWIPE_X){
-        if(dx < 0) swipeTo('next'); // 左滑 → 下一天
-        else swipeTo('prev');       // 右滑 → 前一天
+        if(dx < 0) swipeTo('next');
+        else swipeTo('prev');
       }
     }, {passive:true});
+
+    /* =========================
+       TAXI CARD
+       ========================= */
+    let _taxiKeyword = "";
+    let _taxiKoreanPlace = "";
+
+    function openTaxi(placeKo, keyword){
+      _taxiKoreanPlace = placeKo || keyword || "";
+      _taxiKeyword = keyword || placeKo || "";
+
+      const modal = document.getElementById("taxiModal");
+      document.getElementById("taxiPlace").textContent = _taxiKoreanPlace || "—";
+
+      modal.classList.add("show");
+      modal.setAttribute("aria-hidden","false");
+
+      modal.addEventListener("click", taxiBackdropClose);
+      document.addEventListener("keydown", taxiEscClose);
+    }
+
+    function closeTaxi(){
+      const modal = document.getElementById("taxiModal");
+      modal.classList.remove("show");
+      modal.setAttribute("aria-hidden","true");
+
+      modal.removeEventListener("click", taxiBackdropClose);
+      document.removeEventListener("keydown", taxiEscClose);
+    }
+
+    function taxiBackdropClose(e){
+      if(e.target && e.target.id === "taxiModal") closeTaxi();
+    }
+
+    function taxiEscClose(e){
+      if(e.key === "Escape") closeTaxi();
+    }
+
+    function copyTaxi(){
+      const text = `기사님, 여기로 가 주세요.\n${_taxiKoreanPlace}`;
+      if(navigator.clipboard && window.isSecureContext){
+        navigator.clipboard.writeText(text);
+      }else{
+        const ta = document.createElement("textarea");
+        ta.value = text;
+        document.body.appendChild(ta);
+        ta.select();
+        document.execCommand("copy");
+        document.body.removeChild(ta);
+      }
+    }
+
+    function naverFromTaxi(){
+      if(typeof openNaver === "function"){
+        openNaver(_taxiKeyword || _taxiKoreanPlace);
+      }
+    }
   </script>
+
   <script>
-  if ("serviceWorker" in navigator) {
-    window.addEventListener("load", () => {
-      navigator.serviceWorker.register("./sw.js");
-    });
-  }
-</script>
-<button class="refresh-fab" type="button" onclick="manualRefresh()">
-  🔄 更新 <small>Reload</small>
-</button>
+    if ("serviceWorker" in navigator) {
+      window.addEventListener("load", () => {
+        navigator.serviceWorker.register("./sw.js");
+      });
+    }
+  </script>
+
+  <button class="refresh-fab" type="button" onclick="manualRefresh()">
+    🔄 更新 <small>Reload</small>
+  </button>
+
 </body>
 </html>
