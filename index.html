@@ -1670,7 +1670,9 @@ function closeTaxi(){
 }
 
 function copyTaxi(){
-  const text = `기사님, 여기로 가 주세요.\n${_taxiKoreanPlace}`;
+  // 這裡改為只存入變數本身
+  const text = _taxiKoreanPlace; 
+  
   if(navigator.clipboard && window.isSecureContext){
     navigator.clipboard.writeText(text);
   }else{
