@@ -362,6 +362,128 @@
     margin-top:2px;
   }
 
+/* =========================
+   SHOPPING PAGE (SCOPED)
+   ========================= */
+#shopping .shop-controls{
+  display:flex;flex-direction:column;gap:10px;
+  margin: 8px 0 14px;
+}
+#shopping .shop-controls input{
+  width:100%;
+  padding:12px 14px;
+  border-radius:14px;
+  border:1px solid rgba(0,0,0,.12);
+  font-size:14px;
+  font-weight:800;
+  outline:none;
+}
+#shopping .shop-actions{
+  display:flex;gap:8px;flex-wrap:wrap;
+}
+#shopping .shop-block .shop-head{
+  display:flex;align-items:baseline;justify-content:space-between;gap:10px;
+  margin: 12px 2px 10px;
+}
+#shopping .shop-block .shop-head h3{
+  margin:0;
+  font-family:var(--serif);
+  color:var(--ink);
+  font-size:18px;
+}
+#shopping .shop-block .shop-head .k{
+  font-size:12px;color:rgba(0,0,0,.45);
+  letter-spacing:.12em;text-transform:uppercase;
+}
+
+#shopping details.floor{
+  background: rgba(255,255,255,0.92);
+  border-radius: 16px;
+  box-shadow: 0 10px 28px rgba(0,0,0,.06);
+  margin: 12px 0;
+  overflow: hidden;
+  border: 1px solid rgba(0,0,0,.06);
+}
+#shopping details.floor > summary{
+  list-style:none;
+  cursor:pointer;
+  padding:14px 16px;
+  display:flex;
+  justify-content:space-between;
+  align-items:baseline;
+  gap:12px;
+  border-bottom:1px solid rgba(0,0,0,.06);
+  -webkit-tap-highlight-color:transparent;
+}
+#shopping details.floor > summary::-webkit-details-marker{display:none}
+
+#shopping .floor-left{
+  display:flex;align-items:baseline;gap:10px;flex-wrap:wrap;
+}
+#shopping .floor-lvl{
+  font-family:var(--mono);
+  font-weight:900;
+  font-size:12px;
+  padding:3px 8px;
+  border-radius:999px;
+  border:1px solid rgba(197,164,126,.35);
+  background:rgba(197,164,126,.10);
+  color:rgba(18,30,45,.88);
+}
+#shopping .floor-title{
+  font-weight:900;
+  color:rgba(18,30,45,.92);
+}
+#shopping .floor-count{
+  font-size:12px;
+  color:rgba(0,0,0,.45);
+  white-space:nowrap;
+}
+#shopping details.floor > summary::after{
+  content:"▾";
+  opacity:.5;
+  transform:translateY(-1px);
+  transition:transform .2s ease, opacity .2s ease;
+}
+#shopping details.floor[open] > summary::after{
+  transform:rotate(180deg) translateY(1px);
+  opacity:.75;
+}
+
+#shopping .floor-body{
+  padding: 12px 14px 14px;
+}
+#shopping .tag-row{
+  display:flex;gap:8px;flex-wrap:wrap;margin-bottom:10px;
+}
+#shopping .tag{
+  font-size:12px;font-weight:900;
+  padding:4px 10px;border-radius:999px;
+  border:1px solid rgba(0,0,0,.10);
+  background:rgba(0,0,0,.03);
+  color:rgba(0,0,0,.55);
+}
+#shopping .brands{
+  display:flex;flex-wrap:wrap;gap:8px;
+}
+#shopping .brand{
+  font-size:12px;
+  padding:7px 10px;
+  border-radius:999px;
+  border:1px solid rgba(0,0,0,.10);
+  background:#fff;
+  color:rgba(18,30,45,.82);
+  font-weight:800;
+}
+#shopping .brand mark{
+  background: rgba(197,164,126,.22);
+  color: rgba(18,30,45,.92);
+  padding:0 2px;
+  border-radius:4px;
+}
+#shopping .hidden{display:none !important;}
+
+
   /* =========================
      RESPONSIVE
      ========================= */
@@ -521,6 +643,7 @@
       <button class="tab" data-page="d5">Day 05</button>
       <button class="tab" data-page="d6">Day 06</button>
       <button class="tab" data-page="food">Food</button>
+      <button class="tab" data-page="shopping">新世界百貨</button>
       <button class="tab" data-page="notes">🇰🇷 Notes</button>
     </div>
   </nav>
@@ -1453,6 +1576,37 @@
 
       </div>
     </section>
+    
+    <!-- Shopping -->
+<section class="page card" id="shopping">
+  <div class="pad">
+    <div class="section-title">
+      <h2>新世界百貨</h2>
+      <div class="hint">Floor Guide</div>
+    </div>
+
+    <div class="vibe">
+      <b>Usage</b>：可折疊樓層、可搜尋品牌。建議先用「百貨」再看「Mall」。
+    </div>
+
+    <!-- Controls -->
+    <div class="shop-controls">
+      <input id="shopSearch" type="search" placeholder="搜尋品牌 / 樓層（例：LOEWE、B1、KidZania）" />
+      <div class="shop-actions">
+        <button class="btn" type="button" data-shop-toggle="dept">百貨</button>
+        <button class="btn" type="button" data-shop-toggle="mall">Mall</button>
+        <button class="btn" type="button" id="shopExpandAll">展開全部</button>
+        <button class="btn" type="button" id="shopCollapseAll">收合全部</button>
+      </div>
+    </div>
+
+    <!-- Render targets -->
+    <div id="shopDept" class="shop-block"></div>
+    <div id="shopMall" class="shop-block" style="margin-top:14px"></div>
+
+  </div>
+</section>
+
 
     <!-- Notes -->
     <section class="page card" id="notes">
@@ -1636,6 +1790,407 @@
         else swipeTo('prev');
       }
     }, {passive:true});
+    
+    /* =========================
+   SHOPPING · DATA
+   ========================= */
+const SHINSEGAE = {
+  "source": "https://en.shinsegae.cn/store/introduce.do?storeSeq=3",
+  "store": "Shinsegae Centum City (storeSeq=3)",
+  "generated_at": "2026-01-08",
+  "department_store": [
+    { "level": "11F", "title": "高爾夫練習場",  "items_raw": "GOLF RANGE" },
+    { "level": "10F", "title": "休閒 / 運動 / 高爾夫",  "items_raw": "Trinity Sports Club & Spa" },
+    { 
+      "level": "9F", 
+      "title": "主題餐廳 / 客戶服務", 
+      
+      "items_raw": "SHINSEGAE CULTURE HALL / ATM (Citi / Shinhan) / CUSTOMER SERVICE / ALTERATION SERVICE / SHINSEGAE CARD CENTER (BC / Samsung / Shinhan) / SHINSEGAE POINT CENTER / Gae Jeong / The Kitchen IL FORNO / Dim Dim Sum / Moon Sushi / Mil Hwa / Sariwon Naengmyeon / Spice Market / Xingkai / Younghodong Nakji / Paul Bassett / Hibarin / Emack and Bolios / ZOORAJI" 
+    },
+    { 
+      "level": "8F", 
+      "title": "家具 / 居家設計", 
+       
+      "items_raw": "Goldmund / Sound Gallery / Yamaha / Geneva Sound / Natuzzi / Dauning / Duxiana / Desker / Doleran / Disamobili (Line Roset) / Light Now / Louis Poulsen / Movement lab / Roche Bobois / Barrier / BoConcept / Sketch / BNB Italia / VILLA RECORDS / Simmons / Simmons Black / Sealy Beds / Alloso / Essa / Ace Beds / USM (Herman Miller) / Jakomo / Kartell / Carl Hansen & Son / Comfpro / Tempur / Torre / Fritz Hansen / Print Bakery / Hastens / Hypnos Beds / MUDMAT / maquillée / MEMBERS BAR / Secomd M / N32 / Cassina / LVIC / MATERASSO / MONKEY WOOD / WOODIQUE / Kartell / Herman Miller" 
+    },
+    { 
+      "level": "7F", 
+      "title": "家電 / 科技 / 電影院", 
+      
+      "items_raw": "DJI / LG / Nikon / dyson / DeLonghi / DREAME / Roborock / LUMENA / LIEBHERR / Rinnai / Miele / BALMUDA / Breville / SAMSUNG / shark.NINJA / CERAGEM / SMEG / OSIM / Canon / CUCKOO / Panasonic / Phillips / WMF / AMT / Kuchenprofi / Tefal / PISHION / henckel / Fissler / Nordicsleep / The Chosun Hotel / ralphlaren home / Sherdan / Laura Ashley / LIBECO / Sesa / Soprahum / Allerman / Anstich / Yves Delorme / Cozynest (Rnoma home) / Chrispy baba / Clarheim / Peab / Bassetti / Freshfine Linen / Peter Reed / Kwangjuyo / Notdam / Denby / LENOX / Royal Copenhagen / Rosenthal / Riedel / VBC CASA / villeroy & boch / Saint-Louis / Hermes Maison / odense / Wedgwood / costanova / Christofle / Portmeirion / CGV / LUCELL / Aroma&co / Umbra / Interdesign / Just / Queen's Aroma / Focusis / Play in the box / De Dietrich / TECHNOGYM / TUNTURI / ALESSI / PYRENEX / PILLIVUYT / VAKUEN / Fun City / LAURASTAR / Litter Robot / Maison de Concept / COFFEE BEAN" 
+    },
+    { 
+      "level": "6F", 
+      "title": "童裝 / 高爾夫 / 文化藝術", 
+      
+      "items_raw": "Golf Shop / A.P.C. Golf / BOSS GOLF / G/FORE / J.LINDEBERG / PXG / WAAC / Nike Golf / Dunlop / DESCENT GOLF/ MARK & LONA / MALBON GOLF / MUNSINGWEAR / SOUTHCAPE / St. Andrews / CHERVO / ANEW GOLF / AMAZING CRE / CALLAWAY GOLF / Titleist / PEARLY GATES / FOOTJOY / Philipp Plein Golf / BEBEDEPINO / Blue Dog / Bluetail / KANGOL KIDS / FRENCH CAT / KENZO KIDS / RALPH LAUREN CHILDREN / MONCLER INFANT / MICKEY HOUSE / BURBERRY CHILDREN / BABY DIOR / BOON JR. / A'CONTE / EMPORIO ARMANI JR. / FENDI KIDS / ROAN JANE / Moonya Moonya / Mink Mui / Benebene / Stokke / Absorba / YUMMI MEAL / ettoi / BUGABOO / ORCITE / NABITA / LITTLE ARCHIVE / IQ Box / KIUM HOUSE / SHINSEGAE ACADEMY / SHINSEGAE GALLERY / FIRST LOUNGE (PLATINUM with Kids) / LITTLE LOUNGE (Kids) / MLB Kids / NIKE KIDS / National Geographic Kids / THE NORTH FACE KIDS / NEW BALANCE KIDS / MICRO QUICK BOARD / BLACK YAK KIDS / ADIDAS KIDS / FILA KIDS / THE SIENA LIFE / LEE KIDS / MARITHÉ KIDS / COVERNAT KIDS / MOLO / Bonpoint / Petit Palais / Avectoi Kids / BABEPAPA / BABY CARE / STEP CARE / TOE BOX / TRADHUS" 
+    },
+    { 
+      "level": "5F", 
+      "title": "男裝精品 / 高級服飾 / 高級餐飲", 
+       
+      "items_raw": "SAN FRANCISCO MARKET / SUITSUPPLY / Sculpstore / Fr8ight / B&O / CGV Cine de Chef / Alteration shop for Men / GUCCI Men / DOLCE & GABBANA Men / S.T. Dupont / Christian Dior Men / LOUIS VUITTON Men / BALENCIAGA Men / BURBERRY Men / BERLUTI / BOTTEGA VENETA Men / BOON THE SHOP / EMPORIO ARMANI Men / ZEGNA (Ermenegildo Zegna) / GIORGIO ARMANI Men / CORNELIANI / THOM BROWNE / TOM FORD Men / FENDI Men / HUGO BOSS / DKNY Men / Theory Men / MAN ON THE BOON / BARBOUR Men / BEAKER Men / PAL ZILERI / SONGZIO HOMME / SOLID HOMME / STONE ISLAND / SLOWEAR / Series / ami / A.P.C. / epigram / HOMME PLISSE / WOOYOUNGMI / IRO Men / Juun.J / JILLSTUART NEWYORK Men / CLUB MONACO MEN / Paul Smith Men / GALAXY LIFESTYLE / LACOSTE Men / Ralph Lauren Men / Menhood / BEANPOLE Men / VALENTINO Men / Loro Piana Men / IAMSHOP / ANDZ / SIEG / Custom Mellow / TOMMY HILFIGER Men / HAZZYS / Henry Cotton's / Galaxy / DAKS / CAMBRIDGE MEMBERS / DAKS Shirts / S.T. Dupont Shirts / S.T. Dupont Ties / LANCETTI / renoma Tie / Vanbrough / Countess Mara Necktie / Countess Mara Shirts / UPPERHOUSE / Ralph Lauren Purple Label&Double RL / Prada Men / C.P. Company" 
+    },
+    { 
+      "level": "4F", 
+      "title": "流行女裝 / 內衣 / 溜冰場", 
+      
+      "items_raw": "LOMA / LACOSTE WOMEN / BEANPOLE LADIES / TOMMY HILFIGER WOMEN / CK Underwear / GUESS UNDERWEAR / Emporio Armani Underwear / CC Collect/ SJSJ / W CONCEPT / GROVE / NICE CLAUP / NUMBERING / LINE / LUCKY CHOUETTE / RECTO / ROH SEOUL / LOEUVRE / Lookast / LE17SEPTEMBRE / minitmute / Beneton / VOV / STAND OIL / System / Thursday Island / Àvie muah / Egoist / THEILMA / O'2nd / On & On / OLIVE DES OLIVE / it MICHAA / g-cut / Kenneth lady / codes combine / KINDERSALMON / TANNAT / Paprika / Plastic Island / H&M / ALLSAINTS / JJ JIGOTT / GREY MANSION / LAP / RAIVE / STUDIO TOMBOY / Pleuvoir / CK Calvin Klein Jeans / GUESS JEANS / Polo Denim / raracost / Get Some Coffee / Ice Rink / MEMBERS BAR - The Black / FIRST LOUNGE (PLATINUM) / 2ndSkin / CODES COMBINE INNERWEAR / SJSJ / MUSEE / UMER / ERA / Cardinal Red / TILL I DIE / REST&RECREATION / MULA Wear / Andar / ITZON" 
+    },
+    { 
+      "level": "3F", 
+      "title": "當代女裝 / 休閒 / 鞋履", 
+       
+      "items_raw": "Raum Edition / ROCKPORT / Repetto / Suecomma Bonnie / Sketchers USA / STACCATO / ASH / UGG / ecco / GEOX / Camper / A.P.C. / DKNY / XYTS / GANNI / Comme Des Garcons / Theory / Ralph Lauren Women / rag & bone / maje / Maison Kitsuné / Café Kitsuné / Vanessa Bruno / Berenice / vuori / BEAKER / Vince / SANDRO / Weekend Max Mara / Jill Stuart / Club Monaco / KUHO / the Cashmere / Della Lana / Lanvin Collection / Lynn / MINE / Monochrome / Mojo S. Phine / MICHAA / Obzee / JONS / Jigott / TIME / Daks Women / LEBEIGE / MOE / Miss Gee / Botticelli / Prendang / Son Jung Wan / Specchio / Italiana / GIVI / Izzat Baba / Barbara Lingerie / Venus / Vivian / WACOAL / Dongwoo Fur / Ds FURS / Yoonjin Fur / Jindo Fur / ILAIL / COS / H&M / ADERERROR / huit8 / Tax Refund / Alteration shop for Women / SSecret Woman / Starbucks / LeSportsac / NO.21 / SONGZIO / EENK / James Perse / R2W / DECO / YOICHEU / BCBG / ISAE / K-Way / PORTER / LAPLLI" 
+    },
+    { 
+      "level": "2F", 
+      "title": "精品女裝 / 名牌包款 / 高級鐘錶", 
+      
+      "items_raw": "LOEWE / BOON THE SHOP / BOON THE SHOP SHOE / CELINE / JIMMY CHOO / COACH / IWC / Draw a Circle / BREITLING / Breguet / BLANCPAIN / JAEGER LECOULTRE / OMEGA / HUBLOT / ZENITH / GIRARD PERREGAUX / Chronoswiss / TAG HEUER / TUDOR / PANERAI / LEONARD/ Loro Piana / Max Mara / BRUNELLO CUCINELLI / Blumarine / ERMANNO SCERVINO / OILILY / ISSEY MIYAKE / COLOMBO / TRINITY / Fabiana Filippi / PLEATS PLEASE / GOLDEN GOOSE / Chloe / MONCLER / BALENCIAGA / Vivienne Westwood / Sacai / STUDIO NICHOLSON / Acne Studio / Alexander Wang / HERNO / EMPORIO ARMANI / TORY BURCH / Thom Browne Women / LONGCHAMP / FRAT Sunglasses / KENZO / COMME des GARÇONS Collection / RAUM / LEMAIRE / Maison Margiela / Isabel Marant Collection / Sabatier / CONCIERGE DESK / PSR / TRINITY LOUNGE / FIRST LOUNGE (DIAMOND) / HORIZON CAFE / RIMOWA / VALENTINO / BALMAIN / BARRIE / ALAIA / Alexander McQueen / ENFOLD / JACQUEMUS / TOD'S / SHOE COLLECTION / PATOU / Courrèges" 
+    },
+{ 
+  "level": "1F", 
+  "title": "國際精品 / 彩妝香氛 / 珠寶",
+
+  "groups": [
+    {
+      "name": "國際精品",
+      "brands": [
+        "GOYARD","GUCCI","Roger Vivier","LOUIS VUITTON","MIU MIU","BURBERRY",
+        "BOTTEGA VENETA","Salvatore Ferragamo","YSL","CHANEL","HERMES",
+        "Christian Dior","FENDI","PRADA","DELVAUX","Chrome Hearts","MONTBLANC"
+      ]
+    },
+    {
+      "name": "珠寶 / 高級鐘錶",
+      "brands": [
+        "Cartier","ROLEX","Rolex A/S Center","VACHERON CONSTANTIN","Van Cleef & Arpels",
+        "BVLGARI","CHAUMET","Tiffany","PATEK PHILIPPE","FRED","PIAGET",
+        "DAMIANI","Boucheron","SWAROVSKI","PANDORA"
+      ]
+    },
+    {
+      "name": "彩妝 / 保養 / 香氛",
+      "brands": [
+        "SK-Ⅱ","YSL Cosmetic","Guerlain","Cledepeau-Beaute","NARS","DANIEL'S TRUTH",
+        "Dior Cosmetic","Diptyque","La Mer","La Bruket","La Prairie","Lancome","Lab Series",
+        "L’occitane","LE LABO","MAC","MAKE UP FOR EVER","Maison Margiela Perfume",
+        "Bobbi Brown","BYREDO","Benefit","Officine universelle buly","ViDIVICI",
+        "BIOTHERM","belif","Poiret","Santa Maria Novella","CHANEL Cosmetic",
+        "Sul Hwa Soo","SU:M 37","SWISS PERFECTION","SHISEIDO","SISLEY Cosmetic",
+        "CEO Perfumes","NONFICTION","AVEDA","HOURGLASS","Acqua di Parma",
+        "Hermes Perfume","Estee Lauder","Yunjac","OHUI, Whoo","Jo Malone",
+        "Giorgio Armani Cosmetic","Clinique","Creed","Clarins","Kiehl's","TAMBURINS",
+        "FREDERIC MALLE","HERA","LOEWE PERFUME","Maison franciskurkdjian",
+        "PENHALIGON'S","Golden Dew","Diame","MIKO"
+      ]
+    },
+    {
+      "name": "服務 / 設施 / 其他",
+      "brands": [
+        "Spa Land","Gift Certificate Shop","BABY CARRIAGE SERVICE",
+        "AS OF TODAY","VANZOE","Helen Kaminski","HONEST SEOUL","COLLECT","Emdirusa",
+        "MIKO" 
+      ]
+    }
+  ],
+
+  "items_raw": "GOYARD / GUCCI / Roger Vivier / LOUIS VUITTON / MIU MIU / BURBERRY / BOTTEGA VENETA / Salvatore Ferragamo / YSL / CHANEL / HERMES / Christian Dior / FENDI / PRADA / Cartier / ROLEX / Rolex A/S Center / MONTBLANC / VACHERON CONSTANTIN / Van Cleef & Arpels / BVLGARI / CHAUMET / Chrome Hearts / Tiffany / PATEK PHILIPPE / FRED / PIAGET / DELVAUX / SK-Ⅱ/ YSL Cosmetic / Guerlain / Cledepeau-Beaute / NARS / DANIEL'S TRUTH / Dior Cosmetic / Diptyque / La Mer / La Bruket / La Prairie / Lancome / Lab Series / L’occitane / LE LABO / MAC / MAKE UP FOR EVER / Maison Margiela Perfume / Bobbi Brown / BYREDO / Benefit / Officine universelle buly / ViDIVICI / BIOTHERM / belif / Poiret / Santa Maria Novella / CHANEL Cosmetic / Sul Hwa Soo / SU:M 37 / SWISS PERFECTION / SHISEIDO / SISLEY Cosmetic / CEO Perfumes / NONFICTION / AVEDA / HOURGLASS / Acqua di Parma / Hermes Perfume / Estee Lauder / Yunjac / OHUI, Whoo / Jo Malone / Giorgio Armani Cosmetic / Clinique / Creed / Clarins / Kiehl's / TAMBURINS / FREDERIC MALLE / HERA / Golden Dew / Diame / MIKO / SWAROVSKI / Emdirusa / PENHALIGON'S / Maison franciskurkdjian / PANDORA / COLLECT / Spa Land / Gift Certificate Shop / BABY CARRIAGE SERVICE / DAMIANI / Boucheron / Guerlain / LOEWE PERFUME / AS OF TODAY / VANZOE / Helen Kaminski / HONEST SEOUL"
+},
+    {
+  "level": "B1",
+  "title": "時尚配件 / 美食廣場 / 生活百貨",
+  "groups": [
+    { "name": "鞋履", "items": ["A.testoni","BABARA","Birkenstock","Elizabeth Stuart","HUNTER","KUMKANG","Misope","Soda","Tandy","DAKS SHOES"] },
+    { "name": "箱包皮件", "items": ["Athe Handbag","BRIC'S","COURONNE Handbag","DAKS Handbag","HAZZYS Handbag","Joy Gryson","LOUIS QUATORZE Handbag","Mandarina Duck","METROCITY Handbag","Samsonite","Vunque","rouge & lounge"] },
+    { "name": "鐘錶飾品", "items": ["Grand Seiko","HAMILTON","MIDO","RADO","STYLUS","Swatch","Tissot","DIDIER DUBOT","J.ESTINA Accessories","STONEHENgE","S.tyle Accessories","S.tyle Select","Roseedor","Tirr Lirr"] },
+    { "name": "眼鏡", "items": ["Gentle Monster","Ferragamo Sunglasses","RayBan Sunglasses","Saint Laurent","TOM FORD","GUCCI","Page Glasses","Tomford Sunglasses (DK)","Sunglasses (GUGGI / Chloé / Saint Laurent / Bottega Veneta / KIVULI / Moncler / TOM FORD / DUPONT / ESCADA / VIVIENNE WESTWOOD)"] },
+    { "name": "配件小物", "items": ["CK Socks","DAKS·AGATHA hat","Daks Gloves","Daks Handkerchief","Daks Hat","Daks Socks","Daks Umbrella","Renoma Hat","Renoma scarf","Sermoneta Gloves","VIVIEN Stockings","i.eI d"] },
+    { "name": "健康與生活", "items": ["Nespresso","JAJU","Centum Health Drugstore","KGC(정관장)","Comvita","Dreamleader","Elkara","GNC","Kanggae","Nutricore","Orthomol","Raydel","Solgar","Vitamin Bank"] },
+    { "name": "生鮮食材", "items": ["Vegetable","Meat","Chicken","Pork","Hanwoo","Seafood","Sushi, Raw Fish","Dried Seafood","Fermentation: Storehouse","Haru cook"] },
+    { "name": "飲品酒類", "items": ["Health Beverage","Beer","Imported Beer","Wine House","Fortnum & Mason","Water","Osulloc","Ssangye Tea"] },
+    { "name": "烘焙甜點 / 咖啡", "items": ["Kyungju Bakery","Gyodong Traditional Snacks","Grains Cookie","Knotted","Cafe Layered","Monchouchou","Baekmidang","Bake","SANGSU-DONG CASTILLA","SOMAC BAKERY","PRESS BUTTER SAND","LEE HEUNG YONG BAKERY","Gelati Gelati","Starbucks","S Harrah coffee","Green Five","Butter&Shelter","Buchang Bakery","Pierre Marcolini","Marble Ice Cream","OAKBERRY Açaí"] },
+    { "name": "餐廳", "items": ["GORDON RAMSAY burger","Menu by GORDON RAMSAY","ABIKO (CURRY)","Arirang Croquette","Beechenghiang","Brothersrk (Rice Cake)","Cafe Amoje","CHAI 797","Chilam Manjang","Dami Bunsik","DOJE","Geodae Gomtang","Gajok Hoeguan (가족회관)","GONG-CHA","HAU' SUM","HamKyung Myonok","Hongdae Gaemi","Kim C. Maguro","Kim's MAGURO","KwangBok Sujebi","MALARO","Mido Odeng","Meallions","ONKIJUNG","O MANUKA","Pal Seonsaeng","PEI PEI","Samjin Amook","Sanguk's","Saulthouse Sandwich","Shabu Jin","THE TACO BOOTH","Toi Toi VIETNAM","Tokyo Ramen School","GUO Juicy Dumpling","Tonkatsu REN"] },
+    { "name": "服務/其他", "items": ["Valet Lounge","Short Distance Delivery Service Desk","Namu Flower (Packaging Corner)"] }
+  ],
+  "items_raw": "KUMKANG / DAKS SHOES / Misope / BABARA / Soda / Elizabeth Stuart / Tandy / HUNTER / DAKS Handbag / LOUIS QUATORZE Handbag / rouge & lounge / Mandarina Duck / METROCITY Handbag / Vunque / Grand Seiko / Swatch / Birkenstock / Roseedor / S.tyle Select / DAKS·AGATHA hat / RayBan Sunglasses / Sunglasses (GUGGI / Chloé / Saint Laurent / Bottega Veneta / KIVULI / Moncler / TOM FORD / DUPONT / ESCADA / VIVIENNE WESTWOOD) / Tirr Lirr / Tissot / A.testoni / Athe Handbag / Joy Gryson / COURONNE Handbag / HAZZYS Handbag / S.tyle Accessories / DIDIER DUBOT / RADO / STONEHENgE / J.ESTINA Accessories / CK Socks / Daks Handkerchief / Daks Socks / Daks Umbrella / Daks Gloves / Daks Hat / Renoma Hat / Renoma scarf / VIVIEN Stockings / Sermoneta Gloves / i.eI d / Gentle Monster / Tomford Sunglasses (DK) / Ferragamo Sunglasses / Nespresso / JAJU / Page Glasses / Centum Health Drugstore / Valet Lounge / Short Distance Delivery Service Desk / Vegetable / Meat / Chicken / Pork / Hanwoo / Seafood / Sushi, Raw Fish / Dried Seafood / Fermentation: Storehouse / Haru cook / GNC / Kanggae / Nutricore / Dreamleader / Raydel / Vitamin Bank / Samjin Tongsang / Solgar / Ssangye Tea / Elkara / Osulloc / KGC(정관장) / Orthomol / Comvita / Health Beverage / Beer / Imported Beer / Wine House / Namu Flower (Packaging Corner) / Fortnum & Mason / Water / Kyungju Bakery / Gyodong Traditional Snacks / Grains Cookie / Knotted / Cafe Layered / Monchouchou / Baekmidang / Bake / SANGSU-DONG CASTILLA / SOMAC BAKERY / Yeon.li.hui.jae / Oumt / 2dae / Joseon snack / CHEFFLÉ / PRESS BUTTER SAND / LEE HEUNG YONG BAKERY / Gelati Gelati / GONG-CHA / Starbucks / S Harrah coffee / Green Five / Dami Bunsik / THE TACO BOOTH / DOJE / Brothersrk (Rice Cake) / Toi Toi VIETNAM / Beechenghiang / Samjin Amook / Sanguk's / Arirang Croquette / Cafe Amoje / Pal Seonsaeng / Gajok Hoeguan (가족회관) / Geodae Gomtang / GORDON RAMSAY burger / Kim C. Maguro / Tonkatsu REN / MALARO / Shabu Jin / ABIKO (CURRY) / ONKIJUNG / Chilam Manjang / PEI PEI / HamKyung Myonok / Hongdae Gaemi / HAU' SUM / BRIC'S / Samsonite / KwangBok Sujebi / Kim's MAGURO / CHAI 797 / STYLUS / MIDO / HAMILTON / Tokyo Ramen School / O MANUKA / Marble Ice Cream / Butter&Shelter / Buchang Bakery / Pierre Marcolini / GUO Juicy Dumpling / Mido Odeng / Meallions / Saulthouse Sandwich / OAKBERRY Açaí / Menu by GORDON RAMSAY"
+},
+{ 
+  "level": "B2", 
+  "title": "潮流服飾 / 配件 / 年輕品牌", 
+
+  "groups": [
+    {
+      "name": "潮流服飾",
+      "brands": [
+        "INSTANTFUNK","MISCHIEF","ARKET","draw-fit","MIND BRIDGE","BROWNYARD",
+        "INSILENCE","TOPTEN","Lee","MMLG","NOMANUAL","thisisneverthat",
+        "MARITHÉ FRANÇOIS GIRBAUD","BROWNBREATH","OUTSTANDING","carhartt",
+        "COVERNAT","POTTERY","MARDI MERCREDI","SATUR","Wacky Willy",
+        "CODEGRAPHY","HARLEY-DAVIDSON COLLECTIONS®","MLB"
+      ]
+    },
+    {
+      "name": "帽款 / 配件 / 鐘錶",
+      "brands": [
+        "emis","KANGOL","G-SHOCK"
+      ]
+    },
+    {
+      "name": "箱包 / 旅行配件",
+      "brands": [
+        "RAWROW"
+      ]
+    },
+    {
+      "name": "鞋履 / 鞋類選物",
+      "brands": [
+        "GRAND STAGE","WORKSOUT","BARREL"
+      ]
+    },
+    {
+      "name": "眼鏡",
+      "brands": [
+        "AFRICA EYEWEAR","AECA WHITE"
+      ]
+    },
+    {
+      "name": "3C / 手機配件",
+      "brands": [
+        "Frisbee (Apple)","CASETiFY"
+      ]
+    },
+    {
+      "name": "美妝 / 生活",
+      "brands": [
+        "Bath & Body Works","CAREX","GK NAIL","Kakaofriends Shop"
+      ]
+    },
+    {
+      "name": "咖啡 / 飲品 / 餐食",
+      "brands": [
+        "PHOTO DRINK","DONGBAEK SANGHOE","Super Matcha","Halff Coffee"
+      ]
+    },
+    {
+      "name": "服務 / 其他",
+      "brands": [
+        "Storage Locker",
+        "EV Charging Station (Paid service/Capacity for 5 vehicles simultaneously/Parking Zone H4)"
+      ]
+    }
+  ],
+
+  "items_raw": "INSTANTFUNK / MISCHIEF / ARKET / draw-fit / MIND BRIDGE / BROWNYARD / emis / INSILENCE / TOPTEN / Lee / MMLG / NOMANUAL / thisisneverthat / RAWROW / MARITHÉ FRANÇOIS GIRBAUD / BARREL / BROWNBREATH / OUTSTANDING / AFRICA EYEWEAR / AECA WHITE / MLB / WORKSOUT / G-SHOCK / carhartt / KANGOL / COVERNAT / POTTERY / GRAND STAGE / Frisbee (Apple) / PHOTO DRINK / CAREX / GK NAIL / Storage Locker / DONGBAEK SANGHOE / Super Matcha / Halff Coffee / CASETiFY / Bath & Body Works / MARDI MERCREDI / SATUR / Wacky Willy / Kakaofriends Shop / CODEGRAPHY / HARLEY-DAVIDSON COLLECTIONS® / EV Charging Station (Paid service/Capacity for 5 vehicles simultaneously/Parking Zone H4)"
+},
+  ],
+  "mall": [
+    { "level": "7F", "title": "PSA / S GARDEN",  "items_raw": "PSA (English Immersion Program) / S GARDEN" },
+    { "level": "6F", "title": "KidZania",  "items_raw": "KidZania" },
+    { "level": "5F", "title": "KidZania", "items_raw": "KidZania" },
+    { 
+      "level": "4F", 
+      "title": "Famille Station (Food) / Kidzania", 
+      
+      "items_raw": "GREAT BOOKS / KidZania / Gooseul Hambak / Namsan King Donkatsu / Locos BBQ / villa de spicy / Seorijae / sokcho-kodari naengmyeon / Agra / Outback Steakhouse / Johnsonville Boodae Stew / Konthai / Crystal Jade / Tokkijung / Baekmidang / Teyang Coffee / Yoajung" 
+    },
+    { 
+      "level": "3F", 
+      "title": "Lifestyle / Casamia", 
+       
+      "items_raw": "MOROCCANOIL / Aesop / Formel Camele / HOTPING / Bind / Levi's Jean / AX / Tommy Jeans / Plac Jean / DESCENTE / Diadora / Lacoste Sports / Under Armour / Onitsuka Tiger / Wilson / FLATFORM / dyson beauty / BODYFRIEND / casamia / LUSH / MEMBERS BAR / Gratitude Event Venue / P.F. Chang's / Gundam Base / SAVE HEELS / DYNAFIT / LEMANGO / Foreigner Service Center (Tax Refund)" 
+    },
+    { 
+      "level": "2F", 
+      "title": "Sport / Casual", 
+      
+      "items_raw": "FOOTBALLSTANDARD / dod camp / NORDISK / Timberland / Quiksilver / roxy / Nike / Lecoq sportif / adidas / Arena Swimwear / Umbro / FILA / Nike Swimwear / NATIONAL GEOGRAPHIC™ / thenorthface_whitelabel / Discovery / Snow Peak / DR.Martens / Vans / Skechers / Y concepts / Feiyue" 
+    },
+    { 
+      "level": "1F", 
+      "title": "Sports / Outdoor", 
+      
+      "items_raw": "lululemon / HDEX / UFCSPORTS / SPYDER / XEXYMIX / KIPLING / BBC earth / K2 / GARMIN / GREGORY / NEPA / THE NORTH FACE / multi:POOL / mont-bell / Millet / BLACK YAK / EIDER / ARCTERYX / COLUMBIA / Kolon Sports / PATAGOINA / FJALLRAVEN / BROMPTON / STREAM TRAIL / KODAK / LOOK YOUNG HAIR / TESLA / POLESTAR / SHAKE SHACK / CAMEL COFFEE / GELATI GELATI / STARBUCKS" 
+    },
+    { "level": "B1", "title": "SPORTS SHOE",  "items_raw": "New Balance / Reebok / PUMA / Salomon / Mizuno / Skechers / Converse / Crocs" },
+    { 
+      "level": "B2", 
+      "title": "Shinsegae FACTORY STORE / YOUNGPOONG BOOKSTORE / LX Z:IN", 
+       
+      "items_raw": "CHIQUITA / Wiggle Wiggle / TOPTEN KIDS / CHICOR / LLOYD / MUJI / SPAO / MOSVANI / LEGO / LX Z:IN / MODERN HOUSE / yogibo / YOUNGPOONG BOOKSTORE / Molly's PET SHOP / Shinsegae FACTORY STORE / PROMOM KINDER / PAUL BASSETT / ATM(Shinhan/SC)" 
+    }
+  ]
+};
+
+/* =========================
+   SHOPPING · RENDER LOGIC (你提供的程式碼)
+   ========================= */
+
+function splitBySlashOutsideParen(text){
+  const out = [];
+  let buf = "";
+  let depth = 0;
+  for(let i=0; i<text.length; i++){
+    const ch = text[i];
+    const next2 = text.slice(i, i+3);
+    if(ch === "(") depth++;
+    if(ch === ")") depth = Math.max(0, depth-1);
+    if(depth === 0 && next2 === " / "){
+      out.push(buf.trim());
+      buf = "";
+      i += 2; 
+      continue;
+    }
+    buf += ch;
+  }
+  if(buf.trim()) out.push(buf.trim());
+  return out.filter(Boolean);
+}
+
+function escapeHTML(s){
+  return String(s).replaceAll("&","&amp;").replaceAll("<","&lt;").replaceAll(">","&gt;").replaceAll('"',"&quot;").replaceAll("'","&#039;");
+}
+
+function highlight(text, q){
+  if(!q) return escapeHTML(text);
+  const safe = escapeHTML(text);
+  const re = new RegExp(`(${q.replace(/[.*+?^${}()|[\]\\]/g, "\\$&")})`, "ig");
+  return safe.replace(re, "<mark>$1</mark>");
+}
+
+function groupList(g){
+  return (g && (g.items || g.brands) ? (g.items || g.brands) : []);
+}
+
+function buildFloorDetails(floor, q){
+  const qLower = (q || "").toLowerCase();
+
+  // ✅ 1) 取得此樓層的「品牌清單」
+  // - 若有 groups：從 groups 取出全部 brands
+  // - 否則：使用原本 items_raw 的 split
+const allItems = floor.groups
+  ? floor.groups.flatMap(g => groupList(g).map(b => ({ brand: b, group: g.name })))
+  : splitBySlashOutsideParen(floor.items_raw || "").map(b => ({ brand: b, group: "" }));
+
+  // ✅ 2) 判斷此樓層是否命中搜尋（用 level/title/items_raw/groups 都一起算）
+  const floorBlob = (
+    (floor.level || "") + " " +
+    (floor.title || "") + " " +
+    (floor.items_raw || "") + " " +
+    (floor.groups ? floor.groups.map(g => (g.name + " " + groupList(g).join(" "))).join(" ") : "")
+  ).toLowerCase();
+
+  const isHitFloor = q ? floorBlob.includes(qLower) : true;
+
+  // ✅ 3) 篩選命中的品牌
+  const hitItems = q
+    ? allItems.filter(x => (x.brand || "").toLowerCase().includes(qLower))
+    : allItems;
+
+  const hiddenClass = (!isHitFloor || hitItems.length === 0) ? "hidden" : "";
+
+  const tags = (floor.tags || []).map(t => `<span class="tag">${escapeHTML(t)}</span>`).join("");
+
+  // ✅ 4) 內容：如果有 groups，就依分類輸出；沒有 groups 就照舊輸出 brands
+  let bodyHTML = "";
+
+  if (floor.groups && Array.isArray(floor.groups)) {
+    bodyHTML = floor.groups.map(g => {
+      const brands = groupList(g);
+      const hitBrands = q ? brands.filter(b => b.toLowerCase().includes(qLower)) : brands;
+      if (q && hitBrands.length === 0 && !isHitFloor) return "";
+
+      return `
+        <div style="margin-top:10px">
+          <div style="font-weight:900;font-size:13px;color:rgba(18,30,45,.88);margin:6px 0 8px">
+            ${highlight(g.name, q)}
+            <span style="font-size:12px;color:rgba(0,0,0,.45);font-weight:800;margin-left:6px">
+              ${hitBrands.length}
+            </span>
+          </div>
+          <div class="brands">
+            ${hitBrands.map(b => `<span class="brand">${highlight(b, q)}</span>`).join("") || `<span class="brand">（此分類無符合搜尋的品牌）</span>`}
+          </div>
+        </div>
+      `;
+    }).join("");
+  } else {
+    bodyHTML = `
+      <div class="brands">
+        ${hitItems.map(x => `<span class="brand">${highlight(x.brand, q)}</span>`).join("") || `<span class="brand">（此層無符合搜尋的品牌）</span>`}
+      </div>
+    `;
+  }
+
+  return `
+    <details class="floor ${hiddenClass}">
+      <summary>
+        <span class="floor-left">
+          <span class="floor-lvl">${escapeHTML(floor.level || "")}</span>
+          <span class="floor-title">${highlight(floor.title || "", q)}</span>
+        </span>
+        <span class="floor-count">${hitItems.length} brands</span>
+      </summary>
+      <div class="floor-body">
+        ${tags ? `<div class="tag-row">${tags}</div>` : ""}
+        ${bodyHTML}
+      </div>
+    </details>
+  `;
+}
+
+
+function renderShopping(q=""){
+  const deptEl = document.getElementById("shopDept");
+  const mallEl = document.getElementById("shopMall");
+  if(!deptEl || !mallEl) return;
+
+  const dept = SHINSEGAE.department_store || [];
+  const mall = SHINSEGAE.mall || [];
+
+  deptEl.innerHTML = `
+    <div class="shop-head"><h3>百貨</h3><div class="k">${dept.length} floors</div></div>
+    ${dept.map(f => buildFloorDetails(f, q)).join("")}
+  `;
+  mallEl.innerHTML = `
+    <div class="shop-head"><h3>Mall</h3><div class="k">${mall.length} floors</div></div>
+    ${mall.map(f => buildFloorDetails(f, q)).join("")}
+  `;
+}
+
+function setShopMode(mode){
+  const dept = document.getElementById("shopDept");
+  const mall = document.getElementById("shopMall");
+  const btnDept = document.querySelector('[data-shop-toggle="dept"]');
+  const btnMall = document.querySelector('[data-shop-toggle="mall"]');
+  if(!dept || !mall) return;
+  const showDept = (mode === "dept");
+  dept.classList.toggle("hidden", !showDept);
+  mall.classList.toggle("hidden", showDept);
+  if(btnDept) btnDept.classList.toggle("active", showDept);
+  if(btnMall) btnMall.classList.toggle("active", !showDept);
+}
+
+function expandCollapseAll(open){
+  document.querySelectorAll("#shopping details.floor:not(.hidden)").forEach(d => d.open = !!open);
+}
+
+window.addEventListener("load", () => {
+  renderShopping("");
+  const input = document.getElementById("shopSearch");
+  if(input) input.addEventListener("input", () => renderShopping(input.value.trim()));
+  const btnExpand = document.getElementById("shopExpandAll");
+  const btnCollapse = document.getElementById("shopCollapseAll");
+  if(btnExpand) btnExpand.addEventListener("click", () => expandCollapseAll(true));
+  if(btnCollapse) btnCollapse.addEventListener("click", () => expandCollapseAll(false));
+  const btnDept = document.querySelector('[data-shop-toggle="dept"]');
+  const btnMall = document.querySelector('[data-shop-toggle="mall"]');
+  if(btnDept) btnDept.addEventListener("click", () => setShopMode("dept"));
+  if(btnMall) btnMall.addEventListener("click", () => setShopMode("mall"));
+  setShopMode("dept");
+});
+
 
 /* =========================
    TAXI CARD
