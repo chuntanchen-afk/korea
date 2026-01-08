@@ -482,7 +482,24 @@
   border-radius:4px;
 }
 #shopping .hidden{display:none !important;}
+/* ===== Brand color variants (Shopping only) ===== */
+#shopping .brand.brand--vip{
+  border-color: rgba(197,164,126,.55);
+  background: rgba(197,164,126,.14);
+  color: rgba(18,30,45,.92);
+}
 
+#shopping .brand.brand--green{
+  border-color: rgba(3,199,90,.45);
+  background: rgba(3,199,90,.10);
+  color: rgba(0,0,0,.72);
+}
+
+#shopping .brand.brand--blue{
+  border-color: rgba(66,133,244,.45);
+  background: rgba(66,133,244,.10);
+  color: rgba(0,0,0,.72);
+}
 
   /* =========================
      RESPONSIVE
@@ -1976,13 +1993,12 @@ const SHINSEGAE = {
     {
       "name": "服務 / 其他",
       "brands": [
-        "Storage Locker",
-        "EV Charging Station (Paid service/Capacity for 5 vehicles simultaneously/Parking Zone H4)"
+        "Storage Locker"
       ]
     }
   ],
 
-  "items_raw": "INSTANTFUNK / MISCHIEF / ARKET / draw-fit / MIND BRIDGE / BROWNYARD / emis / INSILENCE / TOPTEN / Lee / MMLG / NOMANUAL / thisisneverthat / RAWROW / MARITHÉ FRANÇOIS GIRBAUD / BARREL / BROWNBREATH / OUTSTANDING / AFRICA EYEWEAR / AECA WHITE / MLB / WORKSOUT / G-SHOCK / carhartt / KANGOL / COVERNAT / POTTERY / GRAND STAGE / Frisbee (Apple) / PHOTO DRINK / CAREX / GK NAIL / Storage Locker / DONGBAEK SANGHOE / Super Matcha / Halff Coffee / CASETiFY / Bath & Body Works / MARDI MERCREDI / SATUR / Wacky Willy / Kakaofriends Shop / CODEGRAPHY / HARLEY-DAVIDSON COLLECTIONS® / EV Charging Station (Paid service/Capacity for 5 vehicles simultaneously/Parking Zone H4)"
+  "items_raw": "INSTANTFUNK / MISCHIEF / ARKET / draw-fit / MIND BRIDGE / BROWNYARD / emis / INSILENCE / TOPTEN / Lee / MMLG / NOMANUAL / thisisneverthat / RAWROW / MARITHÉ FRANÇOIS GIRBAUD / BARREL / BROWNBREATH / OUTSTANDING / AFRICA EYEWEAR / AECA WHITE / MLB / WORKSOUT / G-SHOCK / carhartt / KANGOL / COVERNAT / POTTERY / GRAND STAGE / Frisbee (Apple) / PHOTO DRINK / CAREX / GK NAIL / Storage Locker / DONGBAEK SANGHOE / Super Matcha / Halff Coffee / CASETiFY / Bath & Body Works / MARDI MERCREDI / SATUR / Wacky Willy / Kakaofriends Shop / CODEGRAPHY / HARLEY-DAVIDSON COLLECTIONS® / "
 },
   ],
   "mall": [
@@ -2022,6 +2038,34 @@ const SHINSEGAE = {
     }
   ]
 };
+
+/* ===== Brand highlight rules ===== */
+const BRAND_COLOR = {
+  vip: new Set([
+    // 你想要金色突顯的品牌（示例，自己增減）
+    "chrome hearts", 
+  ]),
+  green: new Set([
+    // 你想要綠色的品牌（示例）
+    "starbucks","gordon ramsay burger","shake shack"
+  ]),
+  blue: new Set([
+    // 你想要藍色的品牌（示例）
+    "emis", "mlb","mardi mercredi".toLowerCase()
+  ])
+};
+
+function normBrandName(s){
+  return String(s || "").trim().toLowerCase();
+}
+
+function brandExtraClass(brandName){
+  const n = normBrandName(brandName);
+  if(BRAND_COLOR.vip.has(n)) return " brand--vip";
+  if(BRAND_COLOR.green.has(n)) return " brand--green";
+  if(BRAND_COLOR.blue.has(n)) return " brand--blue";
+  return "";
+}
 
 /* =========================
    SHOPPING · RENDER LOGIC (你提供的程式碼)
@@ -2110,7 +2154,7 @@ const allItems = floor.groups
             </span>
           </div>
           <div class="brands">
-            ${hitBrands.map(b => `<span class="brand">${highlight(b, q)}</span>`).join("") || `<span class="brand">（此分類無符合搜尋的品牌）</span>`}
+            ${hitBrands.map(b => `<span class="brand${brandExtraClass(b)}">${highlight(b, q)}</span>`).join("") || `<span class="brand">（此分類無符合搜尋的品牌）</span>`}
           </div>
         </div>
       `;
@@ -2118,7 +2162,7 @@ const allItems = floor.groups
   } else {
     bodyHTML = `
       <div class="brands">
-        ${hitItems.map(x => `<span class="brand">${highlight(x.brand, q)}</span>`).join("") || `<span class="brand">（此層無符合搜尋的品牌）</span>`}
+        ${hitItems.map(x => `<span class="brand${brandExtraClass(x.brand)}">${highlight(x.brand, q)}</span>`).join("") || `<span class="brand">（此層無符合搜尋的品牌）</span>`}
       </div>
     `;
   }
